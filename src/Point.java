@@ -19,6 +19,10 @@ public class Point {
         this.y = x.y;
     }
 
+    public Point clone() {
+        return new Point(this);
+    }
+
     public double distanceBetweenPoints(Point a, Point b) {
          return Math.sqrt((a.x - b.x)^2 + (a.y - b.y)^2);
     }

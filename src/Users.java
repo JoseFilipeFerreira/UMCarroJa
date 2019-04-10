@@ -65,13 +65,4 @@ public class Users {
         return new Users(this);
     }
 
-    public boolean equals(Object o) {
-        if(o == this) return true;
-        if(o == null || o.getClass() != this.getClass()) return false;
-
-        Users a = (Users) o;
-
-        return (a.name == this.name);
-
-    }
 }
