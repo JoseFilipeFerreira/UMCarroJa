@@ -1,30 +1,63 @@
+import java.time.LocalDateTime;
+
 public class Rental {
-    //ids or objects ?
-    private Client client;
-    private Car car;
+    private String clientID;
+    private String carID;
     private Point start;
     private Point end;
     private double distance;
     private double price;
+    private LocalDateTime date;
 
-    public Rental(Client client, Car car, Point start, Point end, double distance, double price) {
-        this.client = client;
-        this.car = car;
+    public Rental(String client, String car, Point start, Point end, double distance, double price, LocalDateTime date) {
+        this.clientID = client;
+        this.carID = car;
         this.start = start;
         this.end = end;
         this.distance = distance;
         this.price = price;
+        this.date = date;
     }
 
-    public Car getCar() {
-        return this.car.clone();
+    public Rental(Rental rental) {
+        this.clientID = rental.getClientID();
+        this.carID = rental.getCarID();
+        this.start = rental.getStart();
+        this.end = rental.getEnd();
+        this.distance = rental.getDistance();
+        this.price = rental.getPrice();
+        this.date = rental.getDate();
     }
 
-    public void setCar(Car car) {
-        this.car = car.clone();
+    public LocalDateTime getDate() {
+        return this.date;
     }
 
-    public Client getClient() {
-        return this.client; //needs fixes
+    public Point getStart() {
+        return this.start;
+    }
+
+    public double getDistance() {
+        return this.distance;
+    }
+
+    public Point getEnd() {
+        return this.end;
+    }
+
+    public double getPrice() {
+        return this.price;
+    }
+
+    public String getCarID() {
+        return this.carID;
+    }
+
+    public String getClientID() {
+        return this.clientID;
+    }
+
+    public Rental clone() {
+        return new Rental(this);
     }
 }

@@ -1,5 +1,4 @@
-import org.jetbrains.annotations.NotNull;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,7 @@ public class CarBase {
         this.carBase = new HashMap<>();
     }
 
-    public CarBase(@NotNull CarBase c) {
+    public CarBase(CarBase c) {
         this.carBase = (HashMap<String, Car>) c.carBase
                 .values()
                 .stream()
@@ -23,7 +22,7 @@ public class CarBase {
      * @param a Carro a adicionar
      * @return True se adicionou, False se já existe
      */
-    public boolean addCar(@NotNull Car a) {
+    public boolean addCar(Car a) {
         return this.carBase
                 .putIfAbsent(a.getNumberPlate(), a.clone())
                 != null;
@@ -53,5 +52,21 @@ public class CarBase {
      */
     public CarBase clone() {
         return new CarBase(this);
+    }
+
+    /**
+     * Obtem a lista de todos os carros no sistema
+     * de um determinado tipo
+     * @param b Tipo a procurar
+     * @return Lista dos carros
+     */
+    public ArrayList<Car> listOfCarType(Car.CarType b) {
+        return this.carBase
+                .values()
+                .stream()
+                .filter((e)-> e.getType() == b)
+                .map(Car::clone)
+                .collect(Collectors
+                        .toCollection(ArrayList::new));
     }
 }

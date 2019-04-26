@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDateTime;
 
 public class Users {
@@ -22,7 +20,7 @@ public class Users {
         this.dateOfBirth = LocalDateTime.now();
     }
 
-    public Users(@NotNull Users u) {
+    public Users(Users u) {
         this.email = u.email;
         this.name = u.email;
         this.address = u.address;

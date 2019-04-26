@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 public class Point {
     private int x;
     private int y;
@@ -14,16 +12,24 @@ public class Point {
         this.y = y;
     }
 
-    public Point(@NotNull Point x) {
-        this.x = x.x;
-        this.y = x.y;
+    public Point(Point x) {
+        this.x = x.getX();
+        this.y = x.getY();
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public Point clone() {
         return new Point(this);
     }
 
-    public double distanceBetweenPoints(Point a, Point b) {
-         return Math.sqrt((a.x - b.x)^2 + (a.y - b.y)^2);
+    public double distanceBetweenPoints(Point a) {
+         return Math.sqrt((a.x - this.x)^2 + (a.y - this.y)^2);
     }
 }
