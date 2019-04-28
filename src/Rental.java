@@ -5,16 +5,14 @@ public class Rental {
     private String carID;
     private Point start;
     private Point end;
-    private double distance;
     private double price;
     private LocalDateTime date;
 
-    public Rental(String client, String car, Point start, Point end, double distance, double price, LocalDateTime date) {
+    public Rental(String client, String car, Point start, Point end, double price, LocalDateTime date) {
         this.clientID = client;
         this.carID = car;
         this.start = start;
         this.end = end;
-        this.distance = distance;
         this.price = price;
         this.date = date;
     }
@@ -24,7 +22,6 @@ public class Rental {
         this.carID = rental.getCarID();
         this.start = rental.getStart();
         this.end = rental.getEnd();
-        this.distance = rental.getDistance();
         this.price = rental.getPrice();
         this.date = rental.getDate();
     }
@@ -38,7 +35,7 @@ public class Rental {
     }
 
     public double getDistance() {
-        return this.distance;
+        return this.getStart().distanceBetweenPoints(this.getEnd());
     }
 
     public Point getEnd() {
