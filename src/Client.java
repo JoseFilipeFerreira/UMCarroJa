@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 
-public class Client extends Users{
+public class Client extends User {
     private Point pos;
 
     public Client(Point pos, String email, String name, String address, LocalDateTime dateOfBirth) {
@@ -13,7 +12,7 @@ public class Client extends Users{
         return this.pos.clone();
     }
 
-    public Client(Users u) {
+    public Client(User u) {
         super(u);
         if(u instanceof Client)
             this.pos = ((Client) u).getPos().clone();

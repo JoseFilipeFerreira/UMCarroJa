@@ -1,31 +1,31 @@
 import java.time.LocalDateTime;
 
-public class Users {
+public abstract class User {
     private String email;
     private String name;
     private String address;
     private LocalDateTime dateOfBirth;
 
-    public Users(String email, String name, String address, LocalDateTime dateOfBirth) {
+    public User(String email, String name, String address, LocalDateTime dateOfBirth) {
         this.email = email;
         this.name = name;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Users() {
-        this.email = new String();
-        this.name = new String();
-        this.address = new String();
+    public User() {
+        this.email = "";
+        this.name = "";
+        this.address = "";
         this.dateOfBirth = LocalDateTime.now();
     }
 
-    public Users(Users u) {
-        this.email = u.email;
-        this.name = u.email;
-        this.address = u.address;
-        this.dateOfBirth = u.dateOfBirth;
-    }
+    public User(User u) {
+        this.email = u.getEmail();
+        this.name = u.getName();
+        this.address = u.getAddress();
+        this.dateOfBirth = u.getDateOfBirth();
+   }
 
     public String getName() {
         return this.name;
@@ -59,8 +59,6 @@ public class Users {
         this.email = email;
     }
 
-    public Users clone() {
-        return new Users(this);
-    }
+    public abstract User clone();
 
 }

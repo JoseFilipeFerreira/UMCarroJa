@@ -16,7 +16,7 @@ public class UserBase {
      *
      * @param u User a adicionar
      */
-    public void addUser(Users u) {
+    public void addUser(User u) {
         if(u instanceof Client)
             this.clientBase.put(u.getEmail(), ((Client) u).clone());
         if(u instanceof Owner)

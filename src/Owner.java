@@ -1,7 +1,7 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Owner extends Users {
+public class Owner extends User {
     private int rating;
     private int nRentals;
     private ArrayList<String> carIDs;
@@ -13,7 +13,7 @@ public class Owner extends Users {
         this.carIDs = new ArrayList<>();
     }
 
-    public Owner(Users u) {
+    public Owner(User u) {
         super(u);
         if (u instanceof Owner) {
             Owner o = (Owner) u;
