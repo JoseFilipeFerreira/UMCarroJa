@@ -1,3 +1,8 @@
+package Model;
+
+import Model.Client;
+import Model.Owner;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +19,7 @@ public class UserBase {
     /**
      * Adiciona um user ao sistema
      *
-     * @param u User a adicionar
+     * @param u Model.User a adicionar
      */
     public void addUser(User u) {
         if(u instanceof Client)

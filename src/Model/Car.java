@@ -1,3 +1,7 @@
+package Model;
+
+import Utils.Point;
+
 import java.util.ArrayList;
 
 public class Car {
