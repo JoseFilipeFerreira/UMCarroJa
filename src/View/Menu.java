@@ -13,26 +13,44 @@ public class Menu implements IMenu{
     private ArrayList<MenuInd> options;
     private boolean run;
 
+    public <T> void menuNavigator(Navigator<T> nav){
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            out.print("\033\143");
+            out.println(this.createHeader());
+            out.println(nav);
+            switch (scanner.next().trim().charAt(0)){
+                case 'n':
+                    nav.next();
+                    break;
+                case 'p':
+                    nav.previous();
+                    break;
+                case 'b':
+                    this.back();
+                    return;
+            }
+        }
+    }
+
     public enum MenuInd {
-        Categories,
-        Static,
-        Dynamic,
-        Q1,
-        Q2,
-        Q3,
-        Q4,
-        Q5,
-        Q6,
-        Q7,
-        Q8,
-        Q9,
-        Q10,
-        Q1_1,
-        Q1_2
+        Login,
+        Cliente,
+        Proprietário,
+        Closest_Car,
+        Cheapest_Car,
+        Cheapest_Near_Car,
+        Specific_Car,
+        Autonomy_Car,
+        Free_Car,
+        Fill_Car,
+        Change_Price,
+        Review_Rent,
+        Register_Cost
     }
 
     public Menu() {
-        this.menu = MenuInd.Categories;
+        this.menu = MenuInd.Login;
         this.prev = new Stack<>();
         this.options = new ArrayList<>();
         this.run = true;
@@ -51,36 +69,6 @@ public class Menu implements IMenu{
         return this.menu;
     }
 
-    public String getInputClient(){
-        Scanner scanner = new Scanner(System.in);
-        boolean error = false;
-        while(true){
-            out.print("\033\143");
-            out.println(this.createHeader());
-            if (error)
-                out.println(new StringBetter("Cliente Inválido").under().append("\n").toString());
-            else
-                out.println();
-            out.println("Inserir cliente: ");
-            return scanner.nextLine();
-        }
-    }
-
-    public String getInputProduto(){
-        Scanner scanner = new Scanner(System.in);
-        boolean error = false;
-        while(true){
-            out.print("\033\143");
-            out.println(this.createHeader());
-            if (error)
-                out.println(new StringBetter("Produto Inválido").under().toString());
-            else
-                out.println();
-            out.println("Inserir Produto: ");
-            return scanner.nextLine();
-        }
-    }
-
     public int getInputInteiro(){
         Scanner scanner = new Scanner(System.in);
         String str;
@@ -95,26 +83,6 @@ public class Menu implements IMenu{
             out.println("Inserir Inteiro: ");
             str = scanner.nextLine();
             if (str.matches("^[+-]?\\d{1,8}$"))
-                return Integer.parseInt(str);
-            else
-                error = true;
-        }
-    }
-
-    public int getInputMes(){
-        Scanner scanner = new Scanner(System.in);
-        String str;
-        boolean error = false;
-        while(true){
-            out.print("\033\143");
-            out.println(this.createHeader());
-            if (error)
-                out.println(new StringBetter("Mês Inválido").under().toString());
-            else
-                out.println();
-            out.println("Inserir Mês: ");
-            str = scanner.nextLine();
-            if (str.matches("^[1-9]|1[0-2]$"))
                 return Integer.parseInt(str);
             else
                 error = true;
@@ -167,7 +135,7 @@ public class Menu implements IMenu{
         for (MenuInd val : this.prev)
             strHeader.append(val.name()).append("/");
 
-        return strHeader.append(this.menu.name()).append("--\n").red().toString();
+        return strHeader.append(this.menu.name()).append("--\n").red().toString().replace('_', ' ');
     }
 
     @Override
@@ -185,50 +153,44 @@ public class Menu implements IMenu{
     private String menuOptionText(int i) {
         String r = "";
         switch (this.options.get(i)){
-            case Categories:
+            case Login:
                 r += "Menu Inicial";
                 break;
-            case Static:
-                r += "Queries estáticas";
+            case Cliente:
+                r += "Login como Cliente";
                 break;
-            case Dynamic:
-                r += "Queries dinâmicas";
+            case Proprietário:
+                r += "Login como Proprietária";
                 break;
-            case Q1:
-                r += "Produtos não comprados";
+            case Closest_Car:
+                r += "carro mais próximo das suas coordenadas";
                 break;
-            case Q2:
-                r += "Total de vendas e clientes distintos";
+            case Cheapest_Car:
+                r += "carro mais barato";
                 break;
-            case Q3:
-                r += "Stats sobre cliente (ano)";
+            case Cheapest_Near_Car:
+                r += "carro mais barato dentro de uma distância que estão dispostos a andar a pé";
                 break;
-            case Q4:
-                r += "Stats sobre produto (ano)";
+            case Specific_Car:
+                r += "carro específico";
                 break;
-            case Q5:
-                r += "Produtos mais comprados por cliente";
+            case Autonomy_Car:
+                r += "carro com uma autonomia desejada.";
                 break;
-            case Q6:
-                r += "N produtos mais vendidos";
+            case Free_Car:
+                r += "sinalizar que um dos seus carros está disponível para aluguer";
                 break;
-            case Q7:
-                r += "Três maiores compradores";
+            case Fill_Car:
+                r += "abastecer o veiculo";
                 break;
-            case Q8:
-                r += "N clientes que compraram mais produtos diferentes";
+            case Change_Price:
+                r += "alterar o preço por km";
                 break;
-            case Q9:
-                r += "Clientes que mais compraram um produto";
+            case Review_Rent:
+                r += "aceitar/rejeitar o aluguer de um determinado cliente;";
                 break;
-            case Q10:
-                r += "Faturação total";
-                break;
-            case Q1_1:
-                r += "Stats de ficheiros lidos";
-                break;
-            case Q1_2:
-                r += "Stats globais";
+            case Register_Cost:
+                r += "registar quanto custou a viagem.";
                 break;
         }
         return r;
@@ -236,63 +198,55 @@ public class Menu implements IMenu{
 
     private void correctMenu() {
         switch (this.menu) {
-            case Categories:
+            case Login:
                 this.options.clear();
-                this.options.add(MenuInd.Static);
-                this.options.add(MenuInd.Dynamic);
+                this.options.add(MenuInd.Cliente);
+                this.options.add(MenuInd.Proprietário);
                 break;
-            case Static:
+            case Cliente:
                 this.options.clear();
-                this.options.add(MenuInd.Q1_1);
-                this.options.add(MenuInd.Q1_2);
+                this.options.add(MenuInd.Closest_Car);
+                this.options.add(MenuInd.Cheapest_Car);
+                this.options.add(MenuInd.Cheapest_Near_Car);
+                this.options.add(MenuInd.Specific_Car);
+                this.options.add(MenuInd.Autonomy_Car);
                 break;
-            case Dynamic:
+            case Proprietário:
                 this.options.clear();
-                this.options.add(MenuInd.Q1);
-                this.options.add(MenuInd.Q2);
-                this.options.add(MenuInd.Q3);
-                this.options.add(MenuInd.Q4);
-                this.options.add(MenuInd.Q5);
-                this.options.add(MenuInd.Q6);
-                this.options.add(MenuInd.Q7);
-                this.options.add(MenuInd.Q8);
-                this.options.add(MenuInd.Q9);
-                this.options.add(MenuInd.Q10);
+                this.options.add(MenuInd.Free_Car);
+                this.options.add(MenuInd.Fill_Car);
+                this.options.add(MenuInd.Change_Price);
+                this.options.add(MenuInd.Review_Rent);
+                this.options.add(MenuInd.Register_Cost);
                 break;
-            case Q1:
+            case Closest_Car:
                 this.options.clear();
                 break;
-            case Q2:
+            case Cheapest_Car:
                 this.options.clear();
                 break;
-            case Q3:
+            case Cheapest_Near_Car:
                 this.options.clear();
                 break;
-            case Q4:
+            case Specific_Car:
                 this.options.clear();
                 break;
-            case Q5:
+            case Autonomy_Car:
                 this.options.clear();
                 break;
-            case Q6:
+            case Free_Car:
                 this.options.clear();
                 break;
-            case Q7:
+            case Fill_Car:
                 this.options.clear();
                 break;
-            case Q8:
+            case Change_Price:
                 this.options.clear();
                 break;
-            case Q9:
+            case Review_Rent:
                 this.options.clear();
                 break;
-            case Q10:
-                this.options.clear();
-                break;
-            case Q1_1:
-                this.options.clear();
-                break;
-            case Q1_2:
+            case Register_Cost:
                 this.options.clear();
                 break;
         }

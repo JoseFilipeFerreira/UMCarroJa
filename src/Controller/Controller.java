@@ -17,47 +17,34 @@ public class Controller {
         Scanner scanner = new Scanner(System.in);
         while(this.menu.getRun()) {
             switch (menu.getMenu()) {
-                case Q1:
+                case Closest_Car:
                     menu.back(); 
                     break;
-                case Q2:
-                    menu.getInputMes();
+                case Cheapest_Car:
                     menu.back();
                     break;
-                case Q3:
-                    menu.getInputClient();
+                case Cheapest_Near_Car:
                     menu.back();
                     break;
-                case Q4:
-                    menu.getInputProduto();
+                case Specific_Car:
                     menu.back();
                     break;
-                case Q5:
-                    menu.getInputClient();
+                case Autonomy_Car:
                     menu.back();
                     break;
-                case Q6:
-                    menu.getInputInteiro();
+                case Free_Car:
                     menu.back();
                     break;
-                case Q7:
+                case Fill_Car:
                     menu.back();
                     break;
-                case Q8:
-                    menu.getInputInteiro();
+                case Change_Price:
                     menu.back();
                     break;
-                case Q9:
-                    menu.getInputProduto();
+                case Review_Rent:
                     menu.back();
                     break;
-                case Q10:
-                    menu.back();
-                    break;
-                case Q1_1:
-                    menu.back();
-                    break;
-                case Q1_2:
+                case Register_Cost:
                     menu.back();
                     break;
 

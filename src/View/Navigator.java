@@ -20,20 +20,15 @@ public class Navigator<T> implements INavigator{
         return this.strings.isEmpty();
     }
 
-    public Navigator() {
-        this.builder = new StringBuilder();
-        this.strings = new ArrayList<>();
-    }
-
-    public Navigator(ArrayList<T> strings, int pageSize) {
+    public Navigator(ArrayList<T> strings) {
         this.builder = new StringBuilder();
         this.strings = strings;
-        this.separator = 7;
         this.term = new Terminal();
         this.maxPrint = 0;
         strings.forEach(string -> this.maxPrint = (string.toString().length() < this.maxPrint) ?
                 this.maxPrint : string.toString().length());
-        this.pageSize = pageSize;
+        this.separator = this.maxPrint + 3;
+        this.pageSize = this.term.getLines() - 10;
         this.update();
         this.page = 0;
     }
@@ -46,10 +41,28 @@ public class Navigator<T> implements INavigator{
         this.page = (page - 1 >= 0)?page -1 : page;
     }
 
+    /*
+    public void moreLines() {
+        this.pageSize++;
+        this.update();
+    }
+
+    public void lessLines() {
+        if(this.pageSize > 1) {
+            this.pageSize--;
+            this.update();
+        }
+    }
+    */
+
     private void update(){
+        term.update();
+        this.pageSize = this.term.getLines() - 7;
+        if (this.pageSize < 1)
+            this.pageSize = 1;
         this.nCols = 1;
         while (true) {
-            if (((this.nCols + 1) * (String.valueOf(strings.size() + 1).length() + this.maxPrint + this.separator + 1) < this.term.getColumns()))
+            if (((this.nCols + 1) * (String.valueOf(strings.size() + 1).length() + 2 + this.maxPrint + this.separator) < this.term.getColumns()))
                 this.nCols++;
             else
                 break;
@@ -62,7 +75,6 @@ public class Navigator<T> implements INavigator{
 
     @Override
     public String toString(){
-        term.update();
         this.update();
         StringBetter spac = new StringBetter(" ");
         StringBetter senter = new StringBetter("\n");
