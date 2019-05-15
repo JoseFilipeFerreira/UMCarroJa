@@ -6,31 +6,72 @@ import java.util.ArrayList;
 
 public class Car {
     private String numberPlate;
-    private String ownerID;
+    private int ownerID;
 
+    private String brand;
     private CarType type;
     private double avgSpeed;
     private double basePrice;
     private double gasMileage;
-
-    private int rating;
-    private ArrayList<Integer> rentalHistoric;
     private Point position;
-    private double range;
+    private int fullTankRange;
+
+    private int range;
+    private int rating;
+    private int nRatings;
+    private ArrayList<Integer> rentalHistoric;
+
+    public Car(Car car) {
+        this.numberPlate = car.getNumberPlate();
+        this.ownerID = car.getOwnerID();
+        this.brand = car.getBrand();
+        this.type = car.getType();
+        this.avgSpeed = car.getAvgSpeed();
+        this.basePrice = car.getBasePrice();
+        this.gasMileage = car.getGasMileage();
+        this.position = car.getPosition();
+        this.fullTankRange = car.getFullTankRange();
+        this.range = car.getRange();
+        this.rating = car.getRating();
+        this.nRatings = car.getNRatings();
+        this.rentalHistoric = car.getRentalHistoric();
+    }
 
     public enum CarType {
         Electric,
         Gas,
         Hybrid
-
     }
 
-    public String getOwnerID() {
+    public static CarType fromString(String s) throws UnknownCarTypeException{
+        switch (s) {
+            case "Electrico":
+                return CarType.Electric;
+            case "Gasolina":
+                return CarType.Gas;
+            case "Hibrido":
+                return CarType.Hybrid;
+        }
+        throw new UnknownCarTypeException();
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+        this.range -= this
+                .position
+                .distanceBetweenPoints(position);
+    }
+
+    public int getOwnerID() {
         return this.ownerID;
     }
 
     public double getAvgSpeed() {
         return this.avgSpeed;
+    }
+
+    public int getFullTankRange() {
+        return this.fullTankRange;
     }
 
     public double getBasePrice() {
@@ -46,14 +87,14 @@ public class Car {
     }
 
     public ArrayList<Integer> getRentalHistoric() {
-        return new ArrayList<>(this.rentalHistoric);
+        return new ArrayList<>();
     }
 
    public Point getPosition() {
         return this.position;
     }
 
-   public double getRange() {
+   public int getRange() {
         return this.range;
     }
 
@@ -65,29 +106,32 @@ public class Car {
         return this.numberPlate;
     }
 
-    public Car(String numberPlate, String ownerID, CarType type, double avgSpeed, double basePrice, double gasMileage, int rating, Point position, double range) {
+    public int getNRatings() {
+        return this.nRatings;
+    }
+
+    public String getBrand() {
+        return this.brand;
+    }
+
+    public Car(String numberPlate, int ownerID, CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) {
         this.numberPlate = numberPlate;
         this.ownerID = ownerID;
         this.type = type;
         this.avgSpeed = avgSpeed;
         this.basePrice = basePrice;
         this.gasMileage = gasMileage;
-        this.rating = rating;
-        this.position = position;
-        this.range = range;
+        this.fullTankRange = range;
+        this.range = this.fullTankRange;
+        this.brand = brand;
+        this.position = pos;
+        this.rating = 0;
+        this.nRatings = 0;
     }
 
-    public Car(Car a) {
-        this.numberPlate = a.getNumberPlate();
-        this.ownerID = a.getOwnerID();
-        this.type = a.getType();
-        this.avgSpeed = a.getAvgSpeed();
-        this.basePrice = a.getBasePrice();
-        this.gasMileage = a.getGasMileage();
-        this.rating = a.getRating();
-        this.position = a.getPosition();
-        this.range = a.getRange();
-        this.rentalHistoric = a.getRentalHistoric();
+    public boolean hasRange(Point dest) {
+        if((double)this.range / this.getFullTankRange() < 0.1) return false;
+        return !(this.position.distanceBetweenPoints(dest) > this.range);
     }
 
     public Car clone() {

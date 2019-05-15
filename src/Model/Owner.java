@@ -8,8 +8,8 @@ public class Owner extends User {
     private int nRentals;
     private ArrayList<String> carIDs;
 
-    public Owner(String email, String name, String address, LocalDateTime dateOfBirth) {
-        super(email, name, address, dateOfBirth);
+    public Owner(String email, String name, String address, int nif, String passwd) {
+        super(email, name, address, nif, passwd);
         this.rating = 0;
         this.nRentals = 0;
         this.carIDs = new ArrayList<>();

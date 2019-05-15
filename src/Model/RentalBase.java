@@ -31,7 +31,7 @@ public class RentalBase {
     public double getTotalBilledCar(String carID, LocalDateTime init, LocalDateTime end) {
         return this.rentalBase
                 .stream()
-                .filter((e) -> e.getCarID().equals(carID)
+                .filter(e -> e.getCarID().equals(carID)
                         && e.getDate().isAfter(init)
                         && e.getDate().isBefore(end))
                 .map(Rental::getPrice)
@@ -45,9 +45,9 @@ public class RentalBase {
      * @param end Data de fim
      * @return Lista dos alugueres
      */
-    public List<Rental> getRentalListClient(String clientID, LocalDateTime init, LocalDateTime end) {
+    public List<Rental> getRentalListClient(int clientID, LocalDateTime init, LocalDateTime end) {
         return this.rentalBase.stream()
-                .filter((e) -> e.getClientID().equals(clientID)
+                .filter(e -> e.getClientID() == clientID
                         && e.getDate().isBefore(end)
                         && e.getDate().isAfter(init))
                 .map(Rental::clone)
@@ -59,9 +59,9 @@ public class RentalBase {
      * @param clientID Id do cliente
      * @return Lista dos alugueres
      */
-    public List<Rental> getRentalListClient(String clientID) {
+    public List<Rental> getRentalListClient(int clientID) {
         return this.rentalBase.stream()
-                .filter((e) -> e.getClientID().equals(clientID))
+                .filter(e -> e.getClientID() == clientID)
                 .map(Rental::clone)
                 .collect(Collectors.toList());
     }
@@ -76,7 +76,7 @@ public class RentalBase {
     public List<Rental> getRentalListCar(String carID, LocalDateTime init, LocalDateTime end) {
         return this.rentalBase
                 .stream()
-                .filter((e) -> e.getCarID().equals(carID)
+                .filter(e -> e.getCarID().equals(carID)
                         && e.getDate().isBefore(end)
                         && e.getDate().isAfter(init))
                 .map(Rental::clone)

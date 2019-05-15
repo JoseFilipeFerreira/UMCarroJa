@@ -1,15 +1,15 @@
 package Utils;
 
 public class Point {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
     public Point() {
         this.x = 0;
         this.y = 0;
     }
 
-    public Point(int x, int y) {
+    public Point(Double x, Double y) {
         this.x = x;
         this.y = y;
     }
@@ -19,11 +19,11 @@ public class Point {
         this.y = x.getY();
     }
 
-    public int getX() {
+    public Double getX() {
         return this.x;
     }
 
-    public int getY() {
+    public Double getY() {
         return y;
     }
 
@@ -32,6 +32,6 @@ public class Point {
     }
 
     public double distanceBetweenPoints(Point a) {
-         return Math.sqrt((a.x - this.x)^2 + (a.y - this.y)^2);
+         return Math.sqrt(Math.pow(a.x - this.x, 2) + Math.pow(a.y - this.y, 2));
     }
 }

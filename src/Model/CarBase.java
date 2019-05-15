@@ -1,11 +1,15 @@
 package Model;
 
+import Utils.Point;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CarBase {
-    private HashMap<String, Car> carBase;
+    private Map<String, Car> carBase;
 
     public CarBase() {
         this.carBase = new HashMap<>();
@@ -24,10 +28,11 @@ public class CarBase {
      * @param a Carro a adicionar
      * @return True se adicionou, False se já existe
      */
-    public boolean addCar(Car a) {
-        return this.carBase
+    public void addCar(Car a) throws CarExistsException {
+        if(this.carBase
                 .putIfAbsent(a.getNumberPlate(), a.clone())
-                != null;
+                == null)
+            throw new CarExistsException();
     }
 
     /**
@@ -70,5 +75,26 @@ public class CarBase {
                 .map(Car::clone)
                 .collect(Collectors
                         .toCollection(ArrayList::new));
+    }
+
+    public Car getCar(String compare, Car.CarType type, Point dest, Point origin) throws UnknownCompareType{
+        if(compare.equals("MaisPerto")) return this.carBase
+                .values()
+                .stream()
+                .sorted((e1, e2) -> (int) (e1
+                        .getPosition()
+                        .distanceBetweenPoints(origin)
+                        - e2.getPosition().distanceBetweenPoints(origin)))
+                .collect(Collectors.toList())
+                .get(0);
+
+        if(compare.equals("MaisBarato")) return this.carBase
+                .values()
+                .stream()
+                .sorted(Comparator.comparingDouble(Car::getBasePrice))
+                .collect(Collectors.toList())
+                .get(0);
+
+        throw new UnknownCompareType();
     }
 }

@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public class Client extends User {
     private Point pos;
 
-    public Client(Point pos, String email, String name, String address, LocalDateTime dateOfBirth) {
-        super(email, name, address, dateOfBirth);
+    public Client(Point pos, String email, String passwd, String name, String address, int nif) {
+        super(email, name, address, nif, passwd);
         this.pos = pos;
     }
 
@@ -16,13 +16,17 @@ public class Client extends User {
         return this.pos.clone();
     }
 
-    public Client(User u) {
+    public Client(Client u) {
         super(u);
-        if(u instanceof Client)
-            this.pos = ((Client) u).getPos().clone();
+        this.pos = u.getPos().clone();
+    }
+
+    public void setPos(Point pos) {
+        this.pos = pos;
     }
 
     public Client clone() {
         return new Client(this);
     }
+
 }

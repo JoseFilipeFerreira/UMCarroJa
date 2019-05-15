@@ -3,22 +3,24 @@ package Model;
 import Utils.Point;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.HashMap;
 
 public class Rental {
-    private String clientID;
+    private int clientID;
     private String carID;
     private Point start;
     private Point end;
     private double price;
     private LocalDateTime date;
 
-    public Rental(String client, String car, Point start, Point end, double price, LocalDateTime date) {
-        this.clientID = client;
-        this.carID = car;
-        this.start = start;
-        this.end = end;
-        this.price = price;
-        this.date = date;
+    public Rental(Car car, Client client, Point dest) {
+        this.clientID = client.getNif();
+        this.carID = car.getNumberPlate();
+        this.start = client.getPos();
+        this.end = dest;
+        this.price = car.getBasePrice() * start.distanceBetweenPoints(dest);
+        this.date = LocalDateTime.now();
     }
 
     public Rental(Rental rental) {
@@ -54,7 +56,7 @@ public class Rental {
         return this.carID;
     }
 
-    public String getClientID() {
+    public int getClientID() {
         return this.clientID;
     }
 
