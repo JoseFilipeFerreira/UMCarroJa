@@ -2,10 +2,7 @@ package Model;
 
 import Utils.Point;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CarBase {
@@ -81,10 +78,9 @@ public class CarBase {
         if(compare.equals("MaisPerto")) return this.carBase
                 .values()
                 .stream()
-                .sorted((e1, e2) -> (int) (e1
-                        .getPosition()
-                        .distanceBetweenPoints(origin)
-                        - e2.getPosition().distanceBetweenPoints(origin)))
+                .sorted(Comparator.comparingDouble(e ->
+                        e.getPosition()
+                        .distanceBetweenPoints(origin)))
                 .collect(Collectors.toList())
                 .get(0);
 

@@ -24,6 +24,6 @@ public class UserBase {
     }
 
     public User getUser(int id) {
-        return userBase.get(id);
+        return userBase.get(id).clone();
     }
 }

@@ -2,8 +2,6 @@ package Model;
 
 import Utils.Point;
 
-import java.util.ArrayList;
-
 public class Car {
     private String numberPlate;
     private int ownerID;
@@ -19,7 +17,6 @@ public class Car {
     private int range;
     private int rating;
     private int nRatings;
-    private ArrayList<Integer> rentalHistoric;
 
     public Car(Car car) {
         this.numberPlate = car.getNumberPlate();
@@ -34,7 +31,6 @@ public class Car {
         this.range = car.getRange();
         this.rating = car.getRating();
         this.nRatings = car.getNRatings();
-        this.rentalHistoric = car.getRentalHistoric();
     }
 
     public enum CarType {
@@ -86,15 +82,11 @@ public class Car {
         return this.rating;
     }
 
-    public ArrayList<Integer> getRentalHistoric() {
-        return new ArrayList<>();
-    }
-
-   public Point getPosition() {
+    public Point getPosition() {
         return this.position;
     }
 
-   public int getRange() {
+    public int getRange() {
         return this.range;
     }
 

@@ -56,7 +56,7 @@ public class Parser {
                     ));
                     break;
                 case "NovoCliente":
-                    if (content.length != 7)
+                    if (content.length != 6)
                         break;
                     model.addUser(new Client(
                             new Point(Double.parseDouble(content[4]), Double.parseDouble(content[5])),
@@ -84,7 +84,7 @@ public class Parser {
                     ));
                     break;
                 case "Aluguer":
-                    if (content.length != 6)
+                    if (content.length != 5)
                         break;
                     model.rental(Integer.parseInt(content[0]),
                             new Point(Double.parseDouble(content[1]), Double.parseDouble(content[2])),

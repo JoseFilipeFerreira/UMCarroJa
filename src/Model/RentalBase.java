@@ -12,12 +12,12 @@ public class RentalBase {
 
     public RentalBase() {
         this.rentalBase = new ArrayList<>();
-        this.id = -1;
+        id = -1;
     }
 
     public int addRental(Rental r) {
         id++;
-        this.rentalBase.add(id, r.clone());
+        this.rentalBase.add(r);
         return id;
     }
 
@@ -50,7 +50,6 @@ public class RentalBase {
                 .filter(e -> e.getClientID() == clientID
                         && e.getDate().isBefore(end)
                         && e.getDate().isAfter(init))
-                .map(Rental::clone)
                 .collect(Collectors.toList());
     }
 
@@ -60,9 +59,9 @@ public class RentalBase {
      * @return Lista dos alugueres
      */
     public List<Rental> getRentalListClient(int clientID) {
-        return this.rentalBase.stream()
+        return this.rentalBase
+                .stream()
                 .filter(e -> e.getClientID() == clientID)
-                .map(Rental::clone)
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +78,13 @@ public class RentalBase {
                 .filter(e -> e.getCarID().equals(carID)
                         && e.getDate().isBefore(end)
                         && e.getDate().isAfter(init))
-                .map(Rental::clone)
+                .collect(Collectors.toList());
+    }
+
+    public List<Rental> getRentalListCar(String carID) {
+        return this.rentalBase
+                .stream()
+                .filter(e -> e.getCarID().equals(carID))
                 .collect(Collectors.toList());
     }
 }

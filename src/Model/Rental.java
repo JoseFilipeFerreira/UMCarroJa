@@ -3,8 +3,6 @@ package Model;
 import Utils.Point;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.HashMap;
 
 public class Rental {
     private int clientID;
@@ -21,15 +19,6 @@ public class Rental {
         this.end = dest;
         this.price = car.getBasePrice() * start.distanceBetweenPoints(dest);
         this.date = LocalDateTime.now();
-    }
-
-    public Rental(Rental rental) {
-        this.clientID = rental.getClientID();
-        this.carID = rental.getCarID();
-        this.start = rental.getStart();
-        this.end = rental.getEnd();
-        this.price = rental.getPrice();
-        this.date = rental.getDate();
     }
 
     public LocalDateTime getDate() {
@@ -60,7 +49,4 @@ public class Rental {
         return this.clientID;
     }
 
-    public Rental clone() {
-        return new Rental(this);
-    }
 }

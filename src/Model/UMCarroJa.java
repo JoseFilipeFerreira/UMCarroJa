@@ -53,8 +53,4 @@ public class UMCarroJa {
     public void addCar(Car a) throws CarExistsException {
         this.cars.addCar(a);
     }
-
-    public void number() {
-        System.out.println(cars.listOfCarType(Car.CarType.Electric).size());
-    }
 }
