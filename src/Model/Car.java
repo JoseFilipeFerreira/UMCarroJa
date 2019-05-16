@@ -15,6 +15,8 @@ public class Car {
     private Point position;
     private int fullTankRange;
 
+    public boolean isAvaliable;
+
     private int range;
     private int rating;
     private int nRatings;
@@ -32,6 +34,7 @@ public class Car {
         this.range = car.getRange();
         this.rating = car.getRating();
         this.nRatings = car.getNRatings();
+        this.isAvaliable = car.isAvaliable();
     }
 
     public enum CarType {
@@ -107,6 +110,10 @@ public class Car {
         return this.brand;
     }
 
+    public boolean isAvaliable() {
+        return this.isAvaliable;
+    }
+
     public Car(String numberPlate, int ownerID, CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) {
         this.numberPlate = numberPlate;
         this.ownerID = ownerID;
@@ -120,6 +127,11 @@ public class Car {
         this.position = pos;
         this.rating = 0;
         this.nRatings = 0;
+        this.isAvaliable = true;
+    }
+
+    public void swapState() {
+        this.isAvaliable = !this.isAvaliable;
     }
 
     public boolean hasRange(Point dest) {

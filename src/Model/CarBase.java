@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.CarExistsException;
+import Exceptions.NoCarAvaliableException;
 import Exceptions.UnknownCompareTypeException;
 import Utils.Point;
 
@@ -91,10 +92,40 @@ public class CarBase {
                 .values()
                 .stream()
                 .filter(e -> e.hasRange(dest))
-                .sorted(Comparator.comparingDouble(Car::getBasePrice))
+                .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
+                        .distanceBetweenPoints(dest)))
                 .collect(Collectors.toList())
                 .get(0);
 
         throw new UnknownCompareTypeException();
+    }
+
+    public Car getCar(Car.CarType type, Point dest, Point origin, double range) throws NoCarAvaliableException {
+        Car r = this.carBase
+                .values()
+                .stream()
+                .filter(e -> e.hasRange(dest)
+                        && origin.distanceBetweenPoints(e.getPosition()) <= range)
+                .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * origin.distanceBetweenPoints(dest)))
+                .collect(Collectors.toList())
+                .get(0);
+        if(r == null)
+            throw new NoCarAvaliableException();
+        return r;
+    }
+
+    public Car getCar(Car.CarType type, Point dest, double range) throws NoCarAvaliableException {
+        Car r = this.carBase
+                .values()
+                .stream()
+                .filter(e -> e.hasRange(dest)
+                        && e.getRange() >= range)
+                .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
+                        .distanceBetweenPoints(dest)))
+                .collect(Collectors.toList())
+                .get(0);
+        if(r == null)
+            throw new NoCarAvaliableException();
+        return r;
     }
 }

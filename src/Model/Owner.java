@@ -30,6 +30,10 @@ public class Owner extends User {
         this.nRentals++;
     }
 
+    public void addCar(Car a) {
+        this.carIDs.add(a.getNumberPlate());
+    }
+
     public int getRating() {
         return this.rating;
     }

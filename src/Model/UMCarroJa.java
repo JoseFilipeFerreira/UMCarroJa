@@ -38,21 +38,31 @@ public class UMCarroJa {
                 .collect(Collectors.toList());
     }
 
-    public void rental(Client c, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
-        subRental(c, dest, cartype, preference);
+    public Rental rental(Client c, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
+        return subRental(c, dest, cartype, preference);
     }
 
-    private void subRental(Client c, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
+    private Rental subRental(Client c, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
         Car car = cars.getCar(preference, cartype, dest, c.getPos());
         Rental r = new Rental(car, c, dest);
         rentals.addRental(r);
         c.setPos(dest);
         car.setPosition(dest);
+        return r;
     }
 
-    public void rental(int username, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
+    public Rental rental(Client c, Point dest, Car.CarType carType, double range) throws NoCarAvaliableException{
+        Car car = cars.getCar(carType, dest, c.getPos(), range);
+        Rental r = new Rental(car, c, dest);
+        rentals.addRental(r);
+        c.setPos(dest);
+        car.setPosition(dest);
+        return r;
+    }
+
+    public Rental rental(int username, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
         Client c = (Client) users.getUser(username);
-        subRental(c, dest, cartype, preference);
+        return subRental(c, dest, cartype, preference);
     }
 
     public void addUser(User a) throws UserExistsException {
@@ -61,6 +71,12 @@ public class UMCarroJa {
 
     public void addCar(Car a) throws CarExistsException {
         this.cars.addCar(a);
+        ((Owner) users.getUser(a.getOwnerID())).addCar(a);
+    }
+
+    public void addCar(Owner u, Car a) throws CarExistsException {
+        this.cars.addCar(a);
+        u.addCar(a);
     }
 
     public User logIn(int username, String passwd) throws InvalidUserException, WrongPasswordExecption {

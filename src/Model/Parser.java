@@ -45,7 +45,7 @@ public class Parser {
         try {
             switch (categoria) {
                 case "NovoProp":
-                    if (content.length != 5)
+                    if (content.length != 4)
                         break;
                     model.addUser(new Owner(
                             content[2],

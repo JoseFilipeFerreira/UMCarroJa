@@ -15,7 +15,7 @@ public class Rental {
     public Rental(Car car, Client client, Point dest) {
         this.clientID = client.getNif();
         this.carID = car.getNumberPlate();
-        this.start = client.getPos();
+        this.start = car.getPosition();
         this.end = dest;
         this.price = car.getBasePrice() * start.distanceBetweenPoints(dest);
         this.date = LocalDateTime.now();
