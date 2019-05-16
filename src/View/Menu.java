@@ -1,6 +1,7 @@
 package View;
 import Utils.StringBetter;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
@@ -34,7 +35,9 @@ public class Menu implements IMenu{
     }
 
     public enum MenuInd {
+        Inicial,
         Login,
+        Register,
         Cliente,
         Proprietário,
         Closest_Car,
@@ -50,7 +53,7 @@ public class Menu implements IMenu{
     }
 
     public Menu() {
-        this.menu = MenuInd.Login;
+        this.menu = MenuInd.Inicial;
         this.prev = new Stack<>();
         this.options = new ArrayList<>();
         this.run = true;
@@ -67,6 +70,18 @@ public class Menu implements IMenu{
 
     public MenuInd getMenu() {
         return this.menu;
+    }
+
+    public AbstractMap.SimpleEntry<String, String> newLogin(){
+        Scanner scanner = new Scanner(System.in);
+        out.print("\033\143");
+        out.println((this.createHeader()));
+        out.println("User:");
+        String user = scanner.nextLine();
+        out.println("Password:");
+        String password = scanner.nextLine();
+
+        return new AbstractMap.SimpleEntry<>(user, password);
     }
 
     public int getInputInteiro(){
@@ -153,14 +168,11 @@ public class Menu implements IMenu{
     private String menuOptionText(int i) {
         String r = "";
         switch (this.options.get(i)){
-            case Login:
+            case Register:
                 r += "Menu Inicial";
                 break;
-            case Cliente:
+            case Login:
                 r += "Login como Cliente";
-                break;
-            case Proprietário:
-                r += "Login como Proprietária";
                 break;
             case Closest_Car:
                 r += "carro mais próximo das suas coordenadas";
@@ -198,6 +210,11 @@ public class Menu implements IMenu{
 
     private void correctMenu() {
         switch (this.menu) {
+            case Inicial:
+                this.options.clear();
+                this.options.add(MenuInd.Login);
+                this.options.add(MenuInd.Register);
+                break;
             case Login:
                 this.options.clear();
                 this.options.add(MenuInd.Cliente);

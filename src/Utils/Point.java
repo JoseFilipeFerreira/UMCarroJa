@@ -34,4 +34,9 @@ public class Point {
     public double distanceBetweenPoints(Point a) {
          return Math.sqrt(Math.pow(a.x - this.x, 2) + Math.pow(a.y - this.y, 2));
     }
+
+    @Override
+    public String toString() {
+        return "( " + this.x + ", " + this.y + " )";
+    }
 }

@@ -8,6 +8,6 @@ public class Main {
         UMCarroJa model = new UMCarroJa();
         new Parser("db/logsPOO_carregamentoInicial.bak", model);
 
-        new Controller().run();
+        new Controller(model).run();
     }
 }

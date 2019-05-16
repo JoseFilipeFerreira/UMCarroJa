@@ -49,4 +49,13 @@ public class Rental {
         return this.clientID;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Cliente: ").append(this.clientID).append("\n");
+        str.append("Carro: ").append(this.carID).append("\n");
+        str.append("Viagem: ").append(this.start).append(" -> ").append(this.end).append("\n");
+        str.append("Custo: ").append(this.price);
+        return str.toString();
+    }
 }
