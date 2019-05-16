@@ -1,5 +1,6 @@
 package Model;
 
+import Exceptions.UnknownCarTypeException;
 import Utils.Point;
 
 public class Car {
@@ -39,7 +40,7 @@ public class Car {
         Hybrid
     }
 
-    public static CarType fromString(String s) throws UnknownCarTypeException{
+    public static CarType fromString(String s) throws UnknownCarTypeException {
         switch (s) {
             case "Electrico":
                 return CarType.Electric;

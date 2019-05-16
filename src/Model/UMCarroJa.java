@@ -1,5 +1,6 @@
 package Model;
 
+import Exceptions.*;
 import Utils.Point;
 
 import java.util.Comparator;
@@ -37,13 +38,21 @@ public class UMCarroJa {
                 .collect(Collectors.toList());
     }
 
-    public void rental(int clientID, Point dest, Car.CarType cartype, String preference) throws UnknownCompareType{
-        Client c = (Client) users.getUser(clientID);
+    public void rental(Client c, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
+        subRental(c, dest, cartype, preference);
+    }
+
+    private void subRental(Client c, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
         Car car = cars.getCar(preference, cartype, dest, c.getPos());
         Rental r = new Rental(car, c, dest);
         rentals.addRental(r);
         c.setPos(dest);
         car.setPosition(dest);
+    }
+
+    public void rental(int username, Point dest, Car.CarType cartype, String preference) throws UnknownCompareTypeException {
+        Client c = (Client) users.getUser(username);
+        subRental(c, dest, cartype, preference);
     }
 
     public void addUser(User a) throws UserExistsException {
@@ -52,5 +61,14 @@ public class UMCarroJa {
 
     public void addCar(Car a) throws CarExistsException {
         this.cars.addCar(a);
+    }
+
+    public User logIn(int username, String passwd) throws InvalidUserException, WrongPasswordExecption {
+        User c = users.getUser(username);
+        if(c == null)
+            throw new InvalidUserException();
+        if(!c.getPasswd().equals(passwd))
+            throw new WrongPasswordExecption();
+        return c;
     }
 }

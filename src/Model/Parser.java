@@ -1,8 +1,9 @@
 package Model;
 
-import Model.Car;
-import Model.Client;
-import Model.Owner;
+import Exceptions.CarExistsException;
+import Exceptions.UnknownCarTypeException;
+import Exceptions.UnknownCompareTypeException;
+import Exceptions.UserExistsException;
 import Utils.Point;
 
 import java.io.IOException;
@@ -12,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 import static java.lang.System.out;
 
@@ -97,7 +97,7 @@ public class Parser {
                     break;
             }
         }
-        catch (UserExistsException | CarExistsException | UnknownCarTypeException | UnknownCompareType i) {}
+        catch (UserExistsException | CarExistsException | UnknownCarTypeException | UnknownCompareTypeException i) {}
         return l;
     }
 

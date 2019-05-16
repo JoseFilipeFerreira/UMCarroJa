@@ -1,5 +1,7 @@
 package Model;
 
+import Exceptions.UserExistsException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

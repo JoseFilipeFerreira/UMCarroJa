@@ -1,5 +1,7 @@
 package Model;
 
+import Exceptions.CarExistsException;
+import Exceptions.UnknownCompareTypeException;
 import Utils.Point;
 
 import java.util.*;
@@ -74,10 +76,11 @@ public class CarBase {
                         .toCollection(ArrayList::new));
     }
 
-    public Car getCar(String compare, Car.CarType type, Point dest, Point origin) throws UnknownCompareType{
+    public Car getCar(String compare, Car.CarType type, Point dest, Point origin) throws UnknownCompareTypeException {
         if(compare.equals("MaisPerto")) return this.carBase
                 .values()
                 .stream()
+                .filter(e -> e.hasRange(dest))
                 .sorted(Comparator.comparingDouble(e ->
                         e.getPosition()
                         .distanceBetweenPoints(origin)))
@@ -87,10 +90,11 @@ public class CarBase {
         if(compare.equals("MaisBarato")) return this.carBase
                 .values()
                 .stream()
+                .filter(e -> e.hasRange(dest))
                 .sorted(Comparator.comparingDouble(Car::getBasePrice))
                 .collect(Collectors.toList())
                 .get(0);
 
-        throw new UnknownCompareType();
+        throw new UnknownCompareTypeException();
     }
 }
