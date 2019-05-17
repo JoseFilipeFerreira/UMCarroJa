@@ -37,6 +37,6 @@ public class Point {
 
     @Override
     public String toString() {
-        return "( " + this.x + ", " + this.y + " )";
+        return "( " + String.format("%.2f", this.x) + ", " + String.format("%.2f", this.y) + " )";
     }
 }

@@ -55,7 +55,7 @@ public class Rental {
         str.append("Cliente: ").append(this.clientID).append("\n");
         str.append("Carro: ").append(this.carID).append("\n");
         str.append("Viagem: ").append(this.start).append(" -> ").append(this.end).append("\n");
-        str.append("Custo: ").append(this.price);
+        str.append("Custo: ").append(String.format("%.2f", this.price));
         return str.toString();
     }
 }

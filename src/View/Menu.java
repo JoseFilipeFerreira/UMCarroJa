@@ -1,4 +1,5 @@
 package View;
+import Model.Rental;
 import Utils.StringBetter;
 
 import java.util.AbstractMap;
@@ -72,6 +73,15 @@ public class Menu implements IMenu{
         return this.menu;
     }
 
+    public void showRental(Rental rental){
+        Scanner scanner = new Scanner(System.in);
+        out.print("\033\143");
+        out.println(this.createHeader());
+        out.println();
+        out.println(rental);
+        scanner.nextLine();
+    }
+
     public AbstractMap.SimpleEntry<String, String> newLogin(){
         Scanner scanner = new Scanner(System.in);
         out.print("\033\143");
@@ -134,6 +144,13 @@ public class Menu implements IMenu{
         return this;
     }
 
+    public Menu selectOption(MenuInd i){
+        this.prev.push(this.menu);
+        this.menu = i;
+        this.correctMenu();
+        return this;
+    }
+
     public Menu back(){
         if (this.prev.size() > 0) {
             this.menu = this.prev.pop();
@@ -142,10 +159,12 @@ public class Menu implements IMenu{
         else {
             this.run = false;
         }
+        if (this.menu.equals(MenuInd.Login))
+            this.back();
         return this;
     }
 
-    public String createHeader(){
+    private String createHeader(){
         StringBetter strHeader = new StringBetter("\t--");
         for (MenuInd val : this.prev)
             strHeader.append(val.name()).append("/");
@@ -168,41 +187,43 @@ public class Menu implements IMenu{
     private String menuOptionText(int i) {
         String r = "";
         switch (this.options.get(i)){
-            case Register:
+            case Inicial:
                 r += "Menu Inicial";
+            case Register:
+                r += "Registar novo utilizador";
                 break;
             case Login:
-                r += "Login como Cliente";
+                r += "Login";
                 break;
             case Closest_Car:
-                r += "carro mais próximo das suas coordenadas";
+                r += "Carro mais próximo das suas coordenadas";
                 break;
             case Cheapest_Car:
-                r += "carro mais barato";
+                r += "Carro mais barato";
                 break;
             case Cheapest_Near_Car:
-                r += "carro mais barato dentro de uma distância que estão dispostos a andar a pé";
+                r += "Carro mais barato dentro de uma distância que estão dispostos a andar a pé";
                 break;
             case Specific_Car:
-                r += "carro específico";
+                r += "Carro específico";
                 break;
             case Autonomy_Car:
-                r += "carro com uma autonomia desejada.";
+                r += "Carro com uma autonomia desejada.";
                 break;
             case Free_Car:
-                r += "sinalizar que um dos seus carros está disponível para aluguer";
+                r += "Sinalizar que um dos seus carros está disponível para aluguer";
                 break;
             case Fill_Car:
-                r += "abastecer o veiculo";
+                r += "Abastecer o veiculo";
                 break;
             case Change_Price:
-                r += "alterar o preço por km";
+                r += "Alterar o preço por km";
                 break;
             case Review_Rent:
-                r += "aceitar/rejeitar o aluguer de um determinado cliente;";
+                r += "Aceitar/rejeitar o aluguer de um determinado cliente;";
                 break;
             case Register_Cost:
-                r += "registar quanto custou a viagem.";
+                r += "Registar quanto custou a viagem.";
                 break;
         }
         return r;
@@ -217,8 +238,6 @@ public class Menu implements IMenu{
                 break;
             case Login:
                 this.options.clear();
-                this.options.add(MenuInd.Cliente);
-                this.options.add(MenuInd.Proprietário);
                 break;
             case Cliente:
                 this.options.clear();

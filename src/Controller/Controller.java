@@ -30,29 +30,32 @@ public class Controller {
                     try {
                         AbstractMap.SimpleEntry<String, String> r = menu.newLogin();
                         user = model.logIn(Integer.parseInt(r.getKey()), r.getValue());
-                        menu.selectOption((user instanceof Client)? 1 : 2);
+                        menu.selectOption((user instanceof Client)? Menu.MenuInd.Cliente : Menu.MenuInd.Proprietário);
                     }
                     catch (InvalidUserException | WrongPasswordExecption  e){ }
                     break;
                 case Closest_Car:
                     try{
                         Rental rental = model.rental((Client)user, new Point(0.d, 0.d), Car.CarType.Electric, "MaisPerto");
-                        out.println(menu.createHeader());
-                        out.println(rental);
+                        menu.showRental(rental);
+                        menu.back();
                     }
                     catch (UnknownCompareTypeException e){}
+                    break;
 
                 case Cheapest_Car:
                     try{
                         Rental rental = model.rental((Client)user, new Point(0.d, 0.d), Car.CarType.Electric, "MaisBarato");
-                        out.println(menu.createHeader());
-                        out.println(rental);
+                        menu.showRental(rental);
+                        menu.back();
                     }
                     catch (UnknownCompareTypeException e){}
+                    break;
 
                     default:
                         out.println(menu);
                         menu.parser(scanner.nextLine());
+                        break;
             }
 
         }
