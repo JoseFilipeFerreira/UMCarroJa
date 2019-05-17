@@ -45,9 +45,9 @@ public class RentalBase {
      * @param end Data de fim
      * @return Lista dos alugueres
      */
-    public List<Rental> getRentalListClient(int clientID, LocalDateTime init, LocalDateTime end) {
+    public List<Rental> getRentalListClient(String clientID, LocalDateTime init, LocalDateTime end) {
         return this.rentalBase.stream()
-                .filter(e -> e.getClientID() == clientID
+                .filter(e -> e.getClientID().equals(clientID)
                         && e.getDate().isBefore(end)
                         && e.getDate().isAfter(init))
                 .collect(Collectors.toList());
@@ -58,10 +58,10 @@ public class RentalBase {
      * @param clientID Id do cliente
      * @return Lista dos alugueres
      */
-    public List<Rental> getRentalListClient(int clientID) {
+    public List<Rental> getRentalListClient(String clientID) {
         return this.rentalBase
                 .stream()
-                .filter(e -> e.getClientID() == clientID)
+                .filter(e -> e.getClientID().equals(clientID))
                 .collect(Collectors.toList());
     }
 

@@ -71,9 +71,9 @@ public class Parser {
                     if (content.length != 10) {
                         break;
                     }
-                    model.addCar(new Car(
+                    model.addCar(
                             content[2],
-                            Integer.parseInt(content[3]),
+                            new StringBuilder().append(content[3]).append("@gmail.com").toString(),
                             Car.fromString(content[0]),
                             Double.parseDouble(content[4]),
                             Double.parseDouble(content[5]),
@@ -81,14 +81,13 @@ public class Parser {
                             Integer.parseInt(content[7]),
                             new Point(Double.parseDouble(content[8]), Double.parseDouble(content[9])),
                             content[1]
-                    ));
+                    );
                     break;
                 case "Aluguer":
                     if (content.length != 5)
                         break;
-                    model.rental(Integer.parseInt(content[0]),
+                    model.rental(new StringBuilder().append(content[0]).append("@gmail.com").toString(),
                             new Point(Double.parseDouble(content[1]), Double.parseDouble(content[2])),
-                            Car.fromString(content[3]),
                             content[4]);
                     break;
                 case "Classificar":

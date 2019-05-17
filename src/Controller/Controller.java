@@ -29,14 +29,15 @@ public class Controller {
                 case Login:
                     try {
                         AbstractMap.SimpleEntry<String, String> r = menu.newLogin();
-                        user = model.logIn(Integer.parseInt(r.getKey()), r.getValue());
+                        user = model.logIn(r.getKey(), r.getValue());
                         menu.selectOption((user instanceof Client)? Menu.MenuInd.Cliente : Menu.MenuInd.Proprietário);
+
                     }
                     catch (InvalidUserException | WrongPasswordExecption  e){ }
                     break;
                 case Closest_Car:
                     try{
-                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), Car.CarType.Electric, "MaisPerto");
+                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisPerto");
                         menu.showRental(rental);
                         menu.back();
                     }
@@ -45,7 +46,7 @@ public class Controller {
 
                 case Cheapest_Car:
                     try{
-                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), Car.CarType.Electric, "MaisBarato");
+                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisBarato");
                         menu.showRental(rental);
                         menu.back();
                     }

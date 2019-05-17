@@ -5,16 +5,16 @@ import Utils.Point;
 import java.time.LocalDateTime;
 
 public class Rental {
-    private int clientID;
-    private String carID;
+    private Client client;
+    private Car car;
     private Point start;
     private Point end;
     private double price;
     private LocalDateTime date;
 
     public Rental(Car car, Client client, Point dest) {
-        this.clientID = client.getNif();
-        this.carID = car.getNumberPlate();
+        this.client = client;
+        this.car = car;
         this.start = car.getPosition();
         this.end = dest;
         this.price = car.getBasePrice() * start.distanceBetweenPoints(dest);
@@ -42,18 +42,30 @@ public class Rental {
     }
 
     public String getCarID() {
-        return this.carID;
+        return this.car.getNumberPlate();
     }
 
-    public int getClientID() {
-        return this.clientID;
+    public String getClientID() {
+        return this.client.getEmail();
+    }
+
+    public void refuse() {
+        this.car.removePendingRental(this);
+    }
+
+    public void rent() {
+        this.client.setPos(this.end);
+        this.car.setPosition(this.end);
+        this.car.removePendingRental(this);
+        this.client.addPendingRental(this);
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("Cliente: ").append(this.clientID).append("\n");
-        str.append("Carro: ").append(this.carID).append("\n");
+        str.append("Cliente: ").append(this.client.getEmail()).append("\n");
+        str.append("Carro: ").append(this.car.getNumberPlate()).append("\n");
+        str.append("Dono: ").append(this.car.getOwnerID()).append("\n");
         str.append("Viagem: ").append(this.start).append(" -> ").append(this.end).append("\n");
         str.append("Custo: ").append(String.format("%.2f", this.price));
         return str.toString();

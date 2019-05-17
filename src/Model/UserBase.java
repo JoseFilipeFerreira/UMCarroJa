@@ -8,24 +8,24 @@ import java.util.Map;
 import java.util.List;
 
 public class UserBase {
-    Map<Integer, User> userBase;
+    Map<String, User> userBase;
 
     public UserBase() {
         this.userBase = new HashMap<>();
     }
 
     public void addUser(User u) throws UserExistsException {
-        if(this.userBase.putIfAbsent(u.getNif(), u.clone()) == null)
+        if(this.userBase.putIfAbsent(u.getEmail(), u.clone()) == null)
             throw new UserExistsException();
     }
 
-    public List<Integer> getClientIDS() {
+    public List<String> getClientIDS() {
         return new ArrayList<>(this
                 .userBase
                 .keySet());
     }
 
-    public User getUser(int id) {
+    public User getUser(String id) {
         return userBase.get(id);
     }
 }

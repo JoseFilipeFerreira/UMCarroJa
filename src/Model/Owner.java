@@ -1,12 +1,12 @@
 package Model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Owner extends User {
     private int rating;
     private int nRentals;
-    private ArrayList<String> carIDs;
+    private ArrayList<Car> carIDs;
+    private ArrayList<Rental> pending;
 
     public Owner(String email, String name, String address, int nif, String passwd) {
         super(email, name, address, nif, passwd);
@@ -30,8 +30,20 @@ public class Owner extends User {
         this.nRentals++;
     }
 
+    public ArrayList<Rental> getPending() {
+        return new ArrayList<>(this.pending);
+    }
+
+    public void addPendingRental(Rental r) {
+        this.pending.add(r);
+    }
+
+    public void removePendingRental(Rental r){
+        this.pending.remove(r);
+    }
+
     public void addCar(Car a) {
-        this.carIDs.add(a.getNumberPlate());
+        this.carIDs.add(a);
     }
 
     public int getRating() {
@@ -42,7 +54,7 @@ public class Owner extends User {
         return this.nRentals;
     }
 
-    public ArrayList<String> getCarIDs() {
+    public ArrayList<Car> getCarIDs() {
         return new ArrayList<>(this.carIDs);
     }
 

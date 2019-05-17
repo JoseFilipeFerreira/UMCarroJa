@@ -5,7 +5,7 @@ import Utils.Point;
 
 public class Car {
     private String numberPlate;
-    private int ownerID;
+    private Owner owner;
 
     private String brand;
     private CarType type;
@@ -15,7 +15,7 @@ public class Car {
     private Point position;
     private int fullTankRange;
 
-    public boolean isAvaliable;
+    private boolean isAvailable;
 
     private int range;
     private int rating;
@@ -23,7 +23,7 @@ public class Car {
 
     public Car(Car car) {
         this.numberPlate = car.getNumberPlate();
-        this.ownerID = car.getOwnerID();
+        this.owner = car.getOwner();
         this.brand = car.getBrand();
         this.type = car.getType();
         this.avgSpeed = car.getAvgSpeed();
@@ -34,13 +34,14 @@ public class Car {
         this.range = car.getRange();
         this.rating = car.getRating();
         this.nRatings = car.getNRatings();
-        this.isAvaliable = car.isAvaliable();
+        this.isAvailable = car.isAvailable();
     }
 
     public enum CarType {
         Electric,
         Gas,
-        Hybrid
+        Hybrid,
+        Any
     }
 
     public static CarType fromString(String s) throws UnknownCarTypeException {
@@ -51,6 +52,8 @@ public class Car {
                 return CarType.Gas;
             case "Hibrido":
                 return CarType.Hybrid;
+            case "Todos":
+                return CarType.Any;
         }
         throw new UnknownCarTypeException();
     }
@@ -62,8 +65,12 @@ public class Car {
                 .distanceBetweenPoints(position);
     }
 
-    public int getOwnerID() {
-        return this.ownerID;
+    private Owner getOwner() {
+        return this.owner;
+    }
+
+    public String getOwnerID() {
+        return this.owner.getEmail();
     }
 
     public double getAvgSpeed() {
@@ -110,13 +117,13 @@ public class Car {
         return this.brand;
     }
 
-    public boolean isAvaliable() {
-        return this.isAvaliable;
+    public boolean isAvailable() {
+        return this.isAvailable;
     }
 
-    public Car(String numberPlate, int ownerID, CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) {
+    public Car(String numberPlate, Owner owner, CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) {
         this.numberPlate = numberPlate;
-        this.ownerID = ownerID;
+        this.owner = owner;
         this.type = type;
         this.avgSpeed = avgSpeed;
         this.basePrice = basePrice;
@@ -127,11 +134,11 @@ public class Car {
         this.position = pos;
         this.rating = 0;
         this.nRatings = 0;
-        this.isAvaliable = true;
+        this.isAvailable = true;
     }
 
     public void swapState() {
-        this.isAvaliable = !this.isAvaliable;
+        this.isAvailable = !this.isAvailable;
     }
 
     public boolean hasRange(Point dest) {
@@ -139,6 +146,17 @@ public class Car {
         return !(this.position.distanceBetweenPoints(dest) > this.range);
     }
 
+    public void addCarUser() {
+        this.owner.addCar(this);
+    }
+
+    public void pendingRental(Rental r) {
+        this.owner.addPendingRental(r);
+    }
+
+    public void removePendingRental(Rental r) {
+        this.owner.removePendingRental(r);
+    }
     public Car clone() {
         return new Car(this);
     }

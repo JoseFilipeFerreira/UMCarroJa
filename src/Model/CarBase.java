@@ -26,7 +26,6 @@ public class CarBase {
     /**
      * \brief Adiciona um carro à base de dados
      * @param a Carro a adicionar
-     * @return True se adicionou, False se já existe
      */
     public void addCar(Car a) throws CarExistsException {
         if(this.carBase
@@ -77,7 +76,7 @@ public class CarBase {
                         .toCollection(ArrayList::new));
     }
 
-    public Car getCar(String compare, Car.CarType type, Point dest, Point origin) throws UnknownCompareTypeException {
+    public Car getCar(String compare, Point dest, Point origin) throws UnknownCompareTypeException {
         if(compare.equals("MaisPerto")) return this.carBase
                 .values()
                 .stream()
@@ -91,7 +90,8 @@ public class CarBase {
         if(compare.equals("MaisBarato")) return this.carBase
                 .values()
                 .stream()
-                .filter(e -> e.hasRange(dest))
+                .filter(e -> e.hasRange(dest)
+                        && e.getPosition().distanceBetweenPoints(dest) != 0)
                 .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
                         .distanceBetweenPoints(dest)))
                 .collect(Collectors.toList())
@@ -100,7 +100,7 @@ public class CarBase {
         throw new UnknownCompareTypeException();
     }
 
-    public Car getCar(Car.CarType type, Point dest, Point origin, double range) throws NoCarAvaliableException {
+    public Car getCar(Point dest, Point origin, double range) throws NoCarAvaliableException {
         Car r = this.carBase
                 .values()
                 .stream()
@@ -114,7 +114,7 @@ public class CarBase {
         return r;
     }
 
-    public Car getCar(Car.CarType type, Point dest, double range) throws NoCarAvaliableException {
+    public Car getCar(Point dest, double range) throws NoCarAvaliableException {
         Car r = this.carBase
                 .values()
                 .stream()
