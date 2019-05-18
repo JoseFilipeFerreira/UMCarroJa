@@ -97,27 +97,32 @@ public class Controller {
                 case Review_Rent:
                     Owner owner = (Owner)this.user;
                     ArrayList<Rental> lR = owner.getPending();
-                    out.println(new Navigator<>(lR));
-                    String v = scanner.nextLine();
-                    switch (v.charAt(0)){
-                        case 'A':
-                            this.model.rent(lR.get(Integer.parseInt(v.substring(1))));
-                            break;
-                        case 'R':
-                            owner.refuse(lR.get(Integer.parseInt(v.substring(1))));
-                            break;
-                        case 'b':
-                            this.menu.back();
-                            break;
+                    for(int i = 0; i < lR.size() && i < 4; i++){
+                        out.println(i + 1 + ".");
+                        out.println(lR.get(i));
                     }
+                    String v = scanner.nextLine();
+                    try {
+                        switch (v.charAt(0)) {
+                            case 'A':
+                                this.model.rent(lR.get(Integer.parseInt(v.substring(1)) - 1));
+                                break;
+                            case 'R':
+                                owner.refuse(lR.get(Integer.parseInt(v.substring(1)) - 1));
+                                break;
+                            case 'b':
+                                this.menu.back();
+                                break;
+                        }
+                    }
+                    catch(NumberFormatException e){}
                     break;
+
                     default:
                         out.println(menu);
                         menu.parser(scanner.nextLine());
                         break;
             }
-
         }
-
     }
 }
