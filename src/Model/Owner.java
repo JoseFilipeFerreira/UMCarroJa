@@ -1,18 +1,20 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Owner extends User {
     private int rating;
     private int nRentals;
-    private ArrayList<Car> carIDs;
-    private ArrayList<Rental> pending;
+    private List<Car> carIDs;
+    private List<Rental> pending;
 
     public Owner(String email, String name, String address, int nif, String passwd) {
         super(email, name, address, nif, passwd);
         this.rating = 0;
         this.nRentals = 0;
         this.carIDs = new ArrayList<>();
+        this.pending = new ArrayList<>();
     }
 
     public Owner(User u) {
@@ -38,7 +40,7 @@ public class Owner extends User {
         this.pending.add(r);
     }
 
-    public void removePendingRental(Rental r){
+    public void refuse(Rental r){
         this.pending.remove(r);
     }
 

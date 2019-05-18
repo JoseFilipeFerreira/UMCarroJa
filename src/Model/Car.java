@@ -155,8 +155,9 @@ public class Car {
     }
 
     public void removePendingRental(Rental r) {
-        this.owner.removePendingRental(r);
+        this.owner.refuse(r);
     }
+
     public Car clone() {
         return new Car(this);
     }

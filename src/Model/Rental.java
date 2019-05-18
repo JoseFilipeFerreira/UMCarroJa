@@ -49,10 +49,6 @@ public class Rental {
         return this.client.getEmail();
     }
 
-    public void refuse() {
-        this.car.removePendingRental(this);
-    }
-
     public void rent() {
         this.client.setPos(this.end);
         this.car.setPosition(this.end);
