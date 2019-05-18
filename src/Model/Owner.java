@@ -24,6 +24,7 @@ public class Owner extends User {
             this.rating = o.getRating();
             this.nRentals = o.getnRentals();
             this.carIDs = o.getCarIDs();
+            this.pending = new ArrayList<>(o.pending);
         }
     }
 

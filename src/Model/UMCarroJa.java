@@ -42,6 +42,7 @@ public class UMCarroJa {
         Client c = (Client) users.getUser(username);
         Car car = cars.getCar(preference, dest, c.getPos());
         Rental r = new Rental(car, c, dest);
+        car.pendingRental(r);
         this.rent(r);
         return r;
     }
