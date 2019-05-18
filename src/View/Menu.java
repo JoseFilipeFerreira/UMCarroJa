@@ -1,6 +1,8 @@
 package View;
 import Model.Rental;
+import Utils.Point;
 import Utils.StringBetter;
+import View.ViewModel.Register;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -39,8 +41,10 @@ public class Menu implements IMenu{
         Inicial,
         Login,
         Register,
+        Registar_Cliente,
+        Registar_Proprietario,
         Cliente,
-        Proprietário,
+        Proprietario,
         Closest_Car,
         Cheapest_Car,
         Cheapest_Near_Car,
@@ -82,16 +86,40 @@ public class Menu implements IMenu{
         scanner.nextLine();
     }
 
-    public AbstractMap.SimpleEntry<String, String> newLogin(){
+    public AbstractMap.SimpleEntry<String, String> newLogin(String error){
         Scanner scanner = new Scanner(System.in);
         out.print("\033\143");
         out.println((this.createHeader()));
+        out.println(error);
         out.println("User:");
         String user = scanner.nextLine();
         out.println("Password:");
         String password = scanner.nextLine();
 
         return new AbstractMap.SimpleEntry<>(user, password);
+    }
+
+    public Register newRegister(){
+        Scanner scanner = new Scanner(System.in);
+        out.print("\033\143");
+        out.println(this.createHeader());
+        out.println();
+        out.println("Nome de Utilizador:");
+        String user = scanner.nextLine();
+        out.println("Email:");
+        String email = scanner.nextLine();
+        out.println("Password:");
+        String pass = scanner.nextLine();
+        out.println("Morada:");
+        String adress = scanner.nextLine();
+        out.println("Nif:");
+        int nif = scanner.nextInt();
+        out.println("x:");
+        double x = scanner.nextDouble();
+        out.println("y:");
+        double y = scanner.nextDouble();
+
+        return new Register(user, email, pass, adress, nif, new Point(x, y));
     }
 
     public int getInputInteiro(){
@@ -159,7 +187,7 @@ public class Menu implements IMenu{
         else {
             this.run = false;
         }
-        if (this.menu.equals(MenuInd.Login))
+        if (this.menu.equals(MenuInd.Login) || this.menu.equals(MenuInd.Register))
             this.back();
         return this;
     }
@@ -180,7 +208,6 @@ public class Menu implements IMenu{
 
         for(int i = 0; i < this.options.size(); i++)
             s.append(i + 1).append("- ").append(this.menuOptionText(i)).append("\n");
-        s.append("\n");
         return s.toString();
     }
 
@@ -191,6 +218,12 @@ public class Menu implements IMenu{
                 r += "Menu Inicial";
             case Register:
                 r += "Registar novo utilizador";
+                break;
+            case Registar_Cliente:
+                r += "Registar novo Cliente";
+                break;
+            case Registar_Proprietario:
+                r += "Registar novo Proprietário";
                 break;
             case Login:
                 r += "Login";
@@ -239,6 +272,11 @@ public class Menu implements IMenu{
             case Login:
                 this.options.clear();
                 break;
+            case Register:
+                this.options.clear();
+                this.options.add(MenuInd.Registar_Cliente);
+                this.options.add(MenuInd.Registar_Proprietario);
+                break;
             case Cliente:
                 this.options.clear();
                 this.options.add(MenuInd.Closest_Car);
@@ -247,7 +285,7 @@ public class Menu implements IMenu{
                 this.options.add(MenuInd.Specific_Car);
                 this.options.add(MenuInd.Autonomy_Car);
                 break;
-            case Proprietário:
+            case Proprietario:
                 this.options.clear();
                 this.options.add(MenuInd.Free_Car);
                 this.options.add(MenuInd.Fill_Car);
