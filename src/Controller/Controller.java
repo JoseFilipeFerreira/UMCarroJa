@@ -8,9 +8,11 @@ import Model.*;
 import Utils.Point;
 import Utils.StringBetter;
 import View.Menu;
+import View.Navigator;
 import View.ViewModel.Register;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -33,12 +35,9 @@ public class Controller {
                 case Login:
                     try {
                         AbstractMap.SimpleEntry<String, String> r = menu.newLogin(error);
-                        user = model.logIn(Integer.parseInt(r.getKey()), r.getValue());
+                        user = model.logIn(r.getKey(), r.getValue());
                         menu.selectOption((user instanceof Client)? Menu.MenuInd.Cliente : Menu.MenuInd.Proprietario);
                         error = "";
-                        AbstractMap.SimpleEntry<String, String> r = menu.newLogin();
-                        user = model.logIn(r.getKey(), r.getValue());
-                        menu.selectOption((user instanceof Client)? Menu.MenuInd.Cliente : Menu.MenuInd.Proprietário);
                     }
                     catch (InvalidUserException e){
                         error = new StringBetter("Invalid Username").under().grey().toString();
@@ -96,6 +95,21 @@ public class Controller {
                     catch (UnknownCompareTypeException e){}
                     break;
                 case Review_Rent:
+                    Owner owner = (Owner)this.user;
+                    ArrayList<Rental> lR = owner.getPending();
+                    out.println(new Navigator<>(lR));
+                    String v = scanner.nextLine();
+                    switch (v.charAt(0)){
+                        case 'A':
+                            this.model.rent(lR.get(Integer.parseInt(v.substring(1))));
+                            break;
+                        case 'R':
+                            owner.refuse(lR.get(Integer.parseInt(v.substring(1))));
+                            break;
+                        case 'b':
+                            this.menu.back();
+                            break;
+                    }
                     break;
                     default:
                         out.println(menu);
