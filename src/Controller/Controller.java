@@ -36,12 +36,8 @@ public class Controller {
                         menu.selectOption((user instanceof Client)? Menu.MenuInd.Cliente : Menu.MenuInd.Proprietario);
                         error = "";
                     }
-                    catch (InvalidUserException e){
-                        error = new StringBetter("Invalid Username").under().grey().toString();
-                    }
-                    catch (WrongPasswordExecption e){
-                        error = new StringBetter("Invalid Password").under().grey().toString();
-                    }
+                    catch (InvalidUserException e){ error = "Invalid Username"; }
+                    catch (WrongPasswordExecption e){ error = "Invalid Password"; }
                     break;
                 case Registar_Cliente:
                     try {
