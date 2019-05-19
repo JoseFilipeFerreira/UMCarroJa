@@ -1,9 +1,6 @@
 package Controller;
 
-import Exceptions.InvalidUserException;
-import Exceptions.UnknownCompareTypeException;
-import Exceptions.UserExistsException;
-import Exceptions.WrongPasswordExecption;
+import Exceptions.*;
 import Model.*;
 import Utils.Point;
 import Utils.StringBetter;
@@ -48,7 +45,7 @@ public class Controller {
                     break;
                 case Registar_Cliente:
                     try {
-                        Register registerCli = menu.newRegister();
+                        Register registerCli = menu.newRegister(error);
                         Client client = new Client(
                                 registerCli.getPos(),
                                 registerCli.getEmail(),
@@ -59,12 +56,14 @@ public class Controller {
                         );
                         this.model.addUser(client);
                         menu.back();
+                        error = "";
                     }
-                    catch (UserExistsException e){}
+                    catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
+                    catch (UserExistsException e){ error = "Utilizador já existe"; }
                     break;
                 case Registar_Proprietario:
                     try {
-                        Register registerProp = menu.newRegister();
+                        Register registerProp = menu.newRegister(error);
                         Owner owner = new Owner(
                                 registerProp.getEmail(),
                                 registerProp.getName(),
@@ -74,8 +73,10 @@ public class Controller {
                         );
                         this.model.addUser(owner);
                         menu.back();
+                        error = "";
                     }
-                    catch (UserExistsException e){}
+                    catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
+                    catch (UserExistsException e){ error = "Utilizador já existe"; }
                     break;
                 case Closest_Car:
                     try{
