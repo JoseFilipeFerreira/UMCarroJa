@@ -1,6 +1,6 @@
 package View;
 
-public interface INavigator {
+interface INavigator {
     void next();
 
     void previous();

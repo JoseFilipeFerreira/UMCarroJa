@@ -1,12 +1,13 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RentalBase {
-    private ArrayList<Rental> rentalBase;
+class RentalBase implements Serializable {
+    private final ArrayList<Rental> rentalBase;
 
     static private int id;
 
@@ -15,10 +16,9 @@ public class RentalBase {
         id = -1;
     }
 
-    public int addRental(Rental r) {
+    public void addRental(Rental r) {
         id++;
         this.rentalBase.add(r);
-        return id;
     }
 
     /**

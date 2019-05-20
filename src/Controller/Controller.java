@@ -3,9 +3,7 @@ package Controller;
 import Exceptions.*;
 import Model.*;
 import Utils.Point;
-import Utils.StringBetter;
 import View.Menu;
-import View.Navigator;
 import View.ViewModel.Register;
 
 import java.util.AbstractMap;
@@ -15,9 +13,9 @@ import java.util.Scanner;
 import static java.lang.System.out;
 
 public class Controller {
-    private UMCarroJa model;
+    private final UMCarroJa model;
     private User user;
-    private Menu menu;
+    private final Menu menu;
 
     public Controller(UMCarroJa model) {
         this.menu = new Menu();
@@ -76,20 +74,20 @@ public class Controller {
                     break;
                 case Closest_Car:
                     try{
-                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisPerto");
+                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisPerto", Car.CarType.Any);
                         menu.showRental(rental);
                         menu.back();
                     }
-                    catch (UnknownCompareTypeException e){}
+                    catch (UnknownCompareTypeException | NoCarAvaliableException ignored){}
                     break;
 
                 case Cheapest_Car:
                     try{
-                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisBarato");
+                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisBarato", Car.CarType.Any);
                         menu.showRental(rental);
                         menu.back();
                     }
-                    catch (UnknownCompareTypeException e){}
+                    catch (UnknownCompareTypeException | NoCarAvaliableException ignored){}
                     break;
                 case Review_Rent:
                     Owner owner = (Owner)this.user;
@@ -112,7 +110,7 @@ public class Controller {
                                 break;
                         }
                     }
-                    catch(NumberFormatException e){}
+                    catch(NumberFormatException ignored){}
                     break;
 
                     default:

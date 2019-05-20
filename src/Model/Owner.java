@@ -6,24 +6,24 @@ import java.util.List;
 public class Owner extends User {
     private int rating;
     private int nRentals;
-    private List<Car> carIDs;
+    private List<Car> cars;
     private List<Rental> pending;
 
     public Owner(String email, String name, String address, int nif, String passwd) {
         super(email, name, address, nif, passwd);
         this.rating = 0;
         this.nRentals = 0;
-        this.carIDs = new ArrayList<>();
+        this.cars = new ArrayList<>();
         this.pending = new ArrayList<>();
     }
 
-    public Owner(User u) {
+    private Owner(User u) {
         super(u);
         if (u instanceof Owner) {
             Owner o = (Owner) u;
             this.rating = o.getRating();
             this.nRentals = o.getnRentals();
-            this.carIDs = o.getCarIDs();
+            this.cars = o.getCars();
             this.pending = new ArrayList<>(o.pending);
         }
     }
@@ -46,19 +46,19 @@ public class Owner extends User {
     }
 
     public void addCar(Car a) {
-        this.carIDs.add(a);
+        this.cars.add(a);
     }
 
-    public int getRating() {
+    private int getRating() {
         return this.rating;
     }
 
-    public int getnRentals() {
+    private int getnRentals() {
         return this.nRentals;
     }
 
-    public ArrayList<Car> getCarIDs() {
-        return new ArrayList<>(this.carIDs);
+    private ArrayList<Car> getCars() {
+        return new ArrayList<>(this.cars);
     }
 
     public Owner clone() {

@@ -2,15 +2,16 @@ package Model;
 
 import Utils.Point;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Rental {
-    private Client client;
-    private Car car;
-    private Point start;
-    private Point end;
-    private double price;
-    private LocalDateTime date;
+public class Rental implements Serializable {
+    private final Client client;
+    private final Car car;
+    private final Point start;
+    private final Point end;
+    private final double price;
+    private final LocalDateTime date;
 
     public Rental(Car car, Client client, Point dest) {
         this.client = client;
@@ -25,7 +26,7 @@ public class Rental {
         return this.date;
     }
 
-    public Point getStart() {
+    private Point getStart() {
         return this.start;
     }
 
@@ -33,7 +34,7 @@ public class Rental {
         return this.getStart().distanceBetweenPoints(this.getEnd());
     }
 
-    public Point getEnd() {
+    private Point getEnd() {
         return this.end;
     }
 

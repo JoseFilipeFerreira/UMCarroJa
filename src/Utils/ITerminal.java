@@ -1,6 +1,6 @@
 package Utils;
 
-public interface ITerminal {
+interface ITerminal {
     void update();
 
     int getColumns();

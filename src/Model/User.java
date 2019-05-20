@@ -1,13 +1,15 @@
 package Model;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
     private String email;
     private String passwd;
     private String name;
     private String address;
     private int nif;
 
-    public User(String email, String name, String address, int nif, String passwd) {
+    User(String email, String name, String address, int nif, String passwd) {
         this.email = email;
         this.name = name;
         this.address = address;
@@ -15,14 +17,14 @@ public abstract class User {
         this.passwd = passwd;
     }
 
-    public User() {
+    User() {
         this.nif = 0;
         this.email = "";
         this.name = "";
         this.address = "";
     }
 
-    public User(User u) {
+    User(User u) {
         this.email = u.getEmail();
         this.name = u.getName();
         this.address = u.getAddress();
@@ -38,7 +40,7 @@ public abstract class User {
         this.passwd = passwd;
     }
 
-    public int getNif() {
+    private int getNif() {
         return this.nif;
     }
 
@@ -46,11 +48,11 @@ public abstract class User {
         this.nif = nif;
     }
 
-    public String getName() {
+    private String getName() {
         return this.name;
     }
 
-    public String getAddress() {
+    private String getAddress() {
         return this.address;
     }
 

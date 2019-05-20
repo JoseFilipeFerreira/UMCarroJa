@@ -2,8 +2,8 @@ package Model;
 
 import java.time.LocalDateTime;
 
-public class Weather {
-    private static final String seasons[] = {
+class Weather {
+    private static final String[] seasons = {
             "Winter", "Winter",
             "Spring", "Spring", "Spring",
             "Summer", "Summer", "Summer",
@@ -11,7 +11,7 @@ public class Weather {
             "Winter"
     };
 
-    public String getSeason() {
+    private String getSeason() {
         return seasons[LocalDateTime.now().getMonthValue()];
     }
 

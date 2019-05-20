@@ -5,18 +5,19 @@ import Exceptions.NoCarAvaliableException;
 import Exceptions.UnknownCompareTypeException;
 import Utils.Point;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CarBase {
-    private Map<String, Car> carBase;
+public class Cars implements Serializable {
+    private final Map<String, Car> carBase;
 
-    public CarBase() {
+    public Cars() {
         this.carBase = new HashMap<>();
     }
 
-    public CarBase(CarBase c) {
-        this.carBase = (HashMap<String, Car>) c.carBase
+    private Cars(Cars c) {
+        this.carBase = c.carBase
                 .values()
                 .stream()
                 .collect(Collectors
@@ -53,11 +54,11 @@ public class CarBase {
     }
 
     /**
-     * Clona um objeto da classe Model.CarBase
+     * Clona um objeto da classe Model.Cars
      * @return Clone do objeto
      */
-    public CarBase clone() {
-        return new CarBase(this);
+    public Cars clone() {
+        return new Cars(this);
     }
 
     /**
@@ -76,35 +77,48 @@ public class CarBase {
                         .toCollection(ArrayList::new));
     }
 
-    public Car getCar(String compare, Point dest, Point origin) throws UnknownCompareTypeException {
-        if(compare.equals("MaisPerto")) return this.carBase
-                .values()
-                .stream()
-                .filter(e -> e.hasRange(dest))
-                .sorted(Comparator.comparingDouble(e ->
-                        e.getPosition()
-                        .distanceBetweenPoints(origin)))
-                .collect(Collectors.toList())
-                .get(0);
+    public Car getCar(String compare, Point dest, Point origin, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
+        if(compare.equals("MaisPerto")) {
+            Car r = this.carBase
+                    .values()
+                    .stream()
+                    .filter(e -> e.getType().equals(a)
+                            && e.hasRange(dest))
+                    .sorted(Comparator.comparingDouble(e ->
+                            e.getPosition()
+                            .distanceBetweenPoints(origin)))
+                    .collect(Collectors.toList())
+                    .get(0);
+            if(r == null)
+                throw new NoCarAvaliableException();
+            return r;
+        }
 
-        if(compare.equals("MaisBarato")) return this.carBase
-                .values()
-                .stream()
-                .filter(e -> e.hasRange(dest)
-                        && e.getPosition().distanceBetweenPoints(dest) != 0)
-                .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
-                        .distanceBetweenPoints(dest)))
-                .collect(Collectors.toList())
-                .get(0);
+        if(compare.equals("MaisBarato")) {
+            Car r = this.carBase
+                    .values()
+                    .stream()
+                    .filter(e -> e.getType().equals(a)
+                            && e.hasRange(dest)
+                            && e.getPosition().distanceBetweenPoints(dest) != 0)
+                    .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
+                            .distanceBetweenPoints(dest)))
+                    .collect(Collectors.toList())
+                    .get(0);
+            if(r == null)
+                throw new NoCarAvaliableException();
+            return r;
+        }
 
         throw new UnknownCompareTypeException();
     }
 
-    public Car getCar(Point dest, Point origin, double range) throws NoCarAvaliableException {
+    public Car getCar(Point dest, Point origin, double range, Car.CarType a) throws NoCarAvaliableException {
         Car r = this.carBase
                 .values()
                 .stream()
-                .filter(e -> e.hasRange(dest)
+                .filter(e -> e.getType().equals(a)
+                        && e.hasRange(dest)
                         && origin.distanceBetweenPoints(e.getPosition()) <= range)
                 .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * origin.distanceBetweenPoints(dest)))
                 .collect(Collectors.toList())
@@ -114,11 +128,12 @@ public class CarBase {
         return r;
     }
 
-    public Car getCar(Point dest, double range) throws NoCarAvaliableException {
+    public Car getCar(Point dest, double range, Car.CarType a) throws NoCarAvaliableException {
         Car r = this.carBase
                 .values()
                 .stream()
-                .filter(e -> e.hasRange(dest)
+                .filter(e -> e.getType().equals(a)
+                        && e.hasRange(dest)
                         && e.getRange() >= range)
                 .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
                         .distanceBetweenPoints(dest)))

@@ -3,19 +3,20 @@ package Model;
 import Exceptions.*;
 import Utils.Point;
 
+import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class UMCarroJa {
-    private CarBase cars;
-    private UserBase users;
-    private RentalBase rentals;
+public class UMCarroJa implements Serializable {
+    private final Cars cars;
+    private final Users users;
+    private final RentalBase rentals;
 
     public UMCarroJa() {
-        this.cars = new CarBase();
-        this.users = new UserBase();
+        this.cars = new Cars();
+        this.users = new Users();
         this.rentals = new RentalBase();
     }
 
@@ -38,17 +39,16 @@ public class UMCarroJa {
                 .collect(Collectors.toList());
     }
 
-    public Rental rental(String username, Point dest, String preference) throws UnknownCompareTypeException {
+    public void rental(String username, Point dest, String preference, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
         Client c = (Client) users.getUser(username);
-        Car car = cars.getCar(preference, dest, c.getPos());
+        Car car = cars.getCar(preference, dest, c.getPos(), a);
         Rental r = new Rental(car, c, dest);
         car.pendingRental(r);
         this.rent(r);
-        return r;
     }
 
-    public Rental rental(Client c, Point dest, double range) throws NoCarAvaliableException{
-        Car car = cars.getCar(dest, c.getPos(), range);
+    public Rental rental(Client c, Point dest, double range, Car.CarType a) throws NoCarAvaliableException{
+        Car car = cars.getCar(dest, c.getPos(), range, a);
         Rental r = new Rental(car, c, dest);
         rentals.addRental(r);
         c.setPos(dest);
@@ -56,8 +56,8 @@ public class UMCarroJa {
         return r;
     }
 
-    public Rental rental(Client c, Point dest, String preference) throws UnknownCompareTypeException {
-        Car car = cars.getCar(preference, dest, c.getPos());
+    public Rental rental(Client c, Point dest, String preference, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
+        Car car = cars.getCar(preference, dest, c.getPos(), a);
         Rental r = new Rental(car, c, dest);
         car.pendingRental(r);
         return r;
@@ -91,5 +91,21 @@ public class UMCarroJa {
         if(!c.getPasswd().equals(passwd))
             throw new WrongPasswordExecption();
         return c;
+    }
+
+    public void save(String fName) throws IOException {
+        FileOutputStream a = new FileOutputStream(fName);
+        ObjectOutputStream r = new ObjectOutputStream(a);
+        r.writeObject(this);
+        r.flush();
+        r.close();
+    }
+
+    public static UMCarroJa read(String fName) throws IOException, ClassNotFoundException {
+        FileInputStream r = new FileInputStream(fName);
+        ObjectInputStream a = new ObjectInputStream(r);
+        UMCarroJa u = (UMCarroJa) a.readObject();
+        a.close();
+        return u;
     }
 }

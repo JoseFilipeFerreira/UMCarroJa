@@ -1,6 +1,6 @@
 package View;
 
-public interface IMenu {
+interface IMenu {
 
     enum MenuInd{}
 

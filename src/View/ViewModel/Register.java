@@ -3,11 +3,11 @@ package View.ViewModel;
 import Utils.Point;
 
 public class Register {
-    private String name;
-    private String email;
-    private String passwd;
-    private String address;
-    private int nif;
+    private final String name;
+    private final String email;
+    private final String passwd;
+    private final String address;
+    private final int nif;
 
     private Point pos;
 

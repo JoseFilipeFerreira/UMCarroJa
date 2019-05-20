@@ -1,6 +1,6 @@
 package Utils;
 
-public interface IStringBetter {
+interface IStringBetter {
     String getStr();
 
     void setStr(String str);

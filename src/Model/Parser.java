@@ -1,9 +1,6 @@
 package Model;
 
-import Exceptions.CarExistsException;
-import Exceptions.UnknownCarTypeException;
-import Exceptions.UnknownCompareTypeException;
-import Exceptions.UserExistsException;
+import Exceptions.*;
 import Utils.Point;
 
 import java.io.IOException;
@@ -74,7 +71,7 @@ public class Parser {
                     model.addCar(
                             content[2],
                             new StringBuilder().append(content[3]).append("@gmail.com").toString(),
-                            Car.fromString(content[0]),
+                            Car.CarType.fromString(content[0]),
                             Double.parseDouble(content[4]),
                             Double.parseDouble(content[5]),
                             Double.parseDouble(content[6]),
@@ -86,9 +83,12 @@ public class Parser {
                 case "Aluguer":
                     if (content.length != 5)
                         break;
-                    model.rental(new StringBuilder().append(content[0]).append("@gmail.com").toString(),
-                            new Point(Double.parseDouble(content[1]), Double.parseDouble(content[2])),
-                            content[4]);
+                    try {
+                        model.rental(new StringBuilder().append(content[0]).append("@gmail.com").toString(),
+                                new Point(Double.parseDouble(content[1]), Double.parseDouble(content[2])),
+                                content[4], Car.CarType.fromString(content[3]));
+                    } catch (NoCarAvaliableException ignored) {
+                    }
                     break;
                 case "Classificar":
                     if (content.length != 3)
@@ -96,7 +96,7 @@ public class Parser {
                     break;
             }
         }
-        catch (UserExistsException | CarExistsException | UnknownCarTypeException | UnknownCompareTypeException i) {}
+        catch (UserExistsException | CarExistsException | UnknownCarTypeException | UnknownCompareTypeException ignored) {}
         return l;
     }
 

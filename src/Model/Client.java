@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Client extends User {
     private Point pos;
-    private List<Rental> pendingRates;
+    private final List<Rental> pendingRates;
 
     public Client(Point pos, String email, String passwd, String name, String address, int nif) {
         super(email, name, address, nif, passwd);
@@ -19,7 +19,7 @@ public class Client extends User {
         return this.pos.clone();
     }
 
-    public Client(Client u) {
+    private Client(Client u) {
         super(u);
         this.pos = u.getPos().clone();
         this.pendingRates = new ArrayList<>(u.pendingRates);

@@ -2,20 +2,21 @@ package Model;
 
 import Exceptions.UserExistsException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class UserBase {
-    Map<String, User> userBase;
+class Users implements Serializable {
+    private final Map<String, User> userBase;
 
-    public UserBase() {
+    public Users() {
         this.userBase = new HashMap<>();
     }
 
     public void addUser(User u) throws UserExistsException {
-        if(this.userBase.putIfAbsent(u.getEmail(), u.clone()) == null)
+        if(this.userBase.putIfAbsent(u.getEmail(), u.clone()) != null)
             throw new UserExistsException();
     }
 

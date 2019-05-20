@@ -12,8 +12,8 @@ import static java.lang.System.out;
 
 public class Menu implements IMenu {
     private MenuInd menu;
-    private Stack<MenuInd> prev;
-    private ArrayList<MenuInd> options;
+    private final Stack<MenuInd> prev;
+    private final ArrayList<MenuInd> options;
     private boolean run;
 
     public <T> void menuNavigator(Navigator<T> nav) {

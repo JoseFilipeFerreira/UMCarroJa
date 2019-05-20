@@ -1,8 +1,10 @@
 package Utils;
 
-public class Point {
-    private double x;
-    private double y;
+import java.io.Serializable;
+
+public class Point implements Serializable {
+    private final double x;
+    private final double y;
 
     public Point() {
         this.x = 0;
@@ -14,16 +16,16 @@ public class Point {
         this.y = y;
     }
 
-    public Point(Point x) {
+    private Point(Point x) {
         this.x = x.getX();
         this.y = x.getY();
     }
 
-    public Double getX() {
+    private Double getX() {
         return this.x;
     }
 
-    public Double getY() {
+    private Double getY() {
         return y;
     }
 

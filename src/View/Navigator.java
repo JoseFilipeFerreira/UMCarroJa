@@ -6,15 +6,15 @@ import Utils.Terminal;
 import java.util.ArrayList;
 
 public class Navigator<T> implements INavigator{
-    private ArrayList<T> strings;
+    private final ArrayList<T> strings;
     private final StringBuilder builder;
     private int pageSize;
     private int nCols;
     private int nPages;
     private int page;
-    private int separator;
+    private final int separator;
     private int maxPrint;
-    private Terminal term;
+    private final Terminal term;
 
     public boolean isEmpty(){
         return this.strings.isEmpty();

@@ -3,25 +3,31 @@ package Model;
 import Exceptions.UnknownCarTypeException;
 import Utils.Point;
 
-public class Car {
-    private String numberPlate;
-    private Owner owner;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-    private String brand;
-    private CarType type;
-    private double avgSpeed;
-    private double basePrice;
-    private double gasMileage;
+public class Car implements Serializable {
+    private final String numberPlate;
+    private final Owner owner;
+
+    private final String brand;
+    private final CarType type;
+    private final double avgSpeed;
+    private final double basePrice;
+    private final double gasMileage;
     private Point position;
-    private int fullTankRange;
+    private final int fullTankRange;
 
     private boolean isAvailable;
 
     private int range;
-    private int rating;
-    private int nRatings;
+    private final int rating;
+    private final int nRatings;
 
-    public Car(Car car) {
+    private final List<Rental> historic;
+
+    private Car(Car car) {
         this.numberPlate = car.getNumberPlate();
         this.owner = car.getOwner();
         this.brand = car.getBrand();
@@ -35,27 +41,32 @@ public class Car {
         this.rating = car.getRating();
         this.nRatings = car.getNRatings();
         this.isAvailable = car.isAvailable();
+        this.historic = new ArrayList<>(car.historic);
     }
 
     public enum CarType {
         Electric,
         Gas,
         Hybrid,
-        Any
-    }
+        Any;
 
-    public static CarType fromString(String s) throws UnknownCarTypeException {
-        switch (s) {
-            case "Electrico":
-                return CarType.Electric;
-            case "Gasolina":
-                return CarType.Gas;
-            case "Hibrido":
-                return CarType.Hybrid;
-            case "Todos":
-                return CarType.Any;
+        public boolean equals(CarType a) {
+            return a == this || a == Any;
         }
-        throw new UnknownCarTypeException();
+
+        public static CarType fromString(String s) throws UnknownCarTypeException {
+            switch (s) {
+                case "Electrico":
+                    return CarType.Electric;
+                case "Gasolina":
+                    return CarType.Gas;
+                case "Hibrido":
+                    return CarType.Hybrid;
+                case "Todos":
+                    return CarType.Any;
+            }
+            throw new UnknownCarTypeException();
+        }
     }
 
     public void setPosition(Point position) {
@@ -73,11 +84,11 @@ public class Car {
         return this.owner.getEmail();
     }
 
-    public double getAvgSpeed() {
+    private double getAvgSpeed() {
         return this.avgSpeed;
     }
 
-    public int getFullTankRange() {
+    private int getFullTankRange() {
         return this.fullTankRange;
     }
 
@@ -85,11 +96,11 @@ public class Car {
         return this.basePrice;
     }
 
-    public double getGasMileage() {
+    private double getGasMileage() {
         return this.gasMileage;
     }
 
-    public int getRating() {
+    private int getRating() {
         return this.rating;
     }
 
@@ -109,15 +120,15 @@ public class Car {
         return this.numberPlate;
     }
 
-    public int getNRatings() {
+    private int getNRatings() {
         return this.nRatings;
     }
 
-    public String getBrand() {
+    private String getBrand() {
         return this.brand;
     }
 
-    public boolean isAvailable() {
+    private boolean isAvailable() {
         return this.isAvailable;
     }
 
@@ -135,6 +146,7 @@ public class Car {
         this.rating = 0;
         this.nRatings = 0;
         this.isAvailable = true;
+        this.historic = new ArrayList<>();
     }
 
     public void swapState() {
