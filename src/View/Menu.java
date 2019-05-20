@@ -55,7 +55,8 @@ public class Menu implements IMenu {
         Fill_Car,
         Change_Price,
         Review_Rent,
-        Register_Cost
+        Register_Cost,
+        Add_Car
     }
 
     public Menu() {
@@ -114,18 +115,27 @@ public class Menu implements IMenu {
         String pass = scanner.nextLine();
         out.println("Morada:");
         String adress = scanner.nextLine();
-        out.println("Nif:");
+        int nif;
         try {
-            int nif = scanner.nextInt();
-            out.println("UMCarroJa wants to know your location!");
-            out.println("x:");
-            double x = scanner.nextDouble();
-            out.println("y:");
-            double y = scanner.nextDouble();
-            return new Register(user, email, pass, adress, nif, new Point(x, y));
-        }
-        catch (InputMismatchException e) {
+            out.println("Nif:");
+            nif = scanner.nextInt();
+        } catch (InputMismatchException e) {
             throw new InvalidNewRegister();
+        }
+        if (this.menu.equals(MenuInd.Registar_Cliente)) {
+            try {
+                out.println("UMCarroJa wants to know your location!");
+                out.println("x:");
+                double x = scanner.nextDouble();
+                out.println("y:");
+                double y = scanner.nextDouble();
+                return new Register(user, email, pass, adress, nif, new Point(x, y));
+            } catch (InputMismatchException e) {
+                throw new InvalidNewRegister();
+            }
+        }
+        else {
+            return new Register(user, email, pass, adress, nif);
         }
 
 
@@ -255,6 +265,9 @@ public class Menu implements IMenu {
             case Autonomy_Car:
                 r += "Carro com uma autonomia desejada.";
                 break;
+            case Add_Car:
+                r += "Adicionar novo carro";
+                break;
             case Free_Car:
                 r += "Sinalizar que um dos seus carros está disponível para aluguer";
                 break;
@@ -306,6 +319,7 @@ public class Menu implements IMenu {
                 this.options.add(MenuInd.Change_Price);
                 this.options.add(MenuInd.Review_Rent);
                 this.options.add(MenuInd.Register_Cost);
+                this.options.add(MenuInd.Add_Car);
                 break;
             case Closest_Car:
                 this.options.clear();
