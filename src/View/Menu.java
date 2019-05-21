@@ -58,7 +58,8 @@ public class Menu implements IMenu {
         Change_Price,
         Review_Rent,
         Register_Cost,
-        Add_Car
+        Add_Car,
+        Top_10_Clients
     }
 
     public Menu() {
@@ -88,6 +89,32 @@ public class Menu implements IMenu {
         out.println();
         out.println(rental);
         scanner.nextLine();
+    }
+
+    public void top10ClientsShow (ArrayList<ArrayList<String>> valTab){
+        Scanner scanner = new Scanner(System.in);
+        out.print("\033\143");
+        out.println(this.createHeader());
+        out.println();
+        ArrayList<String> colLabl = new ArrayList<>();
+        colLabl.add("User");
+        colLabl.add("Distance");
+        ArrayList<String> linLabl = new ArrayList<>();
+        linLabl.add("1º");
+        linLabl.add("2º");
+        linLabl.add("3º");
+        linLabl.add("4º");
+        linLabl.add("5º");
+        linLabl.add("6º");
+        linLabl.add("7º");
+        linLabl.add("8º");
+        linLabl.add("9º");
+        linLabl.add("10º");
+        Table<String> tab = new Table<>(valTab,linLabl,colLabl);
+        out.println(tab);
+
+        scanner.nextLine();
+
     }
 
     public AbstractMap.SimpleEntry<String, String> newLogin(String error) {
@@ -329,6 +356,9 @@ public class Menu implements IMenu {
             case Register_Cost:
                 r += "Registar quanto custou a viagem.";
                 break;
+            case Top_10_Clients:
+                r += "10 Melhores clientes";
+                break;
         }
         return r;
     }
@@ -356,6 +386,7 @@ public class Menu implements IMenu {
                 this.options.add(MenuInd.Cheapest_Near_Car);
                 this.options.add(MenuInd.Specific_Car);
                 this.options.add(MenuInd.Autonomy_Car);
+                this.options.add(MenuInd.Top_10_Clients);
                 break;
             case Proprietario:
                 this.options.clear();

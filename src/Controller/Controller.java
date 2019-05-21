@@ -4,12 +4,14 @@ import Exceptions.*;
 import Model.*;
 import Utils.Point;
 import View.Menu;
+import View.Navigator;
+import View.Table;
 import View.ViewModel.RegisterCar;
 import View.ViewModel.RegisterUser;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.sql.Array;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
@@ -132,10 +134,29 @@ public class Controller {
                         menu.back();
                         error = "";
                     }
+
                     catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
                     catch (CarExistsException e){ error = "Carro já existe"; }
                     catch (InvalidUserException ignored) {}
                     break;
+
+                case Top_10_Clients:
+                    ArrayList<ArrayList<String>> valTab =
+                            this.model.getBestClients()
+                            .stream()
+                            .map(
+                                    x -> new ArrayList<>(
+                                            Arrays.asList(
+                                                    x.getKey(),
+                                                    String.format("%.2f", x.getValue())
+                                            )
+                                    )
+                            ).collect(Collectors.toCollection(ArrayList::new));
+
+                    menu.top10ClientsShow(valTab);
+
+
+                    this.menu.back();
 
                     default:
                         out.println(menu);
