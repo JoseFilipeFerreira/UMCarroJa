@@ -1,10 +1,12 @@
 package View;
 
 import Exceptions.InvalidNewRegister;
+import Model.Car;
 import Model.Rental;
 import Utils.Point;
 import Utils.StringBetter;
-import View.ViewModel.Register;
+import View.ViewModel.RegisterCar;
+import View.ViewModel.RegisterUser;
 
 import java.util.*;
 
@@ -101,7 +103,51 @@ public class Menu implements IMenu {
         return new AbstractMap.SimpleEntry<>(user, password);
     }
 
-    public Register newRegister(String error) throws InvalidNewRegister {
+    public RegisterCar newRegisterCar(String error) throws InvalidNewRegister {
+        Scanner scanner = new Scanner(System.in);
+        out.print("\033\143");
+        out.println(this.createHeader());
+        out.println(new StringBetter(error).under().toString());
+        out.println();
+        out.println("Matricula:");
+        String matricula = scanner.nextLine();
+        out.println("Marca:");
+        String marca = scanner.nextLine();
+        out.println("Tipo do Carro: [electric, gas, hybrid or any]");
+        String carType = scanner.nextLine();
+        int range;
+        double x, y, avgSpeed, basePrice, gasMileage;
+        try {
+            out.println("Velocidade Média:");
+            avgSpeed = scanner.nextDouble();
+            out.println("Preço base:");
+            basePrice = scanner.nextDouble();
+            out.println("Consumo médio:");
+            gasMileage = scanner.nextDouble();
+            out.println("Alcance:");
+            range = scanner.nextInt();
+            out.println("UMCarroJa wants to know your location!");
+            out.println("x:");
+            x = scanner.nextDouble();
+            out.println("y:");
+            y = scanner.nextDouble();
+        } catch (InputMismatchException e) {
+            throw new InvalidNewRegister();
+        }
+        return new RegisterCar(
+                matricula,
+                carType,
+                avgSpeed,
+                basePrice,
+                gasMileage,
+                range,
+                new Point(x, y),
+                marca);
+
+
+    }
+
+    public RegisterUser newRegisterUser(String error) throws InvalidNewRegister {
         Scanner scanner = new Scanner(System.in);
         out.print("\033\143");
         out.println(this.createHeader());
@@ -129,13 +175,13 @@ public class Menu implements IMenu {
                 double x = scanner.nextDouble();
                 out.println("y:");
                 double y = scanner.nextDouble();
-                return new Register(user, email, pass, adress, nif, new Point(x, y));
+                return new RegisterUser(user, email, pass, adress, nif, new Point(x, y));
             } catch (InputMismatchException e) {
                 throw new InvalidNewRegister();
             }
         }
         else {
-            return new Register(user, email, pass, adress, nif);
+            return new RegisterUser(user, email, pass, adress, nif);
         }
 
 

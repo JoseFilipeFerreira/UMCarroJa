@@ -4,7 +4,8 @@ import Exceptions.*;
 import Model.*;
 import Utils.Point;
 import View.Menu;
-import View.ViewModel.Register;
+import View.ViewModel.RegisterCar;
+import View.ViewModel.RegisterUser;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -39,14 +40,14 @@ public class Controller {
                     break;
                 case Registar_Cliente:
                     try {
-                        Register registerCli = menu.newRegister(error);
+                        RegisterUser registerUserCli = menu.newRegisterUser(error);
                         Client client = new Client(
-                                registerCli.getPos(),
-                                registerCli.getEmail(),
-                                registerCli.getPasswd(),
-                                registerCli.getName(),
-                                registerCli.getAddress(),
-                                registerCli.getNif()
+                                registerUserCli.getPos(),
+                                registerUserCli.getEmail(),
+                                registerUserCli.getPasswd(),
+                                registerUserCli.getName(),
+                                registerUserCli.getAddress(),
+                                registerUserCli.getNif()
                         );
                         this.model.addUser(client);
                         menu.back();
@@ -57,13 +58,13 @@ public class Controller {
                     break;
                 case Registar_Proprietario:
                     try {
-                        Register registerProp = menu.newRegister(error);
+                        RegisterUser registerUserProp = menu.newRegisterUser(error);
                         Owner owner = new Owner(
-                                registerProp.getEmail(),
-                                registerProp.getName(),
-                                registerProp.getAddress(),
-                                registerProp.getNif(),
-                                registerProp.getPasswd()
+                                registerUserProp.getEmail(),
+                                registerUserProp.getName(),
+                                registerUserProp.getAddress(),
+                                registerUserProp.getNif(),
+                                registerUserProp.getPasswd()
                         );
                         this.model.addUser(owner);
                         menu.back();
@@ -74,7 +75,7 @@ public class Controller {
                     break;
                 case Closest_Car:
                     try{
-                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisPerto", Car.CarType.Any);
+                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisPerto", Car.CarType.any);
                         menu.showRental(rental);
                         menu.back();
                     }
@@ -83,7 +84,7 @@ public class Controller {
 
                 case Cheapest_Car:
                     try{
-                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisBarato", Car.CarType.Any);
+                        Rental rental = model.rental((Client)user, new Point(0.d, 0.d), "MaisBarato", Car.CarType.any);
                         menu.showRental(rental);
                         menu.back();
                     }
@@ -111,6 +112,29 @@ public class Controller {
                         }
                     }
                     catch(NumberFormatException ignored){}
+                    break;
+
+                case Add_Car:
+                    try {
+                        RegisterCar registerCar = menu.newRegisterCar(error);
+                        Owner ownerCar = (Owner)this.user;
+                        Car car = new Car(
+                                registerCar.getNumberPlate(),
+                                ownerCar,
+                                registerCar.getType(),
+                                registerCar.getAvgSpeed(),
+                                registerCar.getBasePrice(),
+                                registerCar.getGasMileage(),
+                                registerCar.getRange(),
+                                registerCar.getPos(),
+                                registerCar.getBrand()
+                        );
+                        this.model.addCar(car);
+                        menu.back();
+                        error = "";
+                    }
+                    catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
+                    catch (CarExistsException e){ error = "Carro já existe"; }
                     break;
 
                     default:

@@ -2,7 +2,7 @@ package View.ViewModel;
 
 import Utils.Point;
 
-public class Register {
+public class RegisterUser {
     private final String name;
     private final String email;
     private final String passwd;
@@ -11,7 +11,7 @@ public class Register {
 
     private Point pos;
 
-    public Register(String name, String email, String passwd, String address, int nif, Point pos) {
+    public RegisterUser(String name, String email, String passwd, String address, int nif, Point pos) {
         this.email = email;
         this.passwd = passwd;
         this.name = name;
@@ -20,7 +20,7 @@ public class Register {
         this.pos = pos;
     }
 
-    public Register(String name, String email, String passwd, String address, int nif) {
+    public RegisterUser(String name, String email, String passwd, String address, int nif) {
         this.email = email;
         this.passwd = passwd;
         this.name = name;
