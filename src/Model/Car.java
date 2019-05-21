@@ -14,7 +14,7 @@ public class Car implements Serializable {
     private final String brand;
     private final CarType type;
     private final double avgSpeed;
-    private final double basePrice;
+    private double basePrice;
     private final double gasMileage;
     private Point position;
     private final int fullTankRange;
@@ -22,8 +22,8 @@ public class Car implements Serializable {
     private boolean isAvailable;
 
     private int range;
-    private final int rating;
-    private final int nRatings;
+    private int rating;
+    private int nRatings;
 
     private final List<Rental> historic;
 
@@ -69,18 +69,22 @@ public class Car implements Serializable {
         }
     }
 
-    public void setPosition(Point position) {
+    void setPosition(Point position) {
         this.position = position;
         this.range -= this
                 .position
                 .distanceBetweenPoints(position);
     }
 
+    public void setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+    }
+
     private Owner getOwner() {
         return this.owner;
     }
 
-    public String getOwnerID() {
+    String getOwnerID() {
         return this.owner.getEmail();
     }
 
@@ -92,7 +96,7 @@ public class Car implements Serializable {
         return this.fullTankRange;
     }
 
-    public double getBasePrice() {
+    double getBasePrice() {
         return this.basePrice;
     }
 
@@ -104,19 +108,19 @@ public class Car implements Serializable {
         return this.rating;
     }
 
-    public Point getPosition() {
+    Point getPosition() {
         return this.position;
     }
 
-    public int getRange() {
+    int getRange() {
         return this.range;
     }
 
-    public CarType getType() {
+    CarType getType() {
         return this.type;
     }
 
-    public String getNumberPlate() {
+    String getNumberPlate() {
         return this.numberPlate;
     }
 
@@ -132,7 +136,8 @@ public class Car implements Serializable {
         return this.isAvailable;
     }
 
-    public Car(String numberPlate, Owner owner, CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) {
+    Car(String numberPlate, Owner owner, CarType type,
+            double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) {
         this.numberPlate = numberPlate;
         this.owner = owner;
         this.type = type;
@@ -153,20 +158,26 @@ public class Car implements Serializable {
         this.isAvailable = !this.isAvailable;
     }
 
-    public boolean hasRange(Point dest) {
+    public void refil() {
+        this.range = this.fullTankRange;
+    }
+
+    boolean hasRange(Point dest) {
         if((double)this.range / this.getFullTankRange() < 0.1) return false;
         return !(this.position.distanceBetweenPoints(dest) > this.range);
     }
 
-    public void addCarUser() {
-        this.owner.addCar(this);
+    void rate(int rating) {
+        this.owner.rate(rating);
+        this.nRatings++;
+        this.rating += rating;
     }
 
-    public void pendingRental(Rental r) {
+    void pendingRental(Rental r) {
         this.owner.addPendingRental(r);
     }
 
-    public void removePendingRental(Rental r) {
+    void removePendingRental(Rental r) {
         this.owner.refuse(r);
     }
 

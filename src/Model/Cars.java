@@ -28,10 +28,10 @@ public class Cars implements Serializable {
      * \brief Adiciona um carro à base de dados
      * @param a Carro a adicionar
      */
-    public void addCar(Car a) throws CarExistsException {
+    void addCar(Car a) throws CarExistsException {
         if(this.carBase
                 .putIfAbsent(a.getNumberPlate(), a.clone())
-                == null)
+                != null)
             throw new CarExistsException();
     }
 
@@ -71,13 +71,13 @@ public class Cars implements Serializable {
         return this.carBase
                 .values()
                 .stream()
-                .filter((e)-> e.getType() == b)
+                .filter((e)-> e.getType().equals(b))
                 .map(Car::clone)
                 .collect(Collectors
                         .toCollection(ArrayList::new));
     }
 
-    public Car getCar(String compare, Point dest, Point origin, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
+    Car getCar(String compare, Point dest, Point origin, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
         if(compare.equals("MaisPerto")) {
             Car r = this.carBase
                     .values()
@@ -113,7 +113,7 @@ public class Cars implements Serializable {
         throw new UnknownCompareTypeException();
     }
 
-    public Car getCar(Point dest, Point origin, double range, Car.CarType a) throws NoCarAvaliableException {
+    Car getCar(Point dest, Point origin, double range, Car.CarType a) throws NoCarAvaliableException {
         Car r = this.carBase
                 .values()
                 .stream()
@@ -128,7 +128,7 @@ public class Cars implements Serializable {
         return r;
     }
 
-    public Car getCar(Point dest, double range, Car.CarType a) throws NoCarAvaliableException {
+    Car getCar(Point dest, double range, Car.CarType a) throws NoCarAvaliableException {
         Car r = this.carBase
                 .values()
                 .stream()

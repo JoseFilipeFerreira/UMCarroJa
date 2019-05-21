@@ -32,7 +32,7 @@ public abstract class User implements Serializable {
         this.passwd = u.getPasswd();
    }
 
-    public String getPasswd() {
+    String getPasswd() {
         return this.passwd;
     }
 
@@ -44,10 +44,6 @@ public abstract class User implements Serializable {
         return this.nif;
     }
 
-    public void setNif(int nif) {
-        this.nif = nif;
-    }
-
     private String getName() {
         return this.name;
     }
@@ -56,20 +52,8 @@ public abstract class User implements Serializable {
         return this.address;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return this.email;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public abstract User clone();

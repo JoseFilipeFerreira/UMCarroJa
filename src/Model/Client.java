@@ -15,7 +15,7 @@ public class Client extends User {
         this.pendingRates = new ArrayList<>();
     }
 
-    public Point getPos() {
+    Point getPos() {
         return this.pos.clone();
     }
 
@@ -25,15 +25,16 @@ public class Client extends User {
         this.pendingRates = new ArrayList<>(u.pendingRates);
     }
 
-    public void addPendingRental(Rental r) {
+    void addPendingRental(Rental r) {
         this.pendingRates.add(r);
     }
 
-    public void removePendingRental(Rental r) {
+    public void rate(Rental r, int rating) {
+        r.rate(rating);
         this.pendingRates.remove(r);
     }
 
-    public void setPos(Point pos) {
+    void setPos(Point pos) {
         this.pos = pos;
     }
 

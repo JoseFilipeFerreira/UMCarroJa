@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class RentalBase implements Serializable {
+class Rentals implements Serializable {
     private final ArrayList<Rental> rentalBase;
 
     static private int id;
 
-    public RentalBase() {
+    Rentals() {
         this.rentalBase = new ArrayList<>();
         id = -1;
     }
 
-    public void addRental(Rental r) {
+    void addRental(Rental r) {
         id++;
         this.rentalBase.add(r);
     }
@@ -45,7 +45,7 @@ class RentalBase implements Serializable {
      * @param end Data de fim
      * @return Lista dos alugueres
      */
-    public List<Rental> getRentalListClient(String clientID, LocalDateTime init, LocalDateTime end) {
+    List<Rental> getRentalListClient(String clientID, LocalDateTime init, LocalDateTime end) {
         return this.rentalBase.stream()
                 .filter(e -> e.getClientID().equals(clientID)
                         && e.getDate().isBefore(end)
@@ -58,7 +58,7 @@ class RentalBase implements Serializable {
      * @param clientID Id do cliente
      * @return Lista dos alugueres
      */
-    public List<Rental> getRentalListClient(String clientID) {
+    List<Rental> getRentalListClient(String clientID) {
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getClientID().equals(clientID))
@@ -72,7 +72,7 @@ class RentalBase implements Serializable {
      * @param end Data de fim
      * @return Lista de alugueres
      */
-    public List<Rental> getRentalListCar(String carID, LocalDateTime init, LocalDateTime end) {
+    List<Rental> getRentalListCar(String carID, LocalDateTime init, LocalDateTime end) {
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getCarID().equals(carID)
@@ -81,7 +81,7 @@ class RentalBase implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<Rental> getRentalListCar(String carID) {
+    List<Rental> getRentalListCar(String carID) {
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getCarID().equals(carID))

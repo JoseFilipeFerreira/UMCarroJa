@@ -37,7 +37,7 @@ public class Owner extends User {
         return new ArrayList<>(this.pending);
     }
 
-    public void addPendingRental(Rental r) {
+    void addPendingRental(Rental r) {
         this.pending.add(r);
     }
 
@@ -45,7 +45,7 @@ public class Owner extends User {
         this.pending.remove(r);
     }
 
-    public void addCar(Car a) {
+    void addCar(Car a) {
         this.cars.add(a);
     }
 
@@ -53,11 +53,15 @@ public class Owner extends User {
         return this.rating;
     }
 
+    public int getRates() {
+        return this.rating / this.nRentals;
+    }
+
     private int getnRentals() {
         return this.nRentals;
     }
 
-    private ArrayList<Car> getCars() {
+    public List<Car> getCars() {
         return new ArrayList<>(this.cars);
     }
 

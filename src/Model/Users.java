@@ -1,5 +1,6 @@
 package Model;
 
+import Exceptions.InvalidUserException;
 import Exceptions.UserExistsException;
 
 import java.io.Serializable;
@@ -11,22 +12,25 @@ import java.util.List;
 class Users implements Serializable {
     private final Map<String, User> userBase;
 
-    public Users() {
+    Users() {
         this.userBase = new HashMap<>();
     }
 
-    public void addUser(User u) throws UserExistsException {
+    void addUser(User u) throws UserExistsException {
         if(this.userBase.putIfAbsent(u.getEmail(), u.clone()) != null)
             throw new UserExistsException();
     }
 
-    public List<String> getClientIDS() {
+    List<String> getClientIDS() {
         return new ArrayList<>(this
                 .userBase
                 .keySet());
     }
 
-    public User getUser(String id) {
-        return userBase.get(id);
+    User getUser(String id) throws InvalidUserException {
+        User a = userBase.get(id);
+        if(a == null)
+            throw new InvalidUserException();
+        return a;
     }
 }

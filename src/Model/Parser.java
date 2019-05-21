@@ -70,13 +70,17 @@ public class Parser {
                     }
                     model.addCar(
                             content[2],
-                            new StringBuilder().append(content[3]).append("@gmail.com").toString(),
+                            new StringBuilder()
+                                    .append(content[3])
+                                    .append("@gmail.com")
+                                    .toString(),
                             Car.CarType.fromString(content[0]),
                             Double.parseDouble(content[4]),
                             Double.parseDouble(content[5]),
                             Double.parseDouble(content[6]),
                             Integer.parseInt(content[7]),
-                            new Point(Double.parseDouble(content[8]), Double.parseDouble(content[9])),
+                            new Point(Double.parseDouble(content[8])
+                                    , Double.parseDouble(content[9])),
                             content[1]
                     );
                     break;
@@ -84,9 +88,15 @@ public class Parser {
                     if (content.length != 5)
                         break;
                     try {
-                        model.rental(new StringBuilder().append(content[0]).append("@gmail.com").toString(),
-                                new Point(Double.parseDouble(content[1]), Double.parseDouble(content[2])),
-                                content[4], Car.CarType.fromString(content[3]));
+                        model.rental(new StringBuilder()
+                                        .append(content[0])
+                                        .append("@gmail.com")
+                                        .toString(),
+                                new Point(Double.parseDouble(content[1])
+                                        , Double.parseDouble(content[2])),
+                                content[4], Car
+                                        .CarType
+                                        .fromString(content[3]));
                     } catch (NoCarAvaliableException ignored) {
                     }
                     break;
@@ -96,7 +106,11 @@ public class Parser {
                     break;
             }
         }
-        catch (UserExistsException | CarExistsException | UnknownCarTypeException | UnknownCompareTypeException ignored) {}
+        catch (InvalidUserException
+                | UserExistsException
+                | CarExistsException
+                | UnknownCarTypeException
+                | UnknownCompareTypeException ignored) {}
         return l;
     }
 

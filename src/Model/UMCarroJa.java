@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 public class UMCarroJa implements Serializable {
     private final Cars cars;
     private final Users users;
-    private final RentalBase rentals;
+    private final Rentals rentals;
 
     public UMCarroJa() {
         this.cars = new Cars();
         this.users = new Users();
-        this.rentals = new RentalBase();
+        this.rentals = new Rentals();
     }
 
-    public List<String> getBestClients() {
+    public List<Entry<String, Double>> getBestClients() {
         return this
                 .users
                 .getClientIDS()
@@ -35,11 +35,11 @@ public class UMCarroJa implements Serializable {
                 .stream()
                 .sorted(Comparator
                         .comparing(Entry::getValue))
-                .map(Entry::getKey)
                 .collect(Collectors.toList());
     }
 
-    public void rental(String username, Point dest, String preference, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
+    void rental(String username, Point dest, String preference, Car.CarType a)
+            throws UnknownCompareTypeException, NoCarAvaliableException, InvalidUserException {
         Client c = (Client) users.getUser(username);
         Car car = cars.getCar(preference, dest, c.getPos(), a);
         Rental r = new Rental(car, c, dest);
@@ -47,16 +47,18 @@ public class UMCarroJa implements Serializable {
         this.rent(r);
     }
 
-    public Rental rental(Client c, Point dest, double range, Car.CarType a) throws NoCarAvaliableException{
+    //Range a pe
+    public Rental rental(Client c, Point dest, double range, Car.CarType a)
+            throws NoCarAvaliableException{
         Car car = cars.getCar(dest, c.getPos(), range, a);
         Rental r = new Rental(car, c, dest);
-        rentals.addRental(r);
-        c.setPos(dest);
-        car.setPosition(dest);
+        car.pendingRental(r);
         return r;
     }
 
-    public Rental rental(Client c, Point dest, String preference, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
+    //MaisPerto e MaisBarato
+    public Rental rental(Client c, Point dest, String preference, Car.CarType a)
+            throws UnknownCompareTypeException, NoCarAvaliableException {
         Car car = cars.getCar(preference, dest, c.getPos(), a);
         Rental r = new Rental(car, c, dest);
         car.pendingRental(r);
@@ -69,25 +71,25 @@ public class UMCarroJa implements Serializable {
     }
 
     public void addUser(User a) throws UserExistsException {
-        this.users.addUser(a);
+        this.users.addUser(a.clone());
     }
 
-    public void addCar(String numberPlate, String ownerID, Car.CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws CarExistsException {
+    void addCar(String numberPlate, String ownerID, Car.CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws CarExistsException, InvalidUserException {
         Owner o = (Owner) this.users.getUser(ownerID);
         Car a = new Car(numberPlate, o, type, avgSpeed, basePrice, gasMileage, range, pos, brand);
         this.cars.addCar(a);
-        a.addCarUser();
+        o.addCar(a);
     }
 
-    public void addCar(Car a) throws CarExistsException {
+    public void addCar(Owner os, String numberPlate, Car.CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws CarExistsException, InvalidUserException {
+        Owner o = (Owner) this.users.getUser(os.getEmail());
+        Car a = new Car(numberPlate, o, type, avgSpeed, basePrice, gasMileage, range, pos, brand);
         this.cars.addCar(a);
-        a.addCarUser();
+        o.addCar(a);
     }
 
     public User logIn(String username, String passwd) throws InvalidUserException, WrongPasswordExecption {
         User c = users.getUser(username);
-        if(c == null)
-            throw new InvalidUserException();
         if(!c.getPasswd().equals(passwd))
             throw new WrongPasswordExecption();
         return c;

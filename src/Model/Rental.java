@@ -13,7 +13,7 @@ public class Rental implements Serializable {
     private final double price;
     private final LocalDateTime date;
 
-    public Rental(Car car, Client client, Point dest) {
+    Rental(Car car, Client client, Point dest) {
         this.client = client;
         this.car = car;
         this.start = car.getPosition();
@@ -22,7 +22,7 @@ public class Rental implements Serializable {
         this.date = LocalDateTime.now();
     }
 
-    public LocalDateTime getDate() {
+    LocalDateTime getDate() {
         return this.date;
     }
 
@@ -30,7 +30,7 @@ public class Rental implements Serializable {
         return this.start;
     }
 
-    public double getDistance() {
+    double getDistance() {
         return this.getStart().distanceBetweenPoints(this.getEnd());
     }
 
@@ -38,23 +38,27 @@ public class Rental implements Serializable {
         return this.end;
     }
 
-    public double getPrice() {
+    double getPrice() {
         return this.price;
     }
 
-    public String getCarID() {
+    String getCarID() {
         return this.car.getNumberPlate();
     }
 
-    public String getClientID() {
+    String getClientID() {
         return this.client.getEmail();
     }
 
-    public void rent() {
+    void rent() {
         this.client.setPos(this.end);
         this.car.setPosition(this.end);
         this.car.removePendingRental(this);
         this.client.addPendingRental(this);
+    }
+
+    void rate(int rating) {
+        this.car.rate(rating);
     }
 
     @Override
