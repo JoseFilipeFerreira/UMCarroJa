@@ -118,9 +118,9 @@ public class Controller {
                     try {
                         RegisterCar registerCar = menu.newRegisterCar(error);
                         Owner ownerCar = (Owner)this.user;
-                        Car car = new Car(
-                                registerCar.getNumberPlate(),
+                        model.addCar(
                                 ownerCar,
+                                registerCar.getNumberPlate(),
                                 registerCar.getType(),
                                 registerCar.getAvgSpeed(),
                                 registerCar.getBasePrice(),
@@ -129,12 +129,12 @@ public class Controller {
                                 registerCar.getPos(),
                                 registerCar.getBrand()
                         );
-                        this.model.addCar(car);
                         menu.back();
                         error = "";
                     }
                     catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
                     catch (CarExistsException e){ error = "Carro já existe"; }
+                    catch (InvalidUserException ignored) {}
                     break;
 
                     default:

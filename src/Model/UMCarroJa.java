@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class UMCarroJa implements Serializable {
@@ -26,7 +27,7 @@ public class UMCarroJa implements Serializable {
                 .getClientIDS()
                 .stream()
                 .collect(Collectors
-                        .toMap((e)-> e,
+                        .toMap(Function.identity(),
                                 (e) -> rentals.getRentalListClient(e)
                                         .stream()
                                         .map(Rental::getDistance)
