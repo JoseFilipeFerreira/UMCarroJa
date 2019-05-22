@@ -2,11 +2,9 @@ package Controller;
 
 import Exceptions.*;
 import Model.*;
-import Utils.Point;
 import View.Menu;
 import View.ViewModel.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,7 +50,7 @@ public class Controller {
                         menu.back();
                         error = "";
                     }
-                    catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
+                    catch (InvalidNewRegisterException e){ error = "Parametros Inválidos"; }
                     catch (UserExistsException e){ error = "Utilizador já existe"; }
                     break;
                 case Registar_Proprietario:
@@ -69,7 +67,7 @@ public class Controller {
                         menu.back();
                         error = "";
                     }
-                    catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
+                    catch (InvalidNewRegisterException e){ error = "Parametros Inválidos"; }
                     catch (UserExistsException e){ error = "Utilizador já existe"; }
                     break;
                 case Closest_Car:
@@ -86,7 +84,7 @@ public class Controller {
                     }
                     catch (UnknownCompareTypeException e) {}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
-                    catch (InvalidNewRental e){error = "Novo Rental inválido"; }
+                    catch (InvalidNewRentalException e){error = "Novo Rental inválido"; }
                     break;
                 case Cheapest_Car:
                     try{
@@ -102,7 +100,7 @@ public class Controller {
                     }
                     catch (UnknownCompareTypeException e) {}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
-                    catch (InvalidNewRental e){error = "Novo Rental inválido"; }
+                    catch (InvalidNewRentalException e){error = "Novo Rental inválido"; }
                     break;
                 case Review_Rent:
                     Owner owner = (Owner)this.user;
@@ -142,8 +140,9 @@ public class Controller {
                         menu.showRental(rental);
                         error = "";
                     }
-                    catch (InvalidNewRental e){error = "New rental inválido";}
+                    catch (InvalidNewRentalException e){error = "New rental inválido";}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
+                    this.menu.back();
                     break;
 
                 case Autonomy_Car:
@@ -159,8 +158,9 @@ public class Controller {
                         menu.showRental(rental);
                         error = "";
                     }
-                    catch (InvalidNewRental e){error = "New rental inválido";}
+                    catch (InvalidNewRentalException e){error = "New rental inválido";}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
+                    this.menu.back();
                     break;
 
                 case Add_Car:
@@ -182,7 +182,7 @@ public class Controller {
                         error = "";
                     }
 
-                    catch (InvalidNewRegister e){ error = "Parametros Inválidos"; }
+                    catch (InvalidNewRegisterException e){ error = "Parametros Inválidos"; }
                     catch (CarExistsException e){ error = "Carro já existe"; }
                     catch (InvalidUserException ignored) {}
                     break;
@@ -196,6 +196,7 @@ public class Controller {
                                             String.format("%.2f", x.getValue()))
                             ).collect(Collectors.toList()));
                     this.menu.back();
+                    break;
 
                 case Car_Overview:
                     Owner ownerCar = (Owner)this.user;
@@ -232,6 +233,23 @@ public class Controller {
                     catch (NumberFormatException e){ error = "Posição inválida"; }
                     catch (InvalidNumberOfArgumentsException e) {error = "Invalid number of parameters";}
                     break;
+
+                case Pending_Ratings_Cli:
+                    try {
+                        Client cli = (Client) user;
+                        if (cli.getPendingRates().size() == 0)
+                            this.menu.back();
+                        ArrayList<Rental> pR = cli.getPendingRates();
+
+                        AbstractMap.SimpleEntry<Integer, Integer> r =
+                                this.menu.pendingRateShow(error, pR.get(0), pR.size());
+
+                        cli.rate(error, pR.get(0), carRating, ownerRating);
+
+                        error = "";
+                    }
+
+                    catch (InvalidRatingException e){error = "Parametros Invalidos";}
 
                     default:
                         out.println(menu);

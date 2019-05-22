@@ -1,6 +1,6 @@
 package View.ViewModel;
 
-import Exceptions.InvalidNewRegister;
+import Exceptions.InvalidNewRegisterException;
 import Model.Car;
 import Utils.Point;
 
@@ -14,13 +14,13 @@ public class RegisterCar {
     private Point pos;
     private String brand;
 
-    public RegisterCar(String numberPlate, String type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws InvalidNewRegister {
+    public RegisterCar(String numberPlate, String type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws InvalidNewRegisterException {
         this.numberPlate = numberPlate;
         try {
             this.type = Car.CarType.valueOf(type.toLowerCase());
         }
         catch (IllegalArgumentException e){
-            throw new InvalidNewRegister();
+            throw new InvalidNewRegisterException();
         }
         this.avgSpeed = avgSpeed;
         this.basePrice = basePrice;

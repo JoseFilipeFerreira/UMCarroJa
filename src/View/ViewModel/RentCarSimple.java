@@ -1,5 +1,5 @@
 package View.ViewModel;
-import Exceptions.InvalidNewRental;
+import Exceptions.InvalidNewRentalException;
 import Model.Car;
 import Utils.Point;
 
@@ -7,14 +7,14 @@ public class RentCarSimple {
     Point point;
     Car.CarType type;
 
-    public RentCarSimple(Point point, String type) throws InvalidNewRental{
+    public RentCarSimple(Point point, String type) throws InvalidNewRentalException {
 
         this.point = point;
         try {
             this.type = Car.CarType.valueOf(type.toLowerCase());
         }
         catch (IllegalArgumentException e){
-            throw new InvalidNewRental();
+            throw new InvalidNewRentalException();
         }
     }
 

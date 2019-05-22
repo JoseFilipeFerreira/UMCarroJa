@@ -1,6 +1,6 @@
 package View.ViewModel;
 
-import Exceptions.InvalidNewRental;
+import Exceptions.InvalidNewRentalException;
 import Model.Car;
 import Utils.Point;
 
@@ -9,12 +9,12 @@ public class CheapestNearCar {
         int walkDistance;
         Car.CarType type;
 
-        public CheapestNearCar(Point point, int walkDistance, String type) throws InvalidNewRental {
+        public CheapestNearCar(Point point, int walkDistance, String type) throws InvalidNewRentalException {
             try {
                 this.type = Car.CarType.valueOf(type.toLowerCase());
             }
             catch (IllegalArgumentException e){
-                throw new InvalidNewRental();
+                throw new InvalidNewRentalException();
             }
             this.point = point;
             this.walkDistance = walkDistance;
