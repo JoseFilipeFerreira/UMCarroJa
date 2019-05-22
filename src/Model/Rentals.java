@@ -23,12 +23,13 @@ class Rentals implements Serializable {
 
     /**
      * Calcula o total faturado por um carro num intervalo de tempo
-     * @param carID Id do carro
+     * @param car Carro a procurar
      * @param init Data de inicio
      * @param end Data de fim
      * @return Total faturado
      */
-    public double getTotalBilledCar(String carID, LocalDateTime init, LocalDateTime end) {
+    public double getTotalBilledCar(Car car, LocalDateTime init, LocalDateTime end) {
+        String carID = car.getNumberPlate();
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getCarID().equals(carID)
@@ -40,12 +41,13 @@ class Rentals implements Serializable {
 
     /**
      * Calcula a lista de alugueres que um cliente fez num intervalo de tempo
-     * @param clientID Id do cliente
+     * @param c Cliente a procurar
      * @param init Data de inicio
      * @param end Data de fim
      * @return Lista dos alugueres
      */
-    List<Rental> getRentalListClient(String clientID, LocalDateTime init, LocalDateTime end) {
+    List<Rental> getRentalListClient(Client c, LocalDateTime init, LocalDateTime end) {
+        String clientID = c.getEmail();
         return this.rentalBase.stream()
                 .filter(e -> e.getClientID().equals(clientID)
                         && e.getDate().isBefore(end)

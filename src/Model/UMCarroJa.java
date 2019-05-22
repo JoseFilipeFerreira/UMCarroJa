@@ -4,6 +4,7 @@ import Exceptions.*;
 import Utils.Point;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -34,8 +35,9 @@ public class UMCarroJa implements Serializable {
                                         .reduce(0.0, Double::sum)))
                 .entrySet()
                 .stream()
-                .sorted(Comparator
-                        .comparing(Entry::getValue))
+                .sorted(Collections
+                        .reverseOrder(Comparator
+                                .comparingDouble(Entry::getValue)))
                 .collect(Collectors.toList());
     }
 
@@ -87,6 +89,18 @@ public class UMCarroJa implements Serializable {
         Car a = new Car(numberPlate, o, type, avgSpeed, basePrice, gasMileage, range, pos, brand);
         this.cars.addCar(a);
         o.addCar(a);
+    }
+
+    void rate(String s, int rate) throws InvalidUserException {
+        try {
+            int id = Integer.parseInt(s);
+            User u = this.users.getUser(s + "@gmail.com");
+            u.rate(rate);
+        }
+        catch(NumberFormatException ignored) {
+            Car a = this.cars.searchCar(s);
+            a.rate(rate);
+        }
     }
 
     public User logIn(String username, String passwd) throws InvalidUserException, WrongPasswordExecption {

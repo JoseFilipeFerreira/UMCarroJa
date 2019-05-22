@@ -168,7 +168,6 @@ public class Car implements Serializable {
     }
 
     void rate(int rating) {
-        this.owner.rate(rating);
         this.nRatings++;
         this.rating += rating;
     }
@@ -177,8 +176,9 @@ public class Car implements Serializable {
         this.owner.addPendingRental(r);
     }
 
-    void removePendingRental(Rental r) {
-        this.owner.refuse(r);
+    void approvePendingRental(Rental r) {
+        this.owner.accept(r);
+        this.historic.add(r);
     }
 
     public Car clone() {

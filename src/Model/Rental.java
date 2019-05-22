@@ -22,6 +22,11 @@ public class Rental implements Serializable {
         this.date = LocalDateTime.now();
     }
 
+    public enum review {
+        car,
+        user;
+    }
+
     LocalDateTime getDate() {
         return this.date;
     }
@@ -53,7 +58,7 @@ public class Rental implements Serializable {
     void rent() {
         this.client.setPos(this.end);
         this.car.setPosition(this.end);
-        this.car.removePendingRental(this);
+        this.car.approvePendingRental(this);
         this.client.addPendingRental(this);
     }
 

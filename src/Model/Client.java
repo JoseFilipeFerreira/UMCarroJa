@@ -29,7 +29,7 @@ public class Client extends User {
         this.pendingRates.add(r);
     }
 
-    public void rate(Rental r, int rating) {
+    public void rate(Rental r, int rating, Rental.review t) {
         r.rate(rating);
         this.pendingRates.remove(r);
     }

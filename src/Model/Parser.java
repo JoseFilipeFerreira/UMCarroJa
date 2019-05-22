@@ -103,6 +103,7 @@ public class Parser {
                 case "Classificar":
                     if (content.length != 3)
                         break;
+                    model.rate(content[0], Integer.parseInt(content[1]));
                     break;
             }
         }
