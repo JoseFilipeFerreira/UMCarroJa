@@ -101,7 +101,7 @@ public class Parser {
                     }
                     break;
                 case "Classificar":
-                    if (content.length != 3)
+                    if (content.length != 2)
                         break;
                     model.rate(content[0], Integer.parseInt(content[1]));
                     break;
@@ -111,7 +111,8 @@ public class Parser {
                 | UserExistsException
                 | CarExistsException
                 | UnknownCarTypeException
-                | UnknownCompareTypeException ignored) {}
+                | UnknownCompareTypeException
+                | InvalidCarException ignored) {}
         return l;
     }
 

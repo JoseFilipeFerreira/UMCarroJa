@@ -91,15 +91,16 @@ public class UMCarroJa implements Serializable {
         o.addCar(a);
     }
 
-    void rate(String s, int rate) throws InvalidUserException {
+    void rate(String s, int rate) throws InvalidUserException, InvalidCarException {
         try {
-            int id = Integer.parseInt(s);
-            User u = this.users.getUser(s + "@gmail.com");
-            u.rate(rate);
+            this.users
+                    .getUser(Integer.parseInt(s) + "@gmail.com")
+                    .rate(rate);
         }
         catch(NumberFormatException ignored) {
-            Car a = this.cars.searchCar(s);
-            a.rate(rate);
+            this.cars
+                    .searchCar(s)
+                    .rate(rate);
         }
     }
 

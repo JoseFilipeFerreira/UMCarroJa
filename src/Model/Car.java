@@ -70,12 +70,10 @@ public class Car implements Serializable {
     }
 
     void setPosition(Point position) {
-        this.position = position;
-        System.out.println(this.range);
         this.range -= this
                 .position
                 .distanceBetweenPoints(position);
-        System.out.println(this.range);
+        this.position = position;
     }
 
     public void setBasePrice(double basePrice) {

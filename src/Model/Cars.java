@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.CarExistsException;
+import Exceptions.InvalidCarException;
 import Exceptions.NoCarAvaliableException;
 import Exceptions.UnknownCompareTypeException;
 import Utils.Point;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 public class Cars implements Serializable {
     private final Map<String, Car> carBase;
 
-    public Cars() {
+    Cars() {
         this.carBase = new HashMap<>();
     }
 
@@ -40,8 +41,11 @@ public class Cars implements Serializable {
      * @param numberPlate Matricula do carro a procurar
      * @return Clone do carro, Null se não existir
      */
-    public Car searchCar(String numberPlate) {
-        return this.carBase.get(numberPlate).clone();
+    Car searchCar(String numberPlate) throws InvalidCarException {
+        Car car = this.carBase.get(numberPlate);
+        if(car == null)
+            throw new InvalidCarException();
+        return car;
     }
 
     /**
