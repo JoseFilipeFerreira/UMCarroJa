@@ -82,73 +82,75 @@ public class Cars implements Serializable {
     }
 
     Car getCar(String compare, Point dest, Point origin, Car.CarType a) throws UnknownCompareTypeException, NoCarAvaliableException {
-        if(compare.equals("MaisPerto")) {
-            Car r = this.carBase
+        try {
+            if (compare.equals("MaisPerto")) {
+                return this.carBase
+                        .values()
+                        .stream()
+                        .filter(e -> e.getType().equals(a)
+                                && e.hasRange(dest)
+                                && e.isAvailable())
+                        .sorted(Comparator.comparingDouble(e ->
+                                e.getPosition()
+                                        .distanceBetweenPoints(origin)))
+                        .collect(Collectors.toList())
+                        .get(0);
+            }
+
+            if (compare.equals("MaisBarato")) {
+                return this.carBase
+                        .values()
+                        .stream()
+                        .filter(e -> e.getType().equals(a)
+                                && e.hasRange(dest)
+                                && e.getPosition().distanceBetweenPoints(dest) != 0
+                                && e.isAvailable())
+                        .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
+                                .distanceBetweenPoints(dest)))
+                        .collect(Collectors.toList())
+                        .get(0);
+            }
+        }
+        catch (IndexOutOfBoundsException ignored) {
+            throw new NoCarAvaliableException();
+        }
+        throw new UnknownCompareTypeException();
+    }
+
+    Car getCar(Point dest, Point origin, double range, Car.CarType a) throws NoCarAvaliableException {
+        try {
+            return this.carBase
                     .values()
                     .stream()
                     .filter(e -> e.getType().equals(a)
                             && e.hasRange(dest)
+                            && origin.distanceBetweenPoints(e.getPosition()) <= range
                             && e.isAvailable())
-                    .sorted(Comparator.comparingDouble(e ->
-                            e.getPosition()
-                                    .distanceBetweenPoints(origin)))
+                    .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * origin.distanceBetweenPoints(dest)))
                     .collect(Collectors.toList())
                     .get(0);
-            if(r == null)
-                throw new NoCarAvaliableException();
-            return r;
         }
+        catch(IndexOutOfBoundsException ignored) {
+            throw new NoCarAvaliableException();
+        }
+    }
 
-        if(compare.equals("MaisBarato")) {
-            Car r = this.carBase
+    Car getCar(Point dest, double range, Car.CarType a) throws NoCarAvaliableException {
+        try {
+            return this.carBase
                     .values()
                     .stream()
                     .filter(e -> e.getType().equals(a)
                             && e.hasRange(dest)
-                            && e.getPosition().distanceBetweenPoints(dest) != 0
+                            && e.getRange() >= range
                             && e.isAvailable())
                     .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
                             .distanceBetweenPoints(dest)))
                     .collect(Collectors.toList())
                     .get(0);
-            if(r == null)
-                throw new NoCarAvaliableException();
-            return r;
         }
-
-        throw new UnknownCompareTypeException();
-    }
-
-    Car getCar(Point dest, Point origin, double range, Car.CarType a) throws NoCarAvaliableException {
-        Car r = this.carBase
-                .values()
-                .stream()
-                .filter(e -> e.getType().equals(a)
-                        && e.hasRange(dest)
-                        && origin.distanceBetweenPoints(e.getPosition()) <= range
-                        && e.isAvailable())
-                .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * origin.distanceBetweenPoints(dest)))
-                .collect(Collectors.toList())
-                .get(0);
-        if(r == null)
+        catch (IndexOutOfBoundsException ignored) {
             throw new NoCarAvaliableException();
-        return r;
-    }
-
-    Car getCar(Point dest, double range, Car.CarType a) throws NoCarAvaliableException {
-        Car r = this.carBase
-                .values()
-                .stream()
-                .filter(e -> e.getType().equals(a)
-                        && e.hasRange(dest)
-                        && e.getRange() >= range
-                        && e.isAvailable())
-                .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
-                        .distanceBetweenPoints(dest)))
-                .collect(Collectors.toList())
-                .get(0);
-        if(r == null)
-            throw new NoCarAvaliableException();
-        return r;
+        }
     }
 }

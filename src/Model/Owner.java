@@ -37,9 +37,14 @@ public class Owner extends User {
         this.pending.remove(r);
     }
 
-    public void accept(Rental r) {
+    void accept(Rental r) {
         this.refuse(r);
         this.historic.add(r);
+    }
+
+    public void rate(Rental r, int clientRate) {
+        r.rate(clientRate);
+        this.historic.remove(r);
     }
 
     void addCar(Car a) {

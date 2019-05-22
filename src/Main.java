@@ -14,12 +14,10 @@ public class Main {
         catch (IOException | ClassNotFoundException e) {
             new Parser("db/logsPOO_carregamentoInicial.bak", model);
         }
-        finally {
-            new Controller(model).run();
-            try {
-                model.save(".tmp");
-            }
-            catch (IOException ignored) {}
-       }
+        new Controller(model).run();
+        try {
+            model.save(".tmp");
+        }
+        catch (IOException ignored) {}
     }
 }

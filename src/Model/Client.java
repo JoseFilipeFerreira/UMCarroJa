@@ -29,8 +29,8 @@ public class Client extends User {
         this.pendingRates.add(r);
     }
 
-    public void rate(Rental r, int rating, Rental.review t) {
-        r.rate(rating);
+    public void rate(Rental r, int ratingCar, int ratingOwner) {
+        r.rate(ratingCar, ratingOwner);
         this.pendingRates.remove(r);
     }
 
@@ -40,6 +40,10 @@ public class Client extends User {
 
     public Client clone() {
         return new Client(this);
+    }
+
+    public List<Rental> getPendingRates() {
+        return new ArrayList<>(this.pendingRates);
     }
 
 }

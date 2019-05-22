@@ -22,11 +22,6 @@ public class Rental implements Serializable {
         this.date = LocalDateTime.now();
     }
 
-    public enum review {
-        car,
-        user;
-    }
-
     LocalDateTime getDate() {
         return this.date;
     }
@@ -62,8 +57,12 @@ public class Rental implements Serializable {
         this.client.addPendingRental(this);
     }
 
-    void rate(int rating) {
-        this.car.rate(rating);
+    void rate(int carRate, int ownerRate) {
+        this.car.rate(carRate, ownerRate);
+    }
+
+    void rate(int clientRate) {
+        this.client.rate(clientRate);
     }
 
     @Override

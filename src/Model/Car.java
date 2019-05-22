@@ -172,6 +172,11 @@ public class Car implements Serializable {
         this.rating += rating;
     }
 
+    void rate(int carRating, int ownerRate) {
+        this.rate(carRating);
+        this.owner.rate(ownerRate);
+    }
+
     void pendingRental(Rental r) {
         this.owner.addPendingRental(r);
     }
