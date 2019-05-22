@@ -3,14 +3,15 @@ package View;
 import Utils.StringBetter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Table<T> implements ITable{
-    private final ArrayList<String> linLabl;
-    private final ArrayList<String> colLabl;
-    private final ArrayList<ArrayList<T>> iT;
+    private final List<String> linLabl;
+    private final List<String> colLabl;
+    private final List<List<T>> iT;
     private final StringBuilder builder;
 
-    public Table(ArrayList<ArrayList<T>> iT, ArrayList<String> linLabel, ArrayList<String> colLabel) {
+    public Table(List<List<T>> iT, List<String> linLabel, List<String> colLabel) {
         this.linLabl = linLabel;
         this.colLabl = colLabel;
         this.iT = iT;

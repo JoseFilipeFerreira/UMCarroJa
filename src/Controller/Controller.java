@@ -4,12 +4,10 @@ import Exceptions.*;
 import Model.*;
 import Utils.Point;
 import View.Menu;
-import View.Navigator;
-import View.Table;
 import View.ViewModel.RegisterCar;
 import View.ViewModel.RegisterUser;
 
-import java.sql.Array;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -96,6 +94,7 @@ public class Controller {
                     Owner owner = (Owner)this.user;
                     ArrayList<Rental> lR = owner.getPending();
                     for(int i = 0; i < lR.size() && i < 4; i++){
+                        out.print("\033\143");
                         out.println(i + 1 + ".");
                         out.println(lR.get(i));
                     }
@@ -141,22 +140,50 @@ public class Controller {
                     break;
 
                 case Top_10_Clients:
-                    ArrayList<ArrayList<String>> valTab =
-                            this.model.getBestClients()
+                    menu.top10ClientsShow(this.model.getBestClients()
                             .stream()
-                            .map(
-                                    x -> new ArrayList<>(
-                                            Arrays.asList(
-                                                    x.getKey(),
-                                                    String.format("%.2f", x.getValue())
-                                            )
-                                    )
-                            ).collect(Collectors.toCollection(ArrayList::new));
-
-                    menu.top10ClientsShow(valTab);
-
-
+                            .map(x ->
+                                    Arrays.asList(
+                                            x.getKey(),
+                                            String.format("%.2f", x.getValue()))
+                            ).collect(Collectors.toList()));
                     this.menu.back();
+
+                case Car_Overview:
+                    Owner ownerCar = (Owner)this.user;
+                    String action = this.menu.carOverviewShow(error,
+                            ownerCar.getCars().stream()
+                            .map(x -> Arrays.asList(x.toString().split("\n")))
+                            .collect(Collectors.toList()));
+                    try {
+                        switch (action.charAt(0)) {
+                            case ' ':
+                                break;
+                            case 'r':
+                                ownerCar.getCars().get(Integer.parseInt(action.substring(1)) - 1).refil();
+                                break;
+                            case'c':
+                                String [] s = action.substring(1).split(" ");
+                                if (s.length != 2)
+                                    throw new InvalidNumberOfArgumentsException();
+                                ownerCar
+                                        .getCars()
+                                        .get(Integer.parseInt(s[0]) - 1)
+                                        .setBasePrice(Double.parseDouble(s[1]));
+                                break;
+                            case 'd':
+                                ownerCar.getCars().get(Integer.parseInt(action.substring(1)) - 1).swapState();
+                                break;
+                            case 'b':
+                                this.menu.back();
+                                break;
+                        }
+                        error = "";
+                    }
+                    catch (IndexOutOfBoundsException e){ error = "Valor de carro inválido"; }
+                    catch (NumberFormatException e){ error = "Posição inválida"; }
+                    catch (InvalidNumberOfArgumentsException e) {error = "Invalid number of parameters";}
+                    break;
 
                     default:
                         out.println(menu);
