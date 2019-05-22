@@ -132,7 +132,7 @@ public class Car implements Serializable {
         return this.brand;
     }
 
-    private boolean isAvailable() {
+    boolean isAvailable() {
         return this.isAvailable;
     }
 

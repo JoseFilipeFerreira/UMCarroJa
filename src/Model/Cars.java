@@ -87,10 +87,11 @@ public class Cars implements Serializable {
                     .values()
                     .stream()
                     .filter(e -> e.getType().equals(a)
-                            && e.hasRange(dest))
+                            && e.hasRange(dest)
+                            && e.isAvailable())
                     .sorted(Comparator.comparingDouble(e ->
                             e.getPosition()
-                            .distanceBetweenPoints(origin)))
+                                    .distanceBetweenPoints(origin)))
                     .collect(Collectors.toList())
                     .get(0);
             if(r == null)
@@ -104,7 +105,8 @@ public class Cars implements Serializable {
                     .stream()
                     .filter(e -> e.getType().equals(a)
                             && e.hasRange(dest)
-                            && e.getPosition().distanceBetweenPoints(dest) != 0)
+                            && e.getPosition().distanceBetweenPoints(dest) != 0
+                            && e.isAvailable())
                     .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
                             .distanceBetweenPoints(dest)))
                     .collect(Collectors.toList())
@@ -123,7 +125,8 @@ public class Cars implements Serializable {
                 .stream()
                 .filter(e -> e.getType().equals(a)
                         && e.hasRange(dest)
-                        && origin.distanceBetweenPoints(e.getPosition()) <= range)
+                        && origin.distanceBetweenPoints(e.getPosition()) <= range
+                        && e.isAvailable())
                 .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * origin.distanceBetweenPoints(dest)))
                 .collect(Collectors.toList())
                 .get(0);
@@ -138,7 +141,8 @@ public class Cars implements Serializable {
                 .stream()
                 .filter(e -> e.getType().equals(a)
                         && e.hasRange(dest)
-                        && e.getRange() >= range)
+                        && e.getRange() >= range
+                        && e.isAvailable())
                 .sorted(Comparator.comparingDouble(e -> e.getBasePrice() * e.getPosition()
                         .distanceBetweenPoints(dest)))
                 .collect(Collectors.toList())
