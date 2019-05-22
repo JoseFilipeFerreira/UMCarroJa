@@ -1,9 +1,7 @@
 package View.ViewModel;
 
 import Exceptions.InvalidNewRegister;
-import Exceptions.UnknownCarTypeException;
 import Model.Car;
-import Model.Owner;
 import Utils.Point;
 
 public class RegisterCar {
