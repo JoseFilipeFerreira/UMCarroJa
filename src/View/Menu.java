@@ -221,7 +221,7 @@ public class Menu{
         out.println("User:");
         String user = scanner.nextLine();
         out.println("Password:");
-        String password = scanner.nextLine();
+        String password = new StringBetter().readPassword().toString();
 
         return new AbstractMap.SimpleEntry<>(user, password);
     }

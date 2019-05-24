@@ -3,7 +3,7 @@ package Utils;
 interface IStringBetter {
     String getStr();
 
-    void setStr(String str);
+    StringBetter setStr(String str);
 
     StringBetter repeate(int n);
 

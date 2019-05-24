@@ -1,7 +1,15 @@
 package Utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class StringBetter implements IStringBetter{
     private String str;
+
+    public StringBetter() {
+        this.str = "";
+    }
 
     public StringBetter(String str) {
         this.str = str;
@@ -11,8 +19,9 @@ public class StringBetter implements IStringBetter{
         return str;
     }
 
-    public void setStr(String str) {
+    public StringBetter setStr(String str) {
         this.str = str;
+        return this;
     }
 
     public StringBetter repeate(int n){
@@ -100,6 +109,21 @@ public class StringBetter implements IStringBetter{
 
     public StringBetter show_cursor(){
         return new StringBetter(this.str + "\033[?25h");
+    }
+
+    public StringBetter readPassword () {
+        EraserThread et = new EraserThread();
+        Thread mask = new Thread(et);
+        mask.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String password = "";
+        try {
+            password = in.readLine();
+        } catch (IOException e) {}
+        et.stopMasking();
+
+        return this.setStr(password);
     }
 
     @Override
