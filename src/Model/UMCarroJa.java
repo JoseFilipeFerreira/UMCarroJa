@@ -156,7 +156,6 @@ public class UMCarroJa implements Serializable {
     }
 
     public double getTotalBilledCar(Car car) {
-        this.rentals.
         return this.rentals.getTotalBilledCar(car);
     }
 

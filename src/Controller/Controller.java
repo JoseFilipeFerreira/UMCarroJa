@@ -251,14 +251,12 @@ public class Controller {
                 case Pending_Ratings_Cli:
                     try {
                         Client cli = (Client) user;
-
                         List<Rental> pR = cli.getPendingRates();
 
                         if (pR.size() == 0) {
                             this.menu.back();
                             break;
                         }
-                        List<Rental> pR = cli.getPendingRates();
 
                         AbstractMap.SimpleEntry<Integer, Integer> r =
                                 this.menu.pendingRateShow(error, pR.get(0).toString(), pR.size());
