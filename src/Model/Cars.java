@@ -31,7 +31,7 @@ public class Cars implements Serializable {
      */
     void addCar(Car a) throws CarExistsException {
         if(this.carBase
-                .putIfAbsent(a.getNumberPlate(), a.clone())
+                .putIfAbsent(a.getNumberPlate(), a)
                 != null)
             throw new CarExistsException();
     }
