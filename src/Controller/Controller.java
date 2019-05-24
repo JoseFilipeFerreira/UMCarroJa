@@ -105,6 +105,10 @@ public class Controller {
                 case Review_Rent:
                     Owner owner = (Owner)this.user;
                     ArrayList<Rental> lR = owner.getPending();
+                    if (lR.size() == 0){
+                        this.menu.back();
+                        break;
+                    }
                     String v = menu.reviewRentShow(
                             error,
                             lR.stream()
@@ -122,6 +126,7 @@ public class Controller {
                                 this.menu.back();
                                 break;
                         }
+                        error = "";
                     }
                     catch(NumberFormatException | IndexOutOfBoundsException e){error = "Input Inválido";}
                     break;
@@ -137,12 +142,12 @@ public class Controller {
                                 walkCar.getType()
                         );
 
-                        menu.showRental(rental);
+                        this.menu.showRental(rental);
+                        this.menu.back();
                         error = "";
                     }
                     catch (InvalidNewRentalException e){error = "New rental inválido";}
-                    catch (NoCarAvaliableException e) { error = "No cars availables"; }
-                    this.menu.back();
+                    catch (NoCarAvaliableException e)  {error = "No cars availables"; }
                     break;
 
                 case Autonomy_Car:
@@ -156,11 +161,24 @@ public class Controller {
                                 (Client)user);
 
                         menu.showRental(rental);
+                        this.menu.back();
                         error = "";
                     }
                     catch (InvalidNewRentalException e){error = "New rental inválido";}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
-                    this.menu.back();
+                    break;
+
+                case Specific_Car:
+                    try {
+                        SpecificCar sc = this.menu.specificRentCarShow(error);
+                        Rental rental = this.model.rental(sc.getPoint(), sc.getNumberPlate(), (Client)user);
+                        this.menu.showRental(rental);
+                        this.menu.back();
+                        error = "";
+                    }
+                    catch (NoCarAvaliableException e) { error = "Carro não está disponível"; }
+                    catch (InvalidCarException e) { error = "Carro não existe"; }
+                    catch (InvalidNewRentalException e) { error = "Invalid Parameters"; }
                     break;
 
                 case Add_Car:
@@ -181,7 +199,6 @@ public class Controller {
                         menu.back();
                         error = "";
                     }
-
                     catch (InvalidNewRegisterException e){ error = "Parametros Inválidos"; }
                     catch (CarExistsException e){ error = "Carro já existe"; }
                     catch (InvalidUserException ignored) {}
@@ -234,19 +251,24 @@ public class Controller {
                 case Pending_Ratings_Cli:
                     try {
                         Client cli = (Client) user;
-                        if (cli.getPendingRates().size() == 0)
+
+                        List<Rental> pR = cli.getPendingRates();
+
+                        if (pR.size() == 0) {
                             this.menu.back();
+                            break;
+                        }
                         List<Rental> pR = cli.getPendingRates();
 
                         AbstractMap.SimpleEntry<Integer, Integer> r =
                                 this.menu.pendingRateShow(error, pR.get(0).toString(), pR.size());
-
+                      
                         model.rate(cli, pR.get(0), r.getKey(), r.getValue());
 
                         error = "";
                     }
-
                     catch (InvalidRatingException e){error = "Parametros Invalidos";}
+                    break;
 
                     default:
                         out.println(menu);

@@ -113,67 +113,45 @@ public class Menu{
 
     public AutonomyCar autonomyCarShow(String error) throws InvalidNewRentalException {
         Scanner scanner = new Scanner(System.in);
-        out.print("\033\143");
-        out.println(this.createHeader());
-        out.println(new StringBetter(error).under().toString());
+        this.createMenuHeader(error);
         out.println("Tipo do Carro: [electric, gas, hybrid or any]");
         String carType = scanner.nextLine();
-        double x, y;
-        int range;
         try {
             out.println("Alcance:");
-            range = scanner.nextInt();
-            out.println("UMCarroJa wants to know your location!");
-            out.println("x:");
-            x = scanner.nextDouble();
-            out.println("y:");
-            y = scanner.nextDouble();
+            int range = scanner.nextInt();
+            return new AutonomyCar(this.getDest(), range, carType);
         } catch (InputMismatchException e) {
             throw new InvalidNewRentalException();
         }
-        return new AutonomyCar(new Point(x, y), range, carType);
     }
 
     public CheapestNearCar walkingDistanceShow(String error) throws InvalidNewRentalException {
         Scanner scanner = new Scanner(System.in);
-        out.print("\033\143");
-        out.println(this.createHeader());
-        out.println(new StringBetter(error).under().toString());
+        this.createMenuHeader(error);
         out.println("Tipo do Carro: [electric, gas, hybrid or any]");
         String carType = scanner.nextLine();
-        double x, y;
-        int walk;
         try {
             out.println("Distância a andar a pé:");
-            walk = scanner.nextInt();
-            out.println("UMCarroJa wants to know your location!");
-            out.println("x:");
-            x = scanner.nextDouble();
-            out.println("y:");
-            y = scanner.nextDouble();
+            int walk = scanner.nextInt();
+            return new CheapestNearCar(this.getDest(), walk, carType);
         } catch (InputMismatchException e) {
             throw new InvalidNewRentalException();
         }
-        return new CheapestNearCar(new Point(x, y), walk, carType);
     }
 
     public String reviewRentShow(String error, List<String> lR){
         Scanner scanner = new Scanner(System.in);
-        out.print("\033\143");
-        out.println(this.createHeader());
-        out.println(new StringBetter(error).under().toString());
+        this.createMenuHeader(error);
         for(int i = 0; i < lR.size() && i < 4; i++) {
             out.println(i + 1 + ".");
             out.println(lR.get(i));
         }
-        return scanner.nextLine();
+        return scanner.nextLine().toLowerCase();
     }
 
     public void top10ClientsShow (List<List<String>> valTab){
         Scanner scanner = new Scanner(System.in);
-        out.print("\033\143");
-        out.println(this.createHeader());
-        out.println();
+        this.createMenuHeader("");
         ArrayList<String> colLabl = new ArrayList<>();
         colLabl.add("User");
         colLabl.add("Distance");
@@ -186,32 +164,33 @@ public class Menu{
         scanner.nextLine();
     }
 
-    public RentCarSimple simpleRentCarShow(String error) throws InvalidNewRentalException {
+    public SpecificCar specificRentCarShow(String error) throws InvalidNewRentalException {
         Scanner scanner = new Scanner(System.in);
-        out.print("\033\143");
-        out.println(this.createHeader());
-        out.println();
-        out.println(new StringBetter(error).under().toString());
-        out.println("Tipo do Carro: [electric, gas, hybrid or any]");
+        this.createMenuHeader(error);
+        out.println("Matricula:");
         String carType = scanner.nextLine();
-        double x, y;
         try {
-            out.println("UMCarroJa wants to know your location!");
-            out.println("x:");
-            x = scanner.nextDouble();
-            out.println("y:");
-            y = scanner.nextDouble();
+            return new SpecificCar(this.getDest(), carType);
         } catch (InputMismatchException e) {
             throw new InvalidNewRentalException();
         }
-        return new RentCarSimple(new Point(x, y), carType);
+    }
+
+    public RentCarSimple simpleRentCarShow(String error) throws InvalidNewRentalException {
+        Scanner scanner = new Scanner(System.in);
+        this.createMenuHeader(error);
+        out.println("Tipo do Carro: [electric, gas, hybrid or any]");
+        String carType = scanner.nextLine();
+        try {
+            return new RentCarSimple(this.getDest(), carType);
+        } catch (InputMismatchException e) {
+            throw new InvalidNewRentalException();
+        }
     }
 
     public AbstractMap.SimpleEntry<String, String> newLogin(String error) {
         Scanner scanner = new Scanner(System.in);
-        out.print("\033\143");
-        out.println((this.createHeader()));
-        out.println(new StringBetter(error).under().toString());
+        this.createMenuHeader(error);
         out.println("User:");
         String user = scanner.nextLine();
         out.println("Password:");
@@ -221,7 +200,7 @@ public class Menu{
     }
 
     public RegisterCar newRegisterCar(String error) throws InvalidNewRegisterException {
-        createMenuHeader(error);
+        this.createMenuHeader(error);
         Scanner scanner = new Scanner(System.in);
         out.println("Matricula:");
         String matricula = scanner.nextLine();
@@ -229,36 +208,28 @@ public class Menu{
         String marca = scanner.nextLine();
         out.println("Tipo do Carro: [electric, gas, hybrid or any]");
         String carType = scanner.nextLine();
-        int range;
-        double x, y, avgSpeed, basePrice, gasMileage;
         try {
             out.println("Velocidade Média:");
-            avgSpeed = scanner.nextDouble();
+            double avgSpeed = scanner.nextDouble();
             out.println("Preço base:");
-            basePrice = scanner.nextDouble();
+            double basePrice = scanner.nextDouble();
             out.println("Consumo médio:");
-            gasMileage = scanner.nextDouble();
+            double gasMileage = scanner.nextDouble();
             out.println("Alcance:");
-            range = scanner.nextInt();
-            out.println("UMCarroJa wants to know your location!");
-            out.println("x:");
-            x = scanner.nextDouble();
-            out.println("y:");
-            y = scanner.nextDouble();
+            int range = scanner.nextInt();
+
+            return new RegisterCar(
+                    matricula,
+                    carType,
+                    avgSpeed,
+                    basePrice,
+                    gasMileage,
+                    range,
+                    this.getDest(),
+                    marca);
         } catch (InputMismatchException e) {
             throw new InvalidNewRegisterException();
         }
-        return new RegisterCar(
-                matricula,
-                carType,
-                avgSpeed,
-                basePrice,
-                gasMileage,
-                range,
-                new Point(x, y),
-                marca);
-
-
     }
 
     public RegisterUser newRegisterUser(String error) throws InvalidNewRegisterException {
@@ -276,18 +247,15 @@ public class Menu{
         try {
             out.println("Nif:");
             nif = scanner.nextInt();
-        } catch (InputMismatchException e) {
+        }
+        catch (InputMismatchException e) {
             throw new InvalidNewRegisterException();
         }
         if (this.menu.equals(MenuInd.Registar_Cliente)) {
             try {
-                out.println("UMCarroJa wants to know your location!");
-                out.println("x:");
-                double x = scanner.nextDouble();
-                out.println("y:");
-                double y = scanner.nextDouble();
-                return new RegisterUser(user, email, pass, adress, nif, new Point(x, y));
-            } catch (InputMismatchException e) {
+                return new RegisterUser(user, email, pass, adress, nif, this.getDest());
+            }
+            catch (InputMismatchException e) {
                 throw new InvalidNewRegisterException();
             }
         }
@@ -296,26 +264,6 @@ public class Menu{
         }
 
 
-    }
-
-    public int getInputInteiro() {
-        Scanner scanner = new Scanner(System.in);
-        String str;
-        boolean error = false;
-        while (true) {
-            out.print("\033\143");
-            out.println(this.createHeader());
-            if (error)
-                out.println(new StringBetter("Inteiro Inválido").under().toString());
-            else
-                out.println();
-            out.println("Inserir Inteiro: ");
-            str = scanner.nextLine();
-            if (str.matches("^[+-]?\\d{1,8}$"))
-                return Integer.parseInt(str);
-            else
-                error = true;
-        }
     }
 
     public Menu parser(String str) {
@@ -359,16 +307,7 @@ public class Menu{
 
     }
 
-    private void createMenuHeader(String error) {
-        out.print("\033\143");
-        out.println(this.createHeader());
-        out.println(new StringBetter(error).under().toString());
-        out.println();
-    }
-
-    public boolean getRun() {
-        return this.run;
-    }
+    public boolean getRun() { return this.run; }
 
     public Menu selectOption(int i) {
         if (this.options.size() > i - 1 && i > 0) {
@@ -398,14 +337,6 @@ public class Menu{
         return this;
     }
 
-    private String createHeader() {
-        StringBetter strHeader = new StringBetter("\t--");
-        for (MenuInd val : this.prev)
-            strHeader.append(val.name()).append("/");
-
-        return strHeader.append(this.menu.name()).append("--\n").red().toString().replace('_', ' ');
-    }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -415,6 +346,31 @@ public class Menu{
         for (int i = 0; i < this.options.size(); i++)
             s.append(i + 1).append("- ").append(this.menuOptionText(i)).append("\n");
         return s.toString();
+    }
+
+    private void createMenuHeader(String error) {
+        out.print("\033\143");
+        out.println(this.createHeader());
+        out.println(new StringBetter(error).under().toString());
+    }
+
+    private Point getDest(){
+        Scanner scanner = new Scanner(System.in);
+        out.println("UMCarroJa wants to know your destination!");
+        out.println("x:");
+        double x = scanner.nextDouble();
+        out.println("y:");
+        double y = scanner.nextDouble();
+
+        return new Point(x, y);
+    }
+
+    private String createHeader() {
+        StringBetter strHeader = new StringBetter("\t--");
+        for (MenuInd val : this.prev)
+            strHeader.append(val.name()).append("/");
+
+        return strHeader.append(this.menu.name()).append("--\n").red().toString();
     }
 
     private String menuOptionText(int i) {
@@ -470,8 +426,10 @@ public class Menu{
                 break;
             case Alugueres:
                 r += "Alugar um carro";
+                break;
             case Pending_Ratings_Cli:
                 r += "Avaliações pendentes";
+                break;
 
         }
         return r;
@@ -516,33 +474,16 @@ public class Menu{
                 this.options.add(MenuInd.Add_Car);
                 break;
             case Closest_Car:
-                this.options.clear();
-                break;
             case Cheapest_Car:
-                this.options.clear();
-                break;
             case Cheapest_Near_Car:
-                this.options.clear();
-                break;
             case Specific_Car:
-                this.options.clear();
-                break;
             case Autonomy_Car:
-                this.options.clear();
-                break;
             case Car_Overview:
-                this.options.clear();
-                break;
             case Review_Rent:
-                this.options.clear();
-                break;
             case Register_Cost:
-                this.options.clear();
-                break;
             case Client_Stats:
-                this.options.clear();
-                break;
             case Pending_Ratings_Cli:
+            case Owner_Stats:
                 this.options.clear();
                 break;
         }
