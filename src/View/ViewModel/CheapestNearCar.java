@@ -5,9 +5,9 @@ import Model.Car;
 import Utils.Point;
 
 public class CheapestNearCar {
-        Point point;
-        int walkDistance;
-        Car.CarType type;
+        private Point point;
+        private int walkDistance;
+        private Car.CarType type;
 
         public CheapestNearCar(Point point, int walkDistance, String type) throws InvalidNewRentalException {
             try {

@@ -3,8 +3,8 @@ package View.ViewModel;
 import Utils.Point;
 
 public class SpecificCar {
-    Point point;
-    String numberPlate;
+    private final Point point;
+    private final String numberPlate;
 
     public SpecificCar(Point point, String numberPlate) {
         this.point = point;

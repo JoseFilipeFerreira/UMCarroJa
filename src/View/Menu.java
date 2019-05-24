@@ -3,11 +3,15 @@ package View;
 import Exceptions.InvalidNewRegisterException;
 import Exceptions.InvalidNewRentalException;
 import Exceptions.InvalidRatingException;
+import Exceptions.InvalidTimeIntervalException;
 import Model.Rental;
 import Utils.Point;
 import Utils.StringBetter;
 import View.ViewModel.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -46,13 +50,13 @@ public class Menu{
         Registar_Proprietario,
         Cliente,
         Proprietario,
-        Client_Stats,
+        Alugueres_Cliente,
         Closest_Car,
         Cheapest_Car,
         Cheapest_Near_Car,
         Specific_Car,
         Autonomy_Car,
-        Owner_Stats,
+        Alugueres_Owner,
         Review_Rent,
         Car_Overview,
         Register_Cost,
@@ -109,6 +113,29 @@ public class Menu{
         out.println("\tR[pos] -> Refill car\n\tC[pos] [price] -> Change Price\n\tD[pos] -> Toggle Availability");
 
         return new Scanner(System.in).nextLine().toLowerCase();
+    }
+
+    public void rentalHistoryShow (TimeInterval ti, List<List<String>> valTab){
+        this.createMenuHeader("");
+        ArrayList<String> colLabl = new ArrayList<>();
+        colLabl.add("Data");
+        colLabl.add("Carro");
+        colLabl.add("Owner");
+        colLabl.add("Inicio da Viagem");
+        colLabl.add("Fim da Viagem");
+        colLabl.add("Preço");
+        ArrayList<String> linLabl = new ArrayList<>();
+        for(int i = 0; i < valTab.size(); i++ )
+            linLabl.add(String.format("%d", i + 1));
+
+        Table<String> tab = new Table<>(valTab,linLabl,colLabl);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        out.println(ti.getInicio().format(formatter) + " -> " + ti.getFim().format(formatter));
+        out.println(tab);
+
+        new Scanner(System.in).nextLine();
     }
 
     public AutonomyCar autonomyCarShow(String error) throws InvalidNewRentalException {
@@ -268,7 +295,12 @@ public class Menu{
 
     public Menu parser(String str) {
         if (str.matches("^[+-]?\\d{1,8}$")) {
-            this.selectOption(Integer.parseInt(str));
+            int i = Integer.parseInt(str);
+            if (this.options.size() > i - 1 && i > 0) {
+                this.prev.push(this.menu);
+                this.menu = this.options.get(i - 1);
+                this.correctMenu();
+            }
         }
         switch (str) {
             case "b":
@@ -281,6 +313,32 @@ public class Menu{
         }
 
         return this;
+    }
+
+    public Menu selectOption(MenuInd i) {
+        this.prev.push(this.menu);
+        this.menu = i;
+        this.correctMenu();
+        return this;
+    }
+
+    public TimeInterval getTimeInterval(String error) throws InvalidTimeIntervalException{
+        Scanner scanner = new Scanner(System.in);
+        this.createMenuHeader(error);
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            out.println("Inicio de Intervalo (yyyy-MM-dd HH:mm):");
+            LocalDateTime inicio = LocalDateTime.parse(scanner.nextLine(), formatter);
+
+            out.println("Fim de Intervalo (yyyy-MM-dd HH:mm):");
+            LocalDateTime fim = LocalDateTime.parse(scanner.nextLine(), formatter);
+
+            return new TimeInterval(inicio, fim);
+        }
+        catch (DateTimeParseException e){
+            throw new InvalidTimeIntervalException();
+        }
     }
 
     public AbstractMap.SimpleEntry<Integer, Integer> pendingRateShow(String error, String pending, int total)
@@ -308,22 +366,6 @@ public class Menu{
     }
 
     public boolean getRun() { return this.run; }
-
-    public Menu selectOption(int i) {
-        if (this.options.size() > i - 1 && i > 0) {
-            this.prev.push(this.menu);
-            this.menu = this.options.get(i - 1);
-            this.correctMenu();
-        }
-        return this;
-    }
-
-    public Menu selectOption(MenuInd i) {
-        this.prev.push(this.menu);
-        this.menu = i;
-        this.correctMenu();
-        return this;
-    }
 
     public Menu back() {
         if (this.prev.size() > 0) {
@@ -390,8 +432,8 @@ public class Menu{
             case Login:
                 r += "Login";
                 break;
-            case Client_Stats:
-            case Owner_Stats:
+            case Alugueres_Cliente:
+            case Alugueres_Owner:
                 r += "Histórico de alugueres";
                 break;
             case Closest_Car:
@@ -452,7 +494,7 @@ public class Menu{
                 break;
             case Cliente:
                 this.options.clear();
-                this.options.add(MenuInd.Client_Stats);
+                this.options.add(MenuInd.Alugueres_Cliente);
                 this.options.add(MenuInd.Pending_Ratings_Cli);
                 this.options.add(MenuInd.Alugueres);
                 this.options.add(MenuInd.Top_10_Clients);
@@ -467,7 +509,7 @@ public class Menu{
                 break;
             case Proprietario:
                 this.options.clear();
-                this.options.add(MenuInd.Owner_Stats);
+                this.options.add(MenuInd.Alugueres_Owner);
                 this.options.add(MenuInd.Car_Overview);
                 this.options.add(MenuInd.Review_Rent);
                 this.options.add(MenuInd.Register_Cost);
@@ -481,9 +523,9 @@ public class Menu{
             case Car_Overview:
             case Review_Rent:
             case Register_Cost:
-            case Client_Stats:
+            case Alugueres_Cliente:
             case Pending_Ratings_Cli:
-            case Owner_Stats:
+            case Alugueres_Owner:
                 this.options.clear();
                 break;
         }

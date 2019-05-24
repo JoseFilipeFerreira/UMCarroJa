@@ -5,7 +5,7 @@ import Model.Car;
 import Utils.Point;
 
 public class RegisterCar {
-    private String numberPlate;
+    private final String numberPlate;
     private Car.CarType type;
     private double avgSpeed;
     private double basePrice;

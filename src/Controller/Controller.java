@@ -268,6 +268,40 @@ public class Controller {
                     catch (InvalidRatingException e){error = "Parametros Invalidos";}
                     break;
 
+                case Alugueres_Owner:
+                    try{
+                        TimeInterval ti = this.menu.getTimeInterval(error);
+
+                        this.menu.rentalHistoryShow(ti,
+                                this.model.getRentalListOwner((Owner) this.user, ti.getInicio(), ti.getFim())
+                                        .stream()
+                                        .map(Rental::toParsableString)
+                                        .map(x -> Arrays.asList(x.split("\n")))
+                                        .collect(Collectors.toList()));
+
+                        this.menu.back();
+                        error = "";
+                    }
+                    catch (InvalidTimeIntervalException e){error = "Intervalo Inválido";}
+                    break;
+
+                case Alugueres_Cliente:
+                    try{
+                        TimeInterval ti = this.menu.getTimeInterval(error);
+
+                        this.menu.rentalHistoryShow(ti,
+                                this.model.getRentalListClient((Client) this.user, ti.getInicio(), ti.getFim())
+                                        .stream()
+                                        .map(Rental::toParsableString)
+                                        .map(x -> Arrays.asList(x.split("\n")))
+                                        .collect(Collectors.toList()));
+
+                        this.menu.back();
+                        error = "";
+                    }
+                    catch (InvalidTimeIntervalException e){error = "Intervalo Inválido";}
+                    break;
+
                     default:
                         out.println(menu);
                         menu.parser(scanner.nextLine());
