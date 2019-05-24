@@ -85,26 +85,26 @@ class Rentals implements Serializable {
     }
     /**
      * Calcula a lista de alugueres de um carro num intervalo de tempo
-     * @param car Carro a procurar
+     * @param owner Owner a procurar
      * @param init Data de inicio
      * @param end Data de fim
      * @return Lista de alugueres
      */
-    List<Rental> getRentalListCar(Car car, LocalDateTime init, LocalDateTime end) {
-        String carID = car.getNumberPlate();
+    List<Rental> getRentalListOwner(Owner owner, LocalDateTime init, LocalDateTime end) {
+        String carID = owner.getEmail();
         return this.rentalBase
                 .stream()
-                .filter(e -> e.getCarID().equals(carID)
+                .filter(e -> e.getOwnerID().equals(carID)
                         && e.getDate().isBefore(end)
                         && e.getDate().isAfter(init))
                 .collect(Collectors.toList());
     }
 
-    List<Rental> getRentalListCar(Car car) {
-        String carID = car.getNumberPlate();
+    List<Rental> getRentalListOwner(Owner owner) {
+        String carID = owner.getEmail();
         return this.rentalBase
                 .stream()
-                .filter(e -> e.getCarID().equals(carID))
+                .filter(e -> e.getOwnerID().equals(carID))
                 .collect(Collectors.toList());
     }
 }

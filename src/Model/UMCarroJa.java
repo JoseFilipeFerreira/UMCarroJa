@@ -159,12 +159,12 @@ public class UMCarroJa implements Serializable {
         return this.rentals.getTotalBilledCar(car);
     }
 
-    public List<Rental> getRentalListCar(Car car, LocalDateTime init, LocalDateTime end) {
-        return this.rentals.getRentalListCar(car, init, end);
+    public List<Rental> getRentalListOwner(Owner owner, LocalDateTime init, LocalDateTime end) {
+        return this.rentals.getRentalListOwner(owner, init, end);
     }
 
-    public List<Rental> getRentalListCar(Car car) {
-        return this.rentals.getRentalListCar(car);
+    public List<Rental> getRentalListOwner(Owner owner) {
+        return this.rentals.getRentalListOwner(owner);
     }
 
     public List<Rental> getRentalListClient(Client client, LocalDateTime init, LocalDateTime end) {

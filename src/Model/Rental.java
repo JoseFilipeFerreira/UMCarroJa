@@ -50,6 +50,10 @@ public class Rental implements Serializable {
         return this.client.getEmail();
     }
 
+    String getOwnerID() {
+        return this.car.getOwnerID();
+    }
+
     void rent() {
         this.client.setPos(this.end);
         this.car.setPosition(this.end);
