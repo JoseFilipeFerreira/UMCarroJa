@@ -28,13 +28,22 @@ class Rentals implements Serializable {
      * @param end Data de fim
      * @return Total faturado
      */
-    public double getTotalBilledCar(Car car, LocalDateTime init, LocalDateTime end) {
+    double getTotalBilledCar(Car car, LocalDateTime init, LocalDateTime end) {
         String carID = car.getNumberPlate();
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getCarID().equals(carID)
                         && e.getDate().isAfter(init)
                         && e.getDate().isBefore(end))
+                .map(Rental::getPrice)
+                .reduce(0.0, Double::sum);
+    }
+
+    double getTotalBilledCar(Car car) {
+        String carID = car.getNumberPlate();
+        return this.rentalBase
+                .stream()
+                .filter(e -> e.getCarID().equals(carID))
                 .map(Rental::getPrice)
                 .reduce(0.0, Double::sum);
     }
@@ -67,14 +76,22 @@ class Rentals implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    List<Rental> getRentalListClient(Client c) {
+        String clientID = c.getEmail();
+        return this.rentalBase
+                .stream()
+                .filter(e -> e.getClientID().equals(clientID))
+                .collect(Collectors.toList());
+    }
     /**
      * Calcula a lista de alugueres de um carro num intervalo de tempo
-     * @param carID Id do carro
+     * @param car Carro a procurar
      * @param init Data de inicio
      * @param end Data de fim
      * @return Lista de alugueres
      */
-    List<Rental> getRentalListCar(String carID, LocalDateTime init, LocalDateTime end) {
+    List<Rental> getRentalListCar(Car car, LocalDateTime init, LocalDateTime end) {
+        String carID = car.getNumberPlate();
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getCarID().equals(carID)
@@ -83,7 +100,8 @@ class Rentals implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    List<Rental> getRentalListCar(String carID) {
+    List<Rental> getRentalListCar(Car car) {
+        String carID = car.getNumberPlate();
         return this.rentalBase
                 .stream()
                 .filter(e -> e.getCarID().equals(carID))

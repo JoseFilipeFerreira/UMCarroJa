@@ -33,7 +33,7 @@ public class Owner extends User {
         this.pending.add(r);
     }
 
-    public void refuse(Rental r){
+    void refuse(Rental r){
         this.pending.remove(r);
     }
 

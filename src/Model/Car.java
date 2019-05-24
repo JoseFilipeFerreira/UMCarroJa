@@ -76,7 +76,7 @@ public class Car implements Serializable {
         this.position = position;
     }
 
-    public void setBasePrice(double basePrice) {
+    void setBasePrice(double basePrice) {
         this.basePrice = basePrice;
     }
 
@@ -154,11 +154,11 @@ public class Car implements Serializable {
         this.historic = new ArrayList<>();
     }
 
-    public void swapState() {
+    void swapState() {
         this.isAvailable = !this.isAvailable;
     }
 
-    public void refil() {
+    void refil() {
         this.range = this.fullTankRange;
     }
 

@@ -4,6 +4,7 @@ import Exceptions.*;
 import Utils.Point;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -92,8 +93,24 @@ public class UMCarroJa implements Serializable {
         r.rent();
     }
 
+    public void refuse(Owner a, Rental r) {
+        a.refuse(r);
+    }
+
     public void addUser(User a) throws UserExistsException {
         this.users.addUser(a.clone());
+    }
+
+    public void refil(Owner ownerCar, int index) {
+        ownerCar.getCars().get(index).refil();
+    }
+
+    public void setBasePrice(Owner ownerCar, int index, double price) {
+        ownerCar.getCars().get(index).setBasePrice(price);
+    }
+
+    public void swapState(Owner ownerCar, int index) {
+        ownerCar.getCars().get(index).swapState();
     }
 
     void addCar(String numberPlate, String ownerID, Car.CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws CarExistsException, InvalidUserException {
@@ -123,11 +140,40 @@ public class UMCarroJa implements Serializable {
         }
     }
 
+    public void rate(Client cli, Rental r, int a, int b) {
+        cli.rate(r, a, b);
+    }
+
     public User logIn(String username, String passwd) throws InvalidUserException, WrongPasswordExecption {
         User c = users.getUser(username);
         if(!c.getPasswd().equals(passwd))
             throw new WrongPasswordExecption();
         return c;
+    }
+
+    public double getTotalBilledCar(Car car, LocalDateTime init, LocalDateTime end) {
+        return this.rentals.getTotalBilledCar(car, init, end);
+    }
+
+    public double getTotalBilledCar(Car car) {
+        this.rentals.
+        return this.rentals.getTotalBilledCar(car);
+    }
+
+    public List<Rental> getRentalListCar(Car car, LocalDateTime init, LocalDateTime end) {
+        return this.rentals.getRentalListCar(car, init, end);
+    }
+
+    public List<Rental> getRentalListCar(Car car) {
+        return this.rentals.getRentalListCar(car);
+    }
+
+    public List<Rental> getRentalListClient(Client client, LocalDateTime init, LocalDateTime end) {
+        return this.rentals.getRentalListClient(client, init, end);
+    }
+
+    public List<Rental> getRentalListClient(Client client) {
+        return this.rentals.getRentalListClient(client);
     }
 
     public void save(String fName) throws IOException {
