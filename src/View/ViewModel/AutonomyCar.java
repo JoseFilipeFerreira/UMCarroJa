@@ -4,9 +4,9 @@ import Model.Car;
 import Utils.Point;
 
 public class AutonomyCar {
-    private Point point;
-    private int autonomy;
-    private Car.CarType type;
+    private final Point point;
+    private final int autonomy;
+    private final Car.CarType type;
 
     public AutonomyCar(Point point, int autonomy, String type) throws InvalidNewRentalException {
         try {

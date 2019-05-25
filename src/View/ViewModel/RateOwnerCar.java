@@ -1,8 +1,8 @@
 package View.ViewModel;
 
 public class RateOwnerCar {
-    private int ownerRate;
-    private int carRate;
+    private final int ownerRate;
+    private final int carRate;
 
     public RateOwnerCar(int ownerRate, int carRate) {
         this.ownerRate = ownerRate;

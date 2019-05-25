@@ -2,7 +2,6 @@ package View;
 
 import Utils.StringBetter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Table<T> implements ITable{
@@ -18,21 +17,10 @@ public class Table<T> implements ITable{
         this.builder = new StringBuilder();
     }
 
-    public boolean isEmpty(){
-        return this.linLabl.isEmpty() || this.colLabl.isEmpty() || this.iT.isEmpty();
-    }
-
-    public Table() {
-        this.linLabl = new ArrayList<>();
-        this.colLabl = new ArrayList<>();
-        this.iT      = new ArrayList<>();
-        this.builder = new StringBuilder();
-    }
-
     private void printSeparatorLine(int[] sizeCols) {
         StringBetter sif = new StringBetter("-");
         for (int j = 0; j <= sizeCols.length - 1; j++)
-            this.builder.append("+").append(sif.repeate(sizeCols[j]).toString());
+            this.builder.append("+").append(sif.repeat(sizeCols[j]).toString());
         this.builder.append("+\n");
     }
 
@@ -58,10 +46,10 @@ public class Table<T> implements ITable{
         /*print label row*/
         this.printSeparatorLine(sizeCols);
         builder.append("|");
-        builder.append(spac.repeate(sizeCols[0]));
+        builder.append(spac.repeat(sizeCols[0]));
         for (int j = 0; j < col; j++) {
             builder.append("| ").append(this.colLabl.get(j));
-            builder.append(spac.repeate(sizeCols[j + 1] - this.colLabl.get(j).length() - 1));
+            builder.append(spac.repeat(sizeCols[j + 1] - this.colLabl.get(j).length() - 1));
         }
         builder.append("|\n");
         this.printSeparatorLine(sizeCols);
@@ -69,10 +57,10 @@ public class Table<T> implements ITable{
         /* print contents*/
         for (int i = 0; i < lin; i++) {
             builder.append("| ").append(this.linLabl.get(i));
-            builder.append(spac.repeate(sizeCols[0] - this.linLabl.get(i).length() - 1));
+            builder.append(spac.repeat(sizeCols[0] - this.linLabl.get(i).length() - 1));
             for (int j = 0; j < col; j++) {
                 builder.append("| ").append(this.iT.get(i).get(j).toString());
-                builder.append(spac.repeate(sizeCols[j + 1] - this.iT.get(i).get(j).toString().length() - 1));
+                builder.append(spac.repeat(sizeCols[j + 1] - this.iT.get(i).get(j).toString().length() - 1));
             }
             builder.append("|\n");
             this.printSeparatorLine(sizeCols);

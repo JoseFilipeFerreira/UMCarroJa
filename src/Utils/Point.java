@@ -16,11 +16,6 @@ public class Point implements Serializable {
         this.y = y;
     }
 
-    private Point(Point x) {
-        this.x = x.getX();
-        this.y = x.getY();
-    }
-
     private Double getX() {
         return this.x;
     }
@@ -30,7 +25,7 @@ public class Point implements Serializable {
     }
 
     public Point clone() {
-        return new Point(this);
+        return new Point(this.x, this.y);
     }
 
     public double distanceBetweenPoints(Point a) {

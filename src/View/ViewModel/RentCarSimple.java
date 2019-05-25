@@ -5,7 +5,7 @@ import Utils.Point;
 
 public class RentCarSimple {
     private final Point point;
-    private Car.CarType type;
+    private final Car.CarType type;
 
     public RentCarSimple(Point point, String type) throws InvalidNewRentalException {
 

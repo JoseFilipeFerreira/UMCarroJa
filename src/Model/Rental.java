@@ -1,9 +1,9 @@
 package Model;
 
 import Utils.Point;
+import Utils.StringBetter;
 
 import java.io.Serializable;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -86,7 +86,7 @@ public class Rental implements Serializable {
         str.append(this.car.getNumberPlate()).append("\n");
         str.append(this.car.getOwnerID()).append("\n");
         str.append(this.start).append("\n").append(this.end).append("\n");
-        str.append(String.format("%.2f", this.expectedPrice));
+        str.append(String.format("%.2f", this.realPrice));
         return str.toString();
     }
 
@@ -96,7 +96,8 @@ public class Rental implements Serializable {
         str.append(this.car.getNumberPlate()).append("\n");
         str.append(this.start).append("\n");
         str.append(this.end).append("\n");
-        str.append(String.format("%.2f", this.price));
+        str.append(String.format("%.2f", this.expectedTime));
+        str.append(String.format("%.2f", this.expectedPrice));
         return str.toString();
     }
 
@@ -115,8 +116,8 @@ public class Rental implements Serializable {
     public String toFinalString() {
         StringBuilder str = new StringBuilder();
         str.append("Tempo Total: ").append(String.format("%.2f Horas", this.realTime)).append("\n");
-        str.append("Custo Total: ").append(String.format("%.2f", this.realPrice));
-        str.append(this.car.warnings());
+        str.append("Custo Total: ").append(String.format("%.2f", this.realPrice)).append("\n\n");
+        str.append(new StringBetter(this.car.warnings()).under());
         return str.toString();
     }
 }

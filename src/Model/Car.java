@@ -192,6 +192,13 @@ public class Car implements Serializable {
         return new Car(this);
     }
 
+    public String warnings() {
+        StringBuilder a = new StringBuilder();
+        if(this.range / this.getFullTankRange() < 0.15)
+            a.append("O carro necessita de ser abastecido\n");
+        return a.toString();
+    }
+
     @Override
     public String toString() {
         return new StringBuilder()
@@ -200,12 +207,5 @@ public class Car implements Serializable {
                 .append(String.format("%.2f", this.getBasePrice())).append("\n")
                 .append(this.isAvailable).append("\n")
                 .append(this.getRating()).toString();
-    }
-
-    public String warnings() {
-        StringBuilder a = new StringBuilder();
-        if(this.range / this.getFullTankRange() < 0.1)
-            a.append("O carro necessita de ser abastecido\n");
-        return a.toString();
     }
 }

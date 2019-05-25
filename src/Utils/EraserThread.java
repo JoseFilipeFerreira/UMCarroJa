@@ -1,7 +1,5 @@
 package Utils;
 
-import java.io.*;
-
 class EraserThread implements Runnable {
     private boolean stop;
 
@@ -12,8 +10,8 @@ class EraserThread implements Runnable {
         while (stop) {
             System.out.print("\010*");
             try {
-                Thread.currentThread().sleep(1);
-            } catch(InterruptedException ie) { }
+                Thread.sleep(1);
+            } catch(InterruptedException ignored) { }
         }
     }
 

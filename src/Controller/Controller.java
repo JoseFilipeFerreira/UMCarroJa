@@ -27,8 +27,8 @@ public class Controller {
             switch (menu.getMenu()) {
                 case Login:
                     try {
-                        AbstractMap.SimpleEntry<String, String> r = menu.newLogin(error);
-                        user = model.logIn(r.getKey(), r.getValue());
+                        NewLogin r = menu.newLogin(error);
+                        user = model.logIn(r.getUser(), r.getPassword());
                         menu.selectOption((user instanceof Client)? Menu.MenuInd.Cliente : Menu.MenuInd.Proprietario);
                         error = "";
                     }
@@ -72,7 +72,7 @@ public class Controller {
                     break;
                 case Closest_Car:
                     try{
-                        RentCarSimple rent = menu.simpleRentCarShow(error);
+                        RentCarSimple rent = menu.simpleCarRent(error);
                         Rental rental = model.rental(
                                 (Client)user,
                                 rent.getPoint(),
@@ -88,7 +88,7 @@ public class Controller {
                     break;
                 case Cheapest_Car:
                     try{
-                        RentCarSimple rent = menu.simpleRentCarShow(error);
+                        RentCarSimple rent = menu.simpleCarRent(error);
                         Rental rental = model.rental(
                                 (Client)user,
                                 rent.getPoint(),
@@ -121,6 +121,7 @@ public class Controller {
                         switch (v.charAt(0)) {
                             case 'a':
                                 this.model.rent(rentalReview);
+                                out.println(rentalReview.toFinalString());
 
                                 break;
                             case 'r':
@@ -137,7 +138,7 @@ public class Controller {
 
                 case Cheapest_Near_Car:
                     try{
-                        CheapestNearCar walkCar = menu.walkingDistanceShow(error);
+                        CheapestNearCar walkCar = menu.walkingDistanceRent(error);
 
                         Rental rental = model.rental(
                                 (Client)user,
@@ -156,7 +157,7 @@ public class Controller {
 
                 case Autonomy_Car:
                     try{
-                        AutonomyCar autoCar = menu.autonomyCarShow(error);
+                        AutonomyCar autoCar = menu.autonomyCarRent(error);
 
                         Rental rental = model.rental(
                                 autoCar.getPoint(),
@@ -174,7 +175,7 @@ public class Controller {
 
                 case Specific_Car:
                     try {
-                        SpecificCar sc = this.menu.specificRentCarShow(error);
+                        SpecificCar sc = this.menu.specificCarRent(error);
                         Rental rental = this.model.rental(sc.getPoint(), sc.getNumberPlate(), (Client)user);
                         this.menu.showRental(rental);
                         this.menu.back();

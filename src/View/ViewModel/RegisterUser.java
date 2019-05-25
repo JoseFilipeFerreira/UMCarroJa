@@ -8,7 +8,6 @@ public class RegisterUser {
     private final String passwd;
     private final String address;
     private final int nif;
-
     private Point pos;
 
     public RegisterUser(String name, String email, String passwd, String address, int nif, Point pos) {
