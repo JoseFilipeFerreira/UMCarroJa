@@ -112,12 +112,16 @@ public class Controller {
                     String v = menu.reviewRentShow(
                             error,
                             lR.stream()
-                                    .map(Rental::toString)
+                                    .map(Rental::toParsableUserString)
+                                    .map(x -> Arrays.asList(x.split("\n")))
                                     .collect(Collectors.toList()));
+
+                    Rental rentalReview = lR.get(Integer.parseInt(v.substring(1)) - 1);
                     try {
                         switch (v.charAt(0)) {
                             case 'a':
-                                this.model.rent(lR.get(Integer.parseInt(v.substring(1)) - 1));
+                                this.model.rent(rentalReview);
+
                                 break;
                             case 'r':
                                 this.model.refuse(owner, lR.get(Integer.parseInt(v.substring(1)) - 1));
@@ -240,12 +244,15 @@ public class Controller {
                             case 'b':
                                 this.menu.back();
                                 break;
+
+                                default:
+                                    throw new InvalidNumberOfArgumentsException();
                         }
                         error = "";
                     }
                     catch (IndexOutOfBoundsException e){ error = "Valor de carro inválido"; }
                     catch (NumberFormatException e){ error = "Posição inválida"; }
-                    catch (InvalidNumberOfArgumentsException e) {error = "Invalid number of parameters";}
+                    catch (InvalidNumberOfArgumentsException e) {error = "Invalid parameters";}
                     break;
 
                 case Pending_Ratings_Cli:
@@ -258,10 +265,9 @@ public class Controller {
                             break;
                         }
 
-                        AbstractMap.SimpleEntry<Integer, Integer> r =
-                                this.menu.pendingRateShow(error, pR.get(0).toString(), pR.size());
+                        RateOwnerCar r = this.menu.pendingRateShow(error, pR.get(0).toString(), pR.size());
                       
-                        model.rate(cli, pR.get(0), r.getKey(), r.getValue());
+                        model.rate(cli, pR.get(0), r.getOwnerRate(), r.getCarRate());
 
                         error = "";
                     }
@@ -275,7 +281,7 @@ public class Controller {
                         this.menu.rentalHistoryShow(ti,
                                 this.model.getRentalListOwner((Owner) this.user, ti.getInicio(), ti.getFim())
                                         .stream()
-                                        .map(Rental::toParsableString)
+                                        .map(Rental::toParsableOwnerString)
                                         .map(x -> Arrays.asList(x.split("\n")))
                                         .collect(Collectors.toList()));
 
@@ -292,7 +298,7 @@ public class Controller {
                         this.menu.rentalHistoryShow(ti,
                                 this.model.getRentalListClient((Client) this.user, ti.getInicio(), ti.getFim())
                                         .stream()
-                                        .map(Rental::toParsableString)
+                                        .map(Rental::toParsableOwnerString)
                                         .map(x -> Arrays.asList(x.split("\n")))
                                         .collect(Collectors.toList()));
 
