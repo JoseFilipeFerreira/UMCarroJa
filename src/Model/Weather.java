@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 class Weather {
     private static final String[] seasons = {
@@ -16,18 +17,19 @@ class Weather {
     }
 
     public double getSeasonDelay() {
+        Random a = new Random();
         switch (getSeason()){
             case "Summer":
-                return 1.0;
+                return a.nextDouble() % 0.1;
 
             case "Spring":
-                return 1.15;
+                return a.nextDouble() % 0.3;
 
             case "Fall":
-                return 1.30;
+                return a.nextDouble() % 0.35;
 
             default:
-                return 1.35;
+                return a.nextDouble() % 0.6;
         }
     }
 }

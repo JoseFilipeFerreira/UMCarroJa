@@ -3,6 +3,7 @@ package Model;
 import Utils.Point;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,16 +12,20 @@ public class Rental implements Serializable {
     private final Car car;
     private final Point start;
     private final Point end;
-    private final double price;
+    private final double expectedPrice;
+    private double realPrice;
     private final LocalDateTime date;
+    private final double expectedTime;
+    private double realTime;
 
     Rental(Car car, Client client, Point dest) {
         this.client = client;
         this.car = car;
         this.start = car.getPosition();
         this.end = dest;
-        this.price = car.getBasePrice() * start.distanceBetweenPoints(dest);
+        this.expectedPrice = car.getBasePrice() * start.distanceBetweenPoints(dest);
         this.date = LocalDateTime.now();
+        this.expectedTime = this.getStart().distanceBetweenPoints(this.end) / this.car.getAvgSpeed();
     }
 
     LocalDateTime getDate() {
@@ -40,7 +45,7 @@ public class Rental implements Serializable {
     }
 
     double getPrice() {
-        return this.price;
+        return this.expectedPrice;
     }
 
     String getCarID() {
@@ -56,8 +61,13 @@ public class Rental implements Serializable {
     }
 
     void rent() {
+        double weather = new Weather().getSeasonDelay();
+        double traffic = new Traffic().getTraficDelay(weather);
+        double delay = (weather % 0.5) + (traffic % 0.5);
+        this.realTime = this.expectedTime * (1 + delay);
+        this.realPrice = this.expectedPrice * (1 + (delay % 0.4));
         this.client.setPos(this.end);
-        this.car.setPosition(this.end);
+        this.car.setPosition(this.end, delay);
         this.car.approvePendingRental(this);
         this.client.addPendingRental(this);
     }
@@ -76,18 +86,27 @@ public class Rental implements Serializable {
         str.append(this.car.getNumberPlate()).append("\n");
         str.append(this.car.getOwnerID()).append("\n");
         str.append(this.start).append("\n").append(this.end).append("\n");
-        str.append(String.format("%.2f", this.price));
+        str.append(String.format("%.2f", this.expectedPrice));
         return str.toString();
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("Cliente: ").append(this.client.getEmail()).append("\n");
-        str.append("Carro:   ").append(this.car.getNumberPlate()).append("\n");
-        str.append("Dono:    ").append(this.car.getOwnerID()).append("\n");
-        str.append("Viagem:  ").append(this.start).append(" -> ").append(this.end).append("\n");
-        str.append("Custo:   ").append(String.format("%.2f", this.price));
+        str.append("Cliente:        ").append(this.client.getEmail()).append("\n");
+        str.append("Carro:          ").append(this.car.getNumberPlate()).append("\n");
+        str.append("Dono:           ").append(this.car.getOwnerID()).append("\n");
+        str.append("Viagem:         ").append(this.start).append(" -> ").append(this.end).append("\n");
+        str.append("Tempo Estimado: ").append(String.format("%.2f Horas", this.expectedTime)).append("\n");
+        str.append("Custo Estimado: ").append(String.format("%.2f", this.expectedPrice));
+        return str.toString();
+    }
+
+    public String toFinalString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Tempo Total: ").append(String.format("%.2f Horas", this.realTime)).append("\n");
+        str.append("Custo Total: ").append(String.format("%.2f", this.realPrice));
+        str.append(this.car.warnings());
         return str.toString();
     }
 }

@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Owner extends User {
     private List<Car> cars;
@@ -39,6 +40,11 @@ public class Owner extends User {
 
     void accept(Rental r) {
         this.refuse(r);
+        this.pending = this.pending.stream()
+                .filter(e -> e
+                        .getCarID()
+                        .equals(r.getCarID()))
+                .collect(Collectors.toList());
         this.historic.add(r);
     }
 

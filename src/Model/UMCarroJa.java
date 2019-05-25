@@ -113,7 +113,8 @@ public class UMCarroJa implements Serializable {
         ownerCar.getCars().get(index).swapState();
     }
 
-    void addCar(String numberPlate, String ownerID, Car.CarType type, double avgSpeed, double basePrice, double gasMileage, int range, Point pos, String brand) throws CarExistsException, InvalidUserException {
+    void addCar(String numberPlate, String ownerID, Car.CarType type, double avgSpeed, double basePrice,
+                double gasMileage, int range, Point pos, String brand) throws CarExistsException, InvalidUserException {
         Owner o = (Owner) this.users.getUser(ownerID);
         Car a = new Car(numberPlate, o, type, avgSpeed, basePrice, gasMileage, range, pos, brand);
         this.cars.addCar(a);

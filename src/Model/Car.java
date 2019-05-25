@@ -69,11 +69,11 @@ public class Car implements Serializable {
         }
     }
 
-    void setPosition(Point position) {
+    void setPosition(Point position, double delay) {
         System.out.println(range);
         this.range -= this
                 .position
-                .distanceBetweenPoints(position);
+                .distanceBetweenPoints(position) * (1 + (delay % 0.2));
         System.out.println(range);
         this.position = position;
     }
@@ -90,7 +90,7 @@ public class Car implements Serializable {
         return this.owner.getEmail();
     }
 
-    private double getAvgSpeed() {
+    double getAvgSpeed() {
         return this.avgSpeed;
     }
 
@@ -165,8 +165,8 @@ public class Car implements Serializable {
     }
 
     boolean hasRange(Point dest) {
-        if((double)this.range / this.getFullTankRange() < 0.1) return false;
-        return !(this.position.distanceBetweenPoints(dest) > this.range);
+        if(this.range / this.getFullTankRange() < 0.1) return false;
+        return !(this.position.distanceBetweenPoints(dest) * 1.2 > this.range);
     }
 
     void rate(int rating) {
@@ -200,5 +200,12 @@ public class Car implements Serializable {
                 .append(String.format("%.2f", this.getBasePrice())).append("\n")
                 .append(this.isAvailable).append("\n")
                 .append(this.getRating()).toString();
+    }
+
+    public String warnings() {
+        StringBuilder a = new StringBuilder();
+        if(this.range / this.getFullTankRange() < 0.1)
+            a.append("O carro necessita de ser abastecido\n");
+        return a.toString();
     }
 }
