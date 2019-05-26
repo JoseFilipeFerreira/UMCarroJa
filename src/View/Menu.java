@@ -22,30 +22,32 @@ public class Menu{
     private boolean run;
 
     public enum MenuInd {
-        Inicial,
+        Initial,
         Login,
         Register,
-        Registar_Cliente,
-        Registar_Proprietario,
-        Cliente,
-        Proprietario,
-        Alugueres_Cliente,
-        Closest_Car,
-        Cheapest_Car,
-        Cheapest_Near_Car,
-        Specific_Car,
-        Autonomy_Car,
-        Alugueres_Owner,
-        Review_Rent,
-        Car_Overview,
-        Add_Car,
-        Top_10_Clients,
-        Alugueres,
-        Pending_Ratings_Cli
+        RegisterClient,
+        RegisterOwner,
+        Client,
+        Owner,
+        HistoryClient,
+        Closest,
+        Cheapest,
+        CheapestNear,
+        Specific,
+        Autonomy,
+        Top10Clients,
+        HistoryOwner,
+        ReviewRental,
+        CarOverview,
+        AddCar,
+        Rentals,
+        Pending,
+        NUses,
+        Distance
     }
 
     public Menu() {
-        this.menu = MenuInd.Inicial;
+        this.menu = MenuInd.Initial;
         this.prev = new Stack<>();
         this.options = new ArrayList<>();
         this.run = true;
@@ -145,7 +147,7 @@ public class Menu{
         Scanner scanner = new Scanner(System.in);
         this.displayMenuHeader(error);
         ArrayList<String> colLabl = new ArrayList<>();
-        colLabl.add("Cliente");
+        colLabl.add("Client");
         colLabl.add("Carro");
         colLabl.add("Inicio");
         colLabl.add("Fim");
@@ -163,19 +165,13 @@ public class Menu{
         return scanner.nextLine().toLowerCase();
     }
 
-    public void top10ClientsShow (List<List<String>> valTab){
-        Scanner scanner = new Scanner(System.in);
-        this.displayMenuHeader("");
+    public void top10ClientsShow (List<List<String>> valTab, String colum){
         ArrayList<String> colLabl = new ArrayList<>();
         colLabl.add("User");
-        colLabl.add("Distance");
-        ArrayList<String> linLabl = new ArrayList<>();
-        for(int i = 1; i < 11; i++)
-            linLabl.add(String.format("%dº", i));
-        Table<String> tab = new Table<>(valTab,linLabl,colLabl);
-        out.println(tab);
-
-        scanner.nextLine();
+        colLabl.add(colum);
+        this.displayMenuHeader("");
+        this.tableDefault(valTab, colLabl);
+        new Scanner(System.in).nextLine();
     }
 
     public SpecificCar specificCarRent(String error) throws InvalidNewRentalException {
@@ -265,7 +261,7 @@ public class Menu{
         catch (InputMismatchException e) {
             throw new InvalidNewRegisterException();
         }
-        if (this.menu.equals(MenuInd.Registar_Cliente)) {
+        if (this.menu.equals(MenuInd.RegisterClient)) {
             try {
                 return new RegisterUser(user, email, pass, adress, nif, this.getDest());
             }
@@ -403,40 +399,44 @@ public class Menu{
 
     private String menuOptionText(int i) {
         switch (this.options.get(i)) {
-            case Inicial:
-                return "Menu Inicial";
+            case Initial:
+                return "Menu Initial";
             case Register:
                 return  "Registar novo utilizador";
-            case Registar_Cliente:
-                return "Registar novo Cliente";
-            case Registar_Proprietario:
+            case RegisterClient:
+                return "Registar novo Client";
+            case RegisterOwner:
                 return  "Registar novo Proprietário";
             case Login:
                 return  "Login";
-            case Alugueres_Cliente:
-            case Alugueres_Owner:
+            case HistoryClient:
+            case HistoryOwner:
                 return "Histórico de alugueres";
-            case Closest_Car:
+            case Closest:
                 return  "Carro mais próximo das suas coordenadas";
-            case Cheapest_Car:
+            case Cheapest:
                 return"Carro mais barato";
-            case Cheapest_Near_Car:
+            case CheapestNear:
                 return "Carro mais barato dentro de uma distância";
-            case Specific_Car:
+            case Specific:
                 return "Carro específico";
-            case Autonomy_Car:
+            case Autonomy:
                 return  "Carro com uma autonomia desejada.";
-            case Add_Car:
+            case AddCar:
                 return  "Adicionar novo carro";
-            case Car_Overview:
+            case CarOverview:
                 return "Várias operações sobre carros";
-            case Review_Rent:
+            case ReviewRental:
                 return  "Aceitar/rejeitar o aluguer de um determinado cliente;";
-            case Top_10_Clients:
+            case Top10Clients:
                 return "UMCarroJá Challenge";
-            case Alugueres:
+            case Distance:
+                return "Organizado por distância";
+            case NUses:
+                return "Organizado por número de Utilizações";
+            case Rentals:
                 return "Alugar um carro";
-            case Pending_Ratings_Cli:
+            case Pending:
                 return "Avaliações pendentes";
 
                 default:
@@ -447,32 +447,36 @@ public class Menu{
     private void pickChildMenus() {
         this.options.clear();
         switch (this.menu) {
-            case Inicial:
+            case Initial:
                 this.options.add(MenuInd.Login);
                 this.options.add(MenuInd.Register);
                 break;
             case Register:
-                this.options.add(MenuInd.Registar_Cliente);
-                this.options.add(MenuInd.Registar_Proprietario);
+                this.options.add(MenuInd.RegisterClient);
+                this.options.add(MenuInd.RegisterOwner);
                 break;
-            case Cliente:
-                this.options.add(MenuInd.Alugueres_Cliente);
-                this.options.add(MenuInd.Pending_Ratings_Cli);
-                this.options.add(MenuInd.Alugueres);
-                this.options.add(MenuInd.Top_10_Clients);
+            case Client:
+                this.options.add(MenuInd.HistoryClient);
+                this.options.add(MenuInd.Pending);
+                this.options.add(MenuInd.Rentals);
+                this.options.add(MenuInd.Top10Clients);
                 break;
-            case Alugueres:
-                this.options.add(MenuInd.Closest_Car);
-                this.options.add(MenuInd.Cheapest_Car);
-                this.options.add(MenuInd.Cheapest_Near_Car);
-                this.options.add(MenuInd.Specific_Car);
-                this.options.add(MenuInd.Autonomy_Car);
+            case Top10Clients:
+                this.options.add(MenuInd.NUses);
+                this.options.add(MenuInd.Distance);
                 break;
-            case Proprietario:
-                this.options.add(MenuInd.Alugueres_Owner);
-                this.options.add(MenuInd.Car_Overview);
-                this.options.add(MenuInd.Review_Rent);
-                this.options.add(MenuInd.Add_Car);
+            case Rentals:
+                this.options.add(MenuInd.Closest);
+                this.options.add(MenuInd.Cheapest);
+                this.options.add(MenuInd.CheapestNear);
+                this.options.add(MenuInd.Specific);
+                this.options.add(MenuInd.Autonomy);
+                break;
+            case Owner:
+                this.options.add(MenuInd.HistoryOwner);
+                this.options.add(MenuInd.CarOverview);
+                this.options.add(MenuInd.ReviewRental);
+                this.options.add(MenuInd.AddCar);
                 break;
         }
     }

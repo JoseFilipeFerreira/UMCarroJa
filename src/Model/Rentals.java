@@ -50,7 +50,7 @@ class Rentals implements Serializable {
 
     /**
      * Calcula a lista de alugueres que um cliente fez num intervalo de tempo
-     * @param c Cliente a procurar
+     * @param c Client a procurar
      * @param init Data de inicio
      * @param end Data de fim
      * @return Lista dos alugueres

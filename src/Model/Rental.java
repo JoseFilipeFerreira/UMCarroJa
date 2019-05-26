@@ -116,7 +116,7 @@ public class Rental implements Serializable {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("Cliente:        ").append(this.client.getEmail()).append("\n");
+        str.append("Client:        ").append(this.client.getEmail()).append("\n");
         str.append("Carro:          ").append(this.car.getNumberPlate()).append("\n");
         str.append("Dono:           ").append(this.car.getOwnerID()).append("\n");
         str.append("Viagem:         ").append(this.start).append(" -> ").append(this.end).append("\n");
