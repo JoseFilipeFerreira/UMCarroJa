@@ -263,7 +263,7 @@ public class Menu{
         }
         if (this.menu.equals(MenuInd.RegisterClient)) {
             try {
-                return new RegisterUser(user, email, pass, adress, nif, this.getDest());
+                return new RegisterUser(user, email, pass, adress, nif, this.getLoc());
             }
             catch (InputMismatchException e) {
                 throw new InvalidNewRegisterException();
@@ -372,6 +372,17 @@ public class Menu{
     private Point getDest(){
         Scanner scanner = new Scanner(System.in);
         out.println("UMCarroJa wants to know your destination!");
+        out.println("x:");
+        double x = scanner.nextDouble();
+        out.println("y:");
+        double y = scanner.nextDouble();
+
+        return new Point(x, y);
+    }
+
+    private Point getLoc(){
+        Scanner scanner = new Scanner(System.in);
+        out.println("UMCarroJa wants to know your location!");
         out.println("x:");
         double x = scanner.nextDouble();
         out.println("y:");
