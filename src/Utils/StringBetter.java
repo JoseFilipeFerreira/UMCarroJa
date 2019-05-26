@@ -106,21 +106,6 @@ public class StringBetter{
         return new StringBetter(this.str + "\033[?25h");
     }
 
-    public StringBetter readPassword () {
-        EraserThread et = new EraserThread();
-        Thread mask = new Thread(et);
-        mask.start();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String password = "";
-        try {
-            password = in.readLine();
-        } catch (IOException ignored) {}
-        et.stopMasking();
-
-        return this.setStr(password);
-    }
-
     @Override
     public String toString() {
         return this.str;

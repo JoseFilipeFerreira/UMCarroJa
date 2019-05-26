@@ -204,7 +204,7 @@ public class Menu{
         out.println("User:");
         String user = scanner.nextLine();
         out.println("Password:");
-        String password = new StringBetter().readPassword().toString();
+        String password = scanner.nextLine();
 
         return new NewLogin(user, password);
     }
