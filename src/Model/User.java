@@ -48,7 +48,7 @@ public abstract class User implements Serializable {
     }
 
     public int getRates() {
-        return this.rating / this.nRatings;
+        return (this.nRatings == 0)? 100 : (this.rating / this.nRatings);
     }
 
     private int getNif() {

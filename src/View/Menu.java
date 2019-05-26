@@ -4,7 +4,6 @@ import Exceptions.InvalidNewRegisterException;
 import Exceptions.InvalidNewRentalException;
 import Exceptions.InvalidRatingException;
 import Exceptions.InvalidTimeIntervalException;
-import Model.Rental;
 import Utils.Point;
 import Utils.StringBetter;
 import View.ViewModel.*;
@@ -57,13 +56,27 @@ public class Menu{
         return this.menu;
     }
 
-    public void showRental(Rental rental) {
+    public void showRental(String rental) {
         Scanner scanner = new Scanner(System.in);
         out.print("\033\143");
         out.println(this.createHeader());
         out.println();
         out.println(rental);
         scanner.nextLine();
+    }
+
+    public int showRentalRate(String rental) {
+        Scanner scanner = new Scanner(System.in);
+        String error = "";
+        while(true) {
+            this.displayMenuHeader(error);
+            out.println(rental);
+            out.println("Client rating:");
+            try {
+                return scanner.nextInt();
+            }
+            catch (InputMismatchException e) {error = "Invalid rating";}
+        }
     }
 
     public String carOverviewShow (String error, List<List<String>> valTab){
@@ -128,16 +141,20 @@ public class Menu{
         }
     }
 
-    public String reviewRentShow(String error, List<List<String>> lR){
+    public String reviewRentShow(String error, int ownerRating, List<List<String>> lR){
         Scanner scanner = new Scanner(System.in);
         this.displayMenuHeader(error);
         ArrayList<String> colLabl = new ArrayList<>();
         colLabl.add("Cliente");
         colLabl.add("Carro");
-        colLabl.add("Inicio da Viagem");
-        colLabl.add("Fim da Viagem");
+        colLabl.add("Inicio");
+        colLabl.add("Fim");
+        colLabl.add("Tempo a pé");
         colLabl.add("Tempo Estimado");
         colLabl.add("Custo Estimado");
+        colLabl.add("Client Rating");
+
+        out.println("Rating pessoal: " + ownerRating);
 
         this.tableDefault(lR, colLabl);
 
@@ -203,7 +220,7 @@ public class Menu{
         String matricula = scanner.nextLine();
         out.println("Marca:");
         String marca = scanner.nextLine();
-        out.println("Tipo do Carro: [electric, gas, hybrid or any]");
+        out.println("Tipo do Carro: [electric, gas or hybrid]");
         String carType = scanner.nextLine();
         try {
             out.println("Velocidade Média:");
@@ -263,7 +280,9 @@ public class Menu{
 
     }
 
-    public Menu parser(String str) {
+    public Menu parser() {
+        out.println(this);
+        String str = new Scanner(System.in).nextLine();
         if (str.matches("^[+-]?\\d{1,8}$")) {
             int i = Integer.parseInt(str);
             if (this.options.size() > i - 1 && i > 0) {

@@ -8,8 +8,6 @@ import View.ViewModel.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.lang.System.out;
-
 public class Controller {
     private final UMCarroJa model;
     private User user;
@@ -21,7 +19,6 @@ public class Controller {
     }
 
     public void run(){
-        Scanner scanner = new Scanner(System.in);
         String error = "";
         while(this.menu.getRun()) {
             switch (menu.getMenu()) {
@@ -78,7 +75,7 @@ public class Controller {
                                 rent.getPoint(),
                                 "MaisPerto",
                                 rent.getCarType());
-                        menu.showRental(rental);
+                        menu.showRental(rental.toString());
                         menu.back();
                         error = "";
                     }
@@ -94,7 +91,7 @@ public class Controller {
                                 rent.getPoint(),
                                 "MaisBarato",
                                 rent.getCarType());
-                        menu.showRental(rental);
+                        menu.showRental(rental.toString());
                         menu.back();
                         error = "";
                     }
@@ -111,18 +108,21 @@ public class Controller {
                     }
                     String v = menu.reviewRentShow(
                             error,
+                            owner.getRates(),
                             lR.stream()
                                     .map(Rental::toParsableUserString)
                                     .map(x -> Arrays.asList(x.split("\n")))
                                     .collect(Collectors.toList()));
 
-                    Rental rentalReview = lR.get(Integer.parseInt(v.substring(1)) - 1);
                     try {
                         switch (v.charAt(0)) {
                             case 'a':
-                                this.model.rent(rentalReview);
-                                out.println(rentalReview.toFinalString());
-
+                                this.model.rent(lR.get(Integer.parseInt(v.substring(1)) - 1));
+                                this.model.rate(
+                                        owner,
+                                        lR.get(Integer.parseInt(v.substring(1)) - 1),
+                                        this.menu.showRentalRate(
+                                                lR.get(Integer.parseInt(v.substring(1)) - 1).toFinalString()));
                                 break;
                             case 'r':
                                 this.model.refuse(owner, lR.get(Integer.parseInt(v.substring(1)) - 1));
@@ -147,7 +147,7 @@ public class Controller {
                                 walkCar.getType()
                         );
 
-                        this.menu.showRental(rental);
+                        this.menu.showRental(rental.toString());
                         this.menu.back();
                         error = "";
                     }
@@ -165,7 +165,7 @@ public class Controller {
                                 autoCar.getType(),
                                 (Client)user);
 
-                        menu.showRental(rental);
+                        menu.showRental(rental.toString());
                         this.menu.back();
                         error = "";
                     }
@@ -177,7 +177,7 @@ public class Controller {
                     try {
                         SpecificCar sc = this.menu.specificCarRent(error);
                         Rental rental = this.model.rental(sc.getPoint(), sc.getNumberPlate(), (Client)user);
-                        this.menu.showRental(rental);
+                        this.menu.showRental(rental.toString());
                         this.menu.back();
                         error = "";
                     }
@@ -310,8 +310,7 @@ public class Controller {
                     break;
 
                     default:
-                        out.println(menu);
-                        menu.parser(scanner.nextLine());
+                        this.menu.parser();
                         break;
             }
         }
