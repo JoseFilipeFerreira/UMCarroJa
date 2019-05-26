@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class Rentals implements Serializable {
-    private final ArrayList<Rental> rentalBase;
+    private final List<Rental> rentalBase;
 
     static private int id;
 

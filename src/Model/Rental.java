@@ -45,7 +45,7 @@ public class Rental implements Serializable {
     }
 
     double getPrice() {
-        return this.expectedPrice;
+        return this.realPrice;
     }
 
     String getCarID() {

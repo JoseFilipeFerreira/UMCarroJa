@@ -5,6 +5,7 @@ import Utils.Point;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -42,12 +43,76 @@ public class UMCarroJa implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public List<Entry<String, Integer>> getBestClientsTimes() {
+        return this
+                .users
+                .getClientIDS()
+                .stream()
+                .collect(Collectors
+                        .toMap(Function.identity(),
+                                rentals::getRentalListClient))
+                .entrySet()
+                .stream()
+                .sorted(new Comparator<Entry<String, List<Rental>>>() {
+                    @Override
+                    public int compare(Entry<String, List<Rental>> o1, Entry<String, List<Rental>> o2) {
+                        int r = Integer.compare(o2.getValue().size(), o1.getValue().size());
+                        if(r == 0) return Double.compare(o2.getValue()
+                                        .stream()
+                                        .mapToDouble(Rental::getDistance)
+                                        .sum(),
+                                o1.getValue()
+                                        .stream()
+                                        .mapToDouble(Rental::getDistance)
+                                        .sum());
+                        return r;
+                    }
+                })
+                .map(e -> new AbstractMap.SimpleEntry<String, Integer>(e.getKey(), e.getValue().size()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Entry<String, Double>> getBestClientsTravel() {
+        return this
+                .users
+                .getClientIDS()
+                .stream()
+                .collect(Collectors
+                        .toMap(Function.identity(),
+                                rentals::getRentalListClient))
+                .entrySet()
+                .stream()
+                .sorted(new Comparator<Entry<String, List<Rental>>>() {
+                    @Override
+                    public int compare(Entry<String, List<Rental>> o1, Entry<String, List<Rental>> o2) {
+                        int r = Double.compare(o2.getValue()
+                                        .stream()
+                                        .mapToDouble(Rental::getDistance)
+                                        .sum(),
+                                o1.getValue()
+                                        .stream()
+                                        .mapToDouble(Rental::getDistance)
+                                        .sum());
+                        if(r == 0) return Integer.compare(o2.getValue()
+                                        .size(),
+                                o1.getValue()
+                                        .size());
+                        return r;
+                    }
+                })
+                .map(e -> new AbstractMap.SimpleEntry<String, Double>(e.getKey(), e.getValue()
+                        .stream()
+                        .mapToDouble(Rental::getDistance)
+                        .sum()))
+                .collect(Collectors.toList());
+    }
+
+
     void rental(String username, Point dest, String preference, Car.CarType a)
             throws UnknownCompareTypeException, NoCarAvaliableException, InvalidUserException {
         Client c = (Client) users.getUser(username);
         Car car = cars.getCar(preference, dest, c.getPos(), a);
         Rental r = new Rental(car, c, dest);
-        car.pendingRental(r);
         this.rent(r);
     }
 
