@@ -1,0 +1,213 @@
+\documentclass[a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{hyperref}
+\usepackage{a4wide}
+\hypersetup{pdftitle={UMCarroJá},
+pdfauthor={João Teixeira, Emanuel Rodrigues, José Ferreira},
+colorlinks=true,
+urlcolor=blue,
+linkcolor=black}
+\usepackage{subcaption}
+\usepackage[cache=false]{minted}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{appendix}
+\usepackage{tikz}
+\usepackage{authblk}
+\usetikzlibrary{positioning,automata,decorations.markings}
+
+\begin{document}
+
+\title{UMCarroJá\\ 
+\large Grupo Nº 48}
+\author{João Teixeira (A85504) \and Emanuel Rodrigues (A84776) \and José Ferreira (A83683)}
+\date{\today}
+
+\begin{center}
+    \begin{minipage}{0.75\linewidth}
+        \centering
+        \includegraphics[width=0.4\textwidth]{eng.jpeg}\par\vspace{1cm}
+        \vspace{1.5cm}
+        \href{https://www.uminho.pt/PT}
+        {\color{black}{\scshape\LARGE Universidade do Minho}} \par
+        \vspace{1cm}
+        {\color{black}{\scshape\Large Programação Orientada a Objetos}} \par
+        \vspace{1.5cm}
+        \maketitle
+    \end{minipage}
+\end{center}
+
+\tableofcontents
+
+\pagebreak
+
+\chapter{Introdução}
+
+O objetivo deste projeto é construir um sistema de aluguer de carros,
+inspirado no serviço de aluguer de casas \textit{Airbnb}, onde um cliente
+pode alugar um carro, onde ele mesmo e o condutor, para fazer a deslocação
+que pretende, ou disponibilizar as suas viaturas para alugar.
+Para a realização deste projeto vamos aplicar conhecimentos adquiridos nas
+aulas da UC de Programação Orientada a Objetos.
+Ao longo deste relatório vamos descrever a nossa abordagem a este problema.
+
+
+\chapter{Arquitetura do Projeto}
+
+Para a construção deste projeto decidimos implementar o padrão de arquitetura de software \textit{MVC}.
+Assim, é consideravelmente mais fácil implementar qualquer alteração na interface de utilizador ou no \textit{Model}.
+
+\begin{figure}[h]
+    \includegraphics[scale=0.4]{hierarquia.png}
+    \caption{Arquitetura do Projeto}
+\end{figure}
+
+\chapter{Classes}\label{chap:api}
+
+\section{Modelo}
+
+No modelo todos os pedidos entram pela classe UmCarroJá como visível na hierarquia de classes desta,
+na figura~\ref{fig:hUCJ}, salvo exceções, como alguns gets sobre classes deste. Daqui são chamados
+todos os métodos das outras classes necessários a realizar os pedidos.
+
+\subsection{UMCarroJá}
+
+Esta e a classe onde esta contida toda a informação sobre utilizadores,
+carros e alugueres. É também a grande ponte de comunicação com o exterior
+do modelo, permitindo assim que não haja interação direta do exterior com
+as classes.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{hierarquiaUmCarroJa.png}
+    \caption{Hierarquia de Classes do \textbf{UmCarroJá}}\label{fig:hUCJ}
+\end{figure}
+
+
+\subsection{User}
+
+Esta e a classe com a informação contida por qualquer user do sistema,
+e métodos comuns tanto aos clientes como aos owners.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{hierarquiaUser.png}
+    \caption{Hierarquia de Classes do \textbf{User}}
+\end{figure}
+
+\subsection{Client}
+
+Esta classe é referente ao user que pode criar alugueres, contendo
+esta um Ponto, correspondente à posição em que se encontra e alugueres
+que ainda não foram avaliados.
+
+\subsection{Owner}
+
+Esta classe é relativa ao utilizador que tem os seus carros para aluguer,
+e este tem informação sobre os carros que possui e também os alugueres
+que ainda não avaliou.
+
+\subsection{Users}
+
+Esta classe contem a informação de todos os utilizadores do sistema.
+
+\subsection{Car}\label{chap:car}
+
+Esta classe representa uma viatura, onde tem todas as suas informações,
+desde autonomia, quem é o seu proprietário, marca e matricula.
+
+\subsection{Cars}
+
+Esta classe trata de guardar todos os carros existentes no sistema, bem
+como procurar carros conforme as condições dadas para efetuar um aluguer.
+
+\subsection{Rental}
+
+Esta classe contem toda a informação de um Aluguer assim como métodos para tratar
+um aluguer.
+
+\subsection{Rentals}
+
+Esta classe guarda a informação relativa a todos os alugueres efetuados
+no sistema.
+
+\subsection{Parser}
+
+Esta classe tem como objetivo a leitura do ficheiro de logs e transformação
+em informação utilizável pelo programa.
+
+\section{View}
+
+\subsection{Menu}
+
+Esta classe representa os vários Menus e as relações entre eles. Para permitir
+conhecer o caminho percorrido até ao menu que se está a observar esta classe
+contém uma stack com os menus percorridos.
+
+\subsection{Table}
+
+Esta classe representa uma Tabela com um generic type parameter. Para tal
+apenas precisa de uma lista de Labels para as colunas, outra para as linhas e
+os dados sobre a forma de uma Lista de Listas.
+O resultado final é uma tabela visualmente apelativa em que cada coluna tem o
+tamanho mínimo possível.
+
+\subsection{ViewModel}
+
+Esta Package contem um conjunto de classes que permitem a transferência de argumentos
+entre a View e o Controller de forma mais legível. Por exemplo, a classe RegisterCar
+contém todos os parâmetros necessários para registar um novo carro e uma instância desta
+é passada da View para o Controller a fim de o adicionar aos carros no model.
+
+\section{Controller}
+
+Cria a ponte entre o View e o Model. Assim, o Controller é o único que conhece a view e o
+Model, sendo que tanto a View como o Model apenas conhecem o Controller.
+
+\section{Utils}
+
+\subsection{Point}
+
+Esta classe contém as coordenadas de um ponto num plano, assim como métodos sobre estes.
+Por exemplo, um método para calcular a distância entre dois pontos.
+
+\subsection{StringBetter}
+
+Esta classe contém métodos para converter uma string para quando for
+impressa num ecrã tenha várias propriedades. Tais como terem cor
+específica e estarem sublinhadas.
+
+\section{Exceptions}
+
+Esta Package contém todas as classes de exceções utilizadas ao longo do projeto.
+
+\chapter{Introdução de novos tipos de Viaturas}
+
+Neste momento, e à luz do ficheiro de logs fornecido, todos os carros são tratados de igual maneira,
+pelo que a diferenciação entre os diversos tipos de veículos e feita através de um \textit{enum}.
+Para facilitar a criação de novos tipos de veículos, a nossa classe \textit{Car} 
+devia ser tornada numa interface, ou uma classe abstrata, de forma a que inserir novos veículos fosse
+apenas a criação de uma nova classe que implementa ou extende a classe \textit{Car}
+
+\chapter{Manual de Utilização}
+
+No menu inicial apresentado é possível escolher se se quer fazer login ou criar novo utilizador.
+Visto que existem dois tipos distintos de utilizadores(Clientes e Proprietários), existem dois menus
+diferentes para cada tipo de utilizador. Essa seleção é feita automaticamente a quando do login.
+Dentro do menu de Proprietários é possível ver o histórico de alugueres, aprovar alugueres pendentes,
+ adicionar carros e realizar várias operações sobre carros (reabastecer o carro, mudar o preço, mudar disponibilidade
+ e calcular o rendimento de um carro).
+Dentro do menu de Clientes é possível ver o histórico de alugueres, ver classificações pendentes, alugar um carro e
+ver os 10 melhores clientes.
+Para navegar para trás no menu basta escrever o carácter \textit{b}.
+
+\chapter{Conclusão}
+
+Para concluir, conseguimos cumprir todos os requisitos propostos criando no processo um
+sistema semelhante ao \textit{Airbnb} para o aluguer de carros que segue um modelo \textit{MVC} (Model View Controller)
+Como trabalho futuro, gostaríamos de melhorar a forma como a classe \textit{Car} está implementada a fim
+de facilitar a adição de novos tipos de veículos. 
+
+\end{document}
