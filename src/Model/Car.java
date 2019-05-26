@@ -17,7 +17,7 @@ public class Car implements Serializable {
     private final double avgSpeed;
     private double basePrice;
     private final double gasMileage;
-    private final Point position;
+    private Point position;
     private final int fullTankRange;
 
     private boolean isAvailable;
@@ -74,6 +74,7 @@ public class Car implements Serializable {
         this.range -= this
                 .position
                 .distanceBetweenPoints(position) * (1 + (delay % 0.2));
+        this.position = position;
     }
 
     void setBasePrice(double basePrice) {

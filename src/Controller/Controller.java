@@ -294,7 +294,7 @@ public class Controller {
 
                         RateOwnerCar r = this.menu.pendingRateShow(error, pR.get(0).toString(), pR.size());
                       
-                        model.rate(cli, pR.get(0), r.getOwnerRate(), r.getCarRate());
+                        model.rate(cli, pR.get(0), r.getCarRate(), r.getOwnerRate());
 
                         error = "";
                     }
