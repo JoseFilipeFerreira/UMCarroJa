@@ -3,13 +3,9 @@ package Utils;
 import java.io.Serializable;
 
 public class Point implements Serializable {
+    private static final long serialVersionUID = 4350420193796601374L;
     private final double x;
     private final double y;
-
-    public Point() {
-        this.x = 0;
-        this.y = 0;
-    }
 
     public Point(Double x, Double y) {
         this.x = x;

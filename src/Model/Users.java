@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.List;
 
 class Users implements Serializable {
+    private static final long serialVersionUID = 7586838070562585444L;
     private final Map<String, User> userBase;
 
     Users() {
@@ -32,5 +33,15 @@ class Users implements Serializable {
         if(a == null)
             throw new InvalidUserException();
         return a;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Users users = (Users) o;
+        return this.userBase.equals(users.userBase);
     }
 }

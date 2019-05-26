@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Rental implements Serializable {
+    private static final long serialVersionUID = 7119901023330524504L;
     private final Client client;
     private final Car car;
     private final Point start;
@@ -123,7 +124,7 @@ public class Rental implements Serializable {
         str.append("Tempo a pé      ").append(
                 String.format(
                         "%.2f Horas",
-                        this.client.getPos().distanceBetweenPoints(this.start)/4)).append("\n");;
+                        this.client.getPos().distanceBetweenPoints(this.start)/4)).append("\n");
         str.append("Tempo Estimado: ").append(String.format("%.2f Horas", this.expectedTime)).append("\n");
         str.append("Custo Estimado: ").append(String.format("%.2f", this.expectedPrice));
         return str.toString();
@@ -135,5 +136,23 @@ public class Rental implements Serializable {
         str.append("Custo Total: ").append(String.format("%.2f", this.realPrice)).append("\n\n");
         str.append(new StringBetter(this.car.warnings()).under());
         return str.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Rental rental = (Rental) o;
+        return this.expectedPrice == rental.expectedPrice
+                && this.realPrice == rental.realPrice
+                && this.expectedTime == rental.expectedTime
+                && this.realTime == rental.realTime
+                && this.client.equals(rental.client)
+                && this.car.equals(rental.car)
+                && this.start.equals(rental.start)
+                && this.end.equals(rental.end)
+                && this.date.equals(rental.date);
     }
 }

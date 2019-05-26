@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class Rentals implements Serializable {
+    private static final long serialVersionUID = 1526373866446179937L;
     private final List<Rental> rentalBase;
 
     static private int id;
@@ -106,5 +107,15 @@ class Rentals implements Serializable {
                 .stream()
                 .filter(e -> e.getOwnerID().equals(carID))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Rentals rentals = (Rentals) o;
+        return this.rentalBase.equals(rentals.rentalBase);
     }
 }

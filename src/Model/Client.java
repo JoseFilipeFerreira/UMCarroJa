@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client extends User {
+    private static final long serialVersionUID = 6476239603804875239L;
     private Point pos;
     private final List<Rental> pendingRates;
 
@@ -46,4 +47,14 @@ public class Client extends User {
         return new ArrayList<>(this.pendingRates);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+        return this.pos.equals(client.pos)
+                && this.pendingRates.equals(client.pendingRates);
+    }
 }

@@ -75,11 +75,11 @@ public class Controller {
                                 rent.getPoint(),
                                 "MaisPerto",
                                 rent.getCarType());
-                        menu.showRental(rental.toString());
+                        menu.showString(rental.toString());
                         menu.back();
                         error = "";
                     }
-                    catch (UnknownCompareTypeException e) {}
+                    catch (UnknownCompareTypeException ignored) {}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
                     catch (InvalidNewRentalException e){error = "Novo Rental inválido"; }
                     break;
@@ -91,11 +91,11 @@ public class Controller {
                                 rent.getPoint(),
                                 "MaisBarato",
                                 rent.getCarType());
-                        menu.showRental(rental.toString());
+                        menu.showString(rental.toString());
                         menu.back();
                         error = "";
                     }
-                    catch (UnknownCompareTypeException e) {}
+                    catch (UnknownCompareTypeException ignored) {}
                     catch (NoCarAvaliableException e) { error = "No cars availables"; }
                     catch (InvalidNewRentalException e){error = "Novo Rental inválido"; }
                     break;
@@ -147,7 +147,7 @@ public class Controller {
                                 walkCar.getType()
                         );
 
-                        this.menu.showRental(rental.toString());
+                        this.menu.showString(rental.toString());
                         this.menu.back();
                         error = "";
                     }
@@ -165,7 +165,7 @@ public class Controller {
                                 autoCar.getType(),
                                 (Client)user);
 
-                        menu.showRental(rental.toString());
+                        menu.showString(rental.toString());
                         this.menu.back();
                         error = "";
                     }
@@ -177,7 +177,7 @@ public class Controller {
                     try {
                         SpecificCar sc = this.menu.specificCarRent(error);
                         Rental rental = this.model.rental(sc.getPoint(), sc.getNumberPlate(), (Client)user);
-                        this.menu.showRental(rental.toString());
+                        this.menu.showString(rental.toString());
                         this.menu.back();
                         error = "";
                     }
@@ -259,6 +259,14 @@ public class Controller {
                             case 'd':
                                 model.swapState(ownerCar, Integer.parseInt(action.substring(1)) - 1);
                                 break;
+                            case 't':
+                                TimeInterval ti = this.menu.getTimeInterval(error);
+                                this.menu.showString("Total faturado: " +
+                                        model.getTotalBilledCar(
+                                        ownerCar.getCars().get(Integer.parseInt(action.substring(1)) - 1),
+                                        ti.getInicio(),
+                                        ti.getFim()));
+                                break;
                             case 'b':
                                 this.menu.back();
                                 break;
@@ -271,6 +279,7 @@ public class Controller {
                     catch (IndexOutOfBoundsException e){ error = "Valor de carro inválido"; }
                     catch (NumberFormatException e){ error = "Posição inválida"; }
                     catch (InvalidNumberOfArgumentsException e) {error = "Invalid parameters";}
+                    catch (InvalidTimeIntervalException e ){error = "Formato Inválido de Data";}
                     break;
 
                 case Pending:

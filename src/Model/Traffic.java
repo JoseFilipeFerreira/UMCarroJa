@@ -3,7 +3,7 @@ package Model;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-public class Traffic {
+class Traffic {
     public double getTraficDelay(double delay) {
         int a = LocalDateTime.now().getHour();
         Random b = new Random();

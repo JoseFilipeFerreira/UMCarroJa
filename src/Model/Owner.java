@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Owner extends User {
+    private static final long serialVersionUID = -2511785557930475729L;
     private List<Car> cars;
     private List<Rental> pending;
     private List<Rental> historic;
@@ -63,6 +64,18 @@ public class Owner extends User {
 
     public Owner clone() {
         return new Owner(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Owner owner = (Owner) o;
+        return this.cars.equals(owner.cars)
+                && this.pending.equals(owner.pending)
+                && this.historic.equals(owner.historic);
     }
 }
 

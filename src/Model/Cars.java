@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cars implements Serializable {
+    private static final long serialVersionUID = 2716582249374370739L;
     private final Map<String, Car> carBase;
 
     Cars() {
@@ -46,15 +47,6 @@ public class Cars implements Serializable {
         if(car == null)
             throw new InvalidCarException();
         return car;
-    }
-
-    /**
-     * Verifica se um carro existe na base de dados
-     * @param numberPlate Matricula a procurar
-     * @return Se o carro existe ou não
-     */
-    public boolean carExixts(String numberPlate) {
-        return this.carBase.containsKey(numberPlate);
     }
 
     /**
@@ -133,6 +125,16 @@ public class Cars implements Serializable {
         catch(IndexOutOfBoundsException ignored) {
             throw new NoCarAvaliableException();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Cars cars = (Cars) o;
+        return this.carBase.equals(cars.carBase);
     }
 
     Car getCar(Point dest, double range, Car.CarType a) throws NoCarAvaliableException {

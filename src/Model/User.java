@@ -3,11 +3,12 @@ package Model;
 import java.io.Serializable;
 
 public abstract class User implements Serializable {
-    private String email;
-    private String passwd;
-    private String name;
-    private String address;
-    private int nif;
+    private static final long serialVersionUID = 8140329421867679989L;
+    private final String email;
+    private final String passwd;
+    private final String name;
+    private final String address;
+    private final int nif;
     private int rating;
     private int nRatings;
 
@@ -43,10 +44,6 @@ public abstract class User implements Serializable {
         return this.passwd;
     }
 
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
-    }
-
     public int getRates() {
         return (this.nRatings == 0)? 100 : (this.rating / this.nRatings);
     }
@@ -74,4 +71,19 @@ public abstract class User implements Serializable {
 
     public abstract User clone();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+        return this.nif == user.nif
+                && this.rating == user.rating
+                && this.nRatings == user.nRatings
+                && this.email.equals(user.email)
+                && this.passwd.equals(user.passwd)
+                && this.name.equals(user.name)
+                && this.address.equals(user.address);
+    }
 }

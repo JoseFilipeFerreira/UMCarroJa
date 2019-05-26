@@ -58,7 +58,7 @@ public class Menu{
         return this.menu;
     }
 
-    public void showRental(String rental) {
+    public void showString(String rental) {
         Scanner scanner = new Scanner(System.in);
         out.print("\033\143");
         out.println(this.createHeader());
@@ -92,7 +92,7 @@ public class Menu{
 
         this.tableDefault(valTab, colLabl);
 
-        out.println("\tR[pos] -> Refill car\n\tC[pos] [price] -> Change Price\n\tD[pos] -> Toggle Availability");
+        out.println("\tR[pos] -> Refill car\n\tC[pos] [price] -> Change Price\n\tD[pos] -> Toggle Availability\n\tT[pos] -> total faturado");
 
         return new Scanner(System.in).nextLine().toLowerCase();
     }

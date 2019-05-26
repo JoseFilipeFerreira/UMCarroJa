@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.System.out;
-
 public class Parser {
     private List<String> file;
 
@@ -31,7 +29,7 @@ public class Parser {
                     .map(e -> this.parseLine(e, model))
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -116,4 +114,13 @@ public class Parser {
         return l;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Parser parser = (Parser) o;
+        return this.file.equals(parser.file);
+    }
 }

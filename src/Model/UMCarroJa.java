@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class UMCarroJa implements Serializable {
+    private static final long serialVersionUID = 8905150170424120902L;
     private final Cars cars;
     private final Users users;
     private final Rentals rentals;
@@ -53,22 +54,19 @@ public class UMCarroJa implements Serializable {
                                 rentals::getRentalListClient))
                 .entrySet()
                 .stream()
-                .sorted(new Comparator<Entry<String, List<Rental>>>() {
-                    @Override
-                    public int compare(Entry<String, List<Rental>> o1, Entry<String, List<Rental>> o2) {
-                        int r = Integer.compare(o2.getValue().size(), o1.getValue().size());
-                        if(r == 0) return Double.compare(o2.getValue()
-                                        .stream()
-                                        .mapToDouble(Rental::getDistance)
-                                        .sum(),
-                                o1.getValue()
-                                        .stream()
-                                        .mapToDouble(Rental::getDistance)
-                                        .sum());
-                        return r;
-                    }
+                .sorted((o1, o2) -> {
+                    int r = Integer.compare(o2.getValue().size(), o1.getValue().size());
+                    if(r == 0) return Double.compare(o2.getValue()
+                                    .stream()
+                                    .mapToDouble(Rental::getDistance)
+                                    .sum(),
+                            o1.getValue()
+                                    .stream()
+                                    .mapToDouble(Rental::getDistance)
+                                    .sum());
+                    return r;
                 })
-                .map(e -> new AbstractMap.SimpleEntry<String, Integer>(e.getKey(), e.getValue().size()))
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().size()))
                 .collect(Collectors.toList());
     }
 
@@ -82,25 +80,22 @@ public class UMCarroJa implements Serializable {
                                 rentals::getRentalListClient))
                 .entrySet()
                 .stream()
-                .sorted(new Comparator<Entry<String, List<Rental>>>() {
-                    @Override
-                    public int compare(Entry<String, List<Rental>> o1, Entry<String, List<Rental>> o2) {
-                        int r = Double.compare(o2.getValue()
-                                        .stream()
-                                        .mapToDouble(Rental::getDistance)
-                                        .sum(),
-                                o1.getValue()
-                                        .stream()
-                                        .mapToDouble(Rental::getDistance)
-                                        .sum());
-                        if(r == 0) return Integer.compare(o2.getValue()
-                                        .size(),
-                                o1.getValue()
-                                        .size());
-                        return r;
-                    }
+                .sorted((o1, o2) -> {
+                    int r = Double.compare(o2.getValue()
+                                    .stream()
+                                    .mapToDouble(Rental::getDistance)
+                                    .sum(),
+                            o1.getValue()
+                                    .stream()
+                                    .mapToDouble(Rental::getDistance)
+                                    .sum());
+                    if(r == 0) return Integer.compare(o2.getValue()
+                                    .size(),
+                            o1.getValue()
+                                    .size());
+                    return r;
                 })
-                .map(e -> new AbstractMap.SimpleEntry<String, Double>(e.getKey(), e.getValue()
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue()
                         .stream()
                         .mapToDouble(Rental::getDistance)
                         .sum()))
