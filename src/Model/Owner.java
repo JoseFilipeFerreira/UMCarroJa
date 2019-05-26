@@ -48,7 +48,7 @@ public class Owner extends User {
         this.historic.add(r);
     }
 
-    public void rate(Rental r, int clientRate) {
+    void rate(Rental r, int clientRate) {
         r.rate(clientRate);
         this.historic.remove(r);
     }

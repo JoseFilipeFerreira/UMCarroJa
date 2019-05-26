@@ -145,6 +145,10 @@ public class UMCarroJa implements Serializable {
         cli.rate(r, a, b);
     }
 
+    public void rate(Owner own, Rental r, int a) {
+        own.rate(r, a);
+    }
+
     public User logIn(String username, String passwd) throws InvalidUserException, WrongPasswordExecption {
         User c = users.getUser(username);
         if(!c.getPasswd().equals(passwd))
