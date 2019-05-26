@@ -80,7 +80,17 @@ public class Rental implements Serializable {
         this.client.rate(clientRate);
     }
 
-    public String toParsableOwnerString() {
+    public String toParsableOwnerRentalString() {
+        StringBuilder str = new StringBuilder();
+        str.append(this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n");
+        str.append(this.car.getNumberPlate()).append("\n");
+        str.append(this.client.getEmail()).append("\n");
+        str.append(this.start).append("\n").append(this.end).append("\n");
+        str.append(String.format("%.2f", this.realPrice));
+        return str.toString();
+    }
+
+    public String toParsableUserRentalString() {
         StringBuilder str = new StringBuilder();
         str.append(this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n");
         str.append(this.car.getNumberPlate()).append("\n");

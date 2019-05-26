@@ -100,7 +100,7 @@ public class Menu{
         ArrayList<String> colLabl = new ArrayList<>();
         colLabl.add("Data");
         colLabl.add("Carro");
-        colLabl.add("Owner");
+        colLabl.add("Utilizador");
         colLabl.add("Inicio da Viagem");
         colLabl.add("Fim da Viagem");
         colLabl.add("Preço Final");

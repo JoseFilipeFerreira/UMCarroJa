@@ -282,7 +282,7 @@ public class Controller {
                         this.menu.rentalHistoryShow(ti,
                                 this.model.getRentalListOwner((Owner) this.user, ti.getInicio(), ti.getFim())
                                         .stream()
-                                        .map(Rental::toParsableOwnerString)
+                                        .map(Rental::toParsableOwnerRentalString)
                                         .map(x -> Arrays.asList(x.split("\n")))
                                         .collect(Collectors.toList()));
 
@@ -299,7 +299,7 @@ public class Controller {
                         this.menu.rentalHistoryShow(ti,
                                 this.model.getRentalListClient((Client) this.user, ti.getInicio(), ti.getFim())
                                         .stream()
-                                        .map(Rental::toParsableOwnerString)
+                                        .map(Rental::toParsableUserRentalString)
                                         .map(x -> Arrays.asList(x.split("\n")))
                                         .collect(Collectors.toList()));
 

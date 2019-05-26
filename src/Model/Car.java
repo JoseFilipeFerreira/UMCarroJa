@@ -107,7 +107,7 @@ public class Car implements Serializable {
     }
 
     private int getRating() {
-        return this.rating;
+        return (this.nRatings == 0)? 100 : (this.rating / this.nRatings);
     }
 
     Point getPosition() {
